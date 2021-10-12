@@ -1,6 +1,7 @@
 package com.demo.utils
 
 object Constants {
+    const val APP_START = "AppStartInfo"
     lateinit var LATITUDE: String
     lateinit var LONGITUDE: String
 

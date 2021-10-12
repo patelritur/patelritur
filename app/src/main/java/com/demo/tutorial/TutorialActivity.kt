@@ -11,6 +11,7 @@ import com.demo.home.model.AppContentModel
 import com.demo.home.model.viewmodel.AppContentViewModel
 import com.demo.home.model.viewmodel.AppContentViewModelFactory
 import com.demo.registrationLogin.LoginActivity
+import com.demo.utils.Constants
 
 class TutorialActivity : AppCompatActivity() {
     /*val images: IntArray = intArrayOf(R.mipmap.tutorial_one, R.mipmap.tutorial_two, R.mipmap.tutorial_three, R.mipmap.tutorial_four
@@ -21,7 +22,7 @@ class TutorialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val activityTutorialBinding: ActivityTutorialBinding =  DataBindingUtil.setContentView(
             this, R.layout.activity_tutorial)
-        val factory = AppContentViewModelFactory(this.application, "AppStartInfo")
+        val factory = AppContentViewModelFactory(this.application, Constants.APP_START)
         val appContentViewModel = ViewModelProviders.of(this, factory).get(
             AppContentViewModel::class.java
         )
