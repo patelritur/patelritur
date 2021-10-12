@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="handler"
+            type="com.demo.registrationLogin.UploadDocDialog" />
+    </data>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:background="@drawable/google_rounded_corner"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+
+        android:orientation="vertical">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/margin_20"
+        android:paddingLeft="@dimen/margin_20"
+        android:paddingRight="@dimen/margin_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:textColor="#393939"
+        android:letterSpacing="0.01"
+        android:lineSpacingExtra="6.5sp"
+        android:text="@string/upload_your_vaccination_certificate"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20"
+        android:src="@mipmap/upload_certi"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:onClick="@{handler::onUploadDocClick}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textColor="@color/color_E8505B"
+        android:paddingRight="@dimen/margin_20"
+        android:paddingLeft="@dimen/margin_20"
+        android:paddingTop="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_10"
+        app:fontFamily="@font/montserrat_regular"
+        android:textStyle="bold"
+        android:letterSpacing="0.01"
+        android:background="@drawable/border_red_rounded_corner"
+        android:text="@string/upload_file"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_margin="@dimen/margin_20"
+        android:onClick="@{handler::onSkipClick}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/skip_for_now"
+        android:textColor="@color/color_E8505B"
+        style="@style/forgot_password_text"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

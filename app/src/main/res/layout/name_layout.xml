@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="homeModel"
+            type="com.demo.home.model.HomeModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            style="@style/drawer"
+           />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:fontFamily="@font/montserrat_semibold"
+            android:paddingLeft="@dimen/margin_20"
+            android:text="@={homeModel.greetingMessage}"
+            android:textColor="#c0c0c0"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:layout_marginBottom="5dp"
+            android:textStyle="normal"
+            tools:text="GOOD EVENING" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:paddingLeft="@dimen/margin_20"
+            android:text="@{homeModel.fName.concat(@string/space).concat(homeModel.lName)}"
+            android:textColor="#2b2b2b"
+            style="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textStyle="bold"
+            tools:text="JAY ANAND" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_2"
+            android:background="#e7e7e7" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

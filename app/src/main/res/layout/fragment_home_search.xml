@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_margin="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_20"
+        android:background="@drawable/shadowed_background">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/icon_search"
+            android:layout_gravity="center_vertical"
+            >
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSearch"
+            android:backgroundTint="@color/white"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textStyle="normal"
+            android:maxLength="40"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColorHint="#9d9d9d"
+            android:hint="@string/search_for_product_or_brand"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:background="@{etSearch.text.length() > 0 ? @drawable/rounded_corner : @drawable/disable_rounded_corner}"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:text="@string/book_a_demo"
+        style="@style/redButton">
+
+    </androidx.appcompat.widget.AppCompatTextView>
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

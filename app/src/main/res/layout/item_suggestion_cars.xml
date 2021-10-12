@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<data>
+    <import type="android.view.View"/>
+    <variable
+        name="carSearchResult"
+        type="com.demo.home.model.CarSearchResultModel.Carlist" />
+</data>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardMaxElevation="12dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    >
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="150dp"
+            android:layout_height="90dp"
+            android:id="@+id/imageview_car"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            app:homeOptionsImage="@{carSearchResult.carImage}"
+            android:src="@mipmap/new_user"
+            />
+        <TextView
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#222831"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:text="@{carSearchResult.carName}"
+            tools:text="S-CROSS"/>
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:textColor="#333333"
+            android:text="@{carSearchResult.brand}"
+            tools:text="MARUTI SUZUKI"/>
+        <RatingBar
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:numStars="5"
+            android:scaleY="0.5"
+            android:scaleX="0.5"
+            app:carRating="@{carSearchResult.carRateing}"
+            android:stepSize="1"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:theme="@style/RatingBar"/>
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:id="@+id/textview_count_demo"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:textColor="#333333"
+            android:text="@{carSearchResult.DemoCount}"
+            tools:text="1312"/>
+        <TextView
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:singleLine="true"
+            android:text="Demos taken"/>
+        <TextView
+            android:visibility='@{carSearchResult.newLaunch.equalsIgnoreCase("y") ? View.VISIBLE : View.INVISIBLE}'
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="normal"
+            android:padding="@dimen/margin_5"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:gravity="center"
+            android:background="@color/color_E8505B"
+            android:textColor="#ffffff"
+            android:text="@string/new_launch"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>
+</layout>

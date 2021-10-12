@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+       <variable
+           name="carDetailReviewModel"
+           type="com.demo.carDetails.model.CarDetailReviewModel.Carreview" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_margin="@dimen/margin_10"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/margin_25"
+            app:roundHomeOptionsImage="@{carDetailReviewModel.ProfileImage}"
+            android:layout_height="@dimen/margin_25"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_20"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textStyle="normal"
+                android:textSize="20sp"
+                android:textColor="#323643"
+                android:text="@{carDetailReviewModel.userName}"
+                android:layout_marginBottom="@dimen/margin_10"
+                tools:text="Dhruv Mittel"/>
+            <TextView
+                android:text="@{carDetailReviewModel.ReviewDesc}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:textStyle="normal"
+                android:textSize="15sp"
+                android:textColor="#323643"
+                android:lineSpacingExtra="2.5sp"
+                tools:text="“Good demo given by Rohit. On time. would recommend to others.”"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

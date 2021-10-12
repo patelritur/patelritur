@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="redButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/rounded_corner</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+        <item name="android:paddingLeft">@dimen/margin_25</item>
+        <item name="android:paddingRight">@dimen/margin_25</item>
+        <item name="android:paddingTop">@dimen/margin_10</item>
+        <item name="android:paddingBottom">@dimen/margin_10</item>
+    </style>
+
+
+    <style name="page_header">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textColor">@color/color_222831</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>-->
+
+    </style>
+
+    <style name="register_input">
+        <item name="android:singleLine">true</item>
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColor">@color/color_030303</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small
+        </item>
+        <item name="android:layout_marginTop">@dimen/margin_20</item>
+    </style>
+
+    <style name="registration_condition">
+        <item name="android:textColor">@color/color_030303</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small
+        </item>
+    </style>
+
+    <style name="forgot_password_text">
+        <item name="android:textColor">@color/color_131313</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/textsize_15</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:lineSpacingExtra">2.5sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_margin">@dimen/margin_10</item>
+    </style>
+
+    <style name="edittext_style">
+        <item name="android:textColorHint">@color/color_66030303</item>
+        <item name="android:inputType">number</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:lineSpacingExtra">2.5sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/margin_20</item>
+        <item name="android:layout_marginRight">@dimen/margin_20</item>
+        <item name="android:maxLength">@integer/pin_length</item>
+        <item name="android:textSize">@dimen/textsize_20</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+
+    <style name="NewDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+
+    <style name="bottom_barnavigation">
+        <item name="textAllCaps">false</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Small</item>
+
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/ced0d2</item>
+        <item name="colorControlActivated">@color/ffca00</item>
+    </style>
+
+    <style name="divider">
+        <item name="android:layout_width">match_parent
+        </item>
+        <item name="android:layout_height">@dimen/margin_2</item>
+        <item name="android:layout_marginTop">@dimen/margin_20</item>
+        <item name="android:layout_marginBottom">@dimen/margin_20</item>
+        <item name="android:background">#e7e7e7</item>
+
+    </style>
+
+    <style name="drawer">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+        <item name="android:background">#d8d8d8</item>
+    </style>
+
+    <style name="perfomainvoicetextValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#323643</item>
+        <item name="android:fontFamily">@font/montserrat_bold
+        </item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+
+
+    </style>
+
+    <style name="perfomainvoicetextName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:textColor">#323643</item>
+        <item name="android:fontFamily">@font/montserrat_regular
+        </item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+
+
+    </style>
+</resources>

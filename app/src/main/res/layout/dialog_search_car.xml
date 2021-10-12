@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="carImage"
+            type="java.lang.String" />
+        <variable
+            name="bikeImage"
+            type="java.lang.String" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/black"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_30"
+            android:layout_gravity="end"
+            android:src="@drawable/close_white"
+            />
+
+        <RelativeLayout
+            android:background="@drawable/google_rounded_corner"
+            android:layout_width="match_parent"
+            android:layout_marginRight="-5dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-20dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_categorytype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="80dp"
+                    android:layout_height="@dimen/margin_40"
+                    android:layout_gravity="center_vertical"
+                    app:homeOptionsImage="@{carImage}" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_E8505B"
+                    android:checked="true"
+                    android:clickable="false"
+                    android:rotation="180" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="#000000"
+                    android:alpha="91"
+                    app:homeOptionsImage="@{bikeImage}" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_categorytype"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@drawable/shadowed_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_20">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/icon_search">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:backgroundTint="@color/white"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:hint="@string/search_for_product_or_brand"
+                    android:imeOptions="actionDone"
+                    android:maxLength="40"
+                    android:singleLine="true"
+                    android:textColor="#9d9d9d"
+                    android:textColorHint="#9d9d9d"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="normal" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:id="@+id/divider"
+                style="@style/divider"
+                android:layout_marginBottom="@dimen/margin_2"
+                android:layout_below="@+id/ll_search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/carsearch_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_bottom"
+                android:layout_below="@+id/divider"
+                android:layout_marginBottom="@dimen/margin_10"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:orientation="vertical">
+
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:gravity="center_horizontal"
+                    android:text="You will get top model for Demo"
+                    android:textColor="#323643"
+                    android:textSize="@dimen/textsize_18"
+                    android:textStyle="normal" />
+
+                <View style="@style/divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_personalise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:lineSpacingExtra="3.5sp"
+                    android:text="@string/let_us_help_you_choose_your_perfect_car_to_take_a_demo_personalise_here"
+                    android:textColor="#323643"
+                    android:textSize="@dimen/textsize_20"
+                    android:textStyle="normal" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

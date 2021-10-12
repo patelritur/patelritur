@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="imageUrl"
+            type="java.lang.String" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:detailImage="@{imageUrl}"
+            android:scaleType="fitXY"
+            >
+        </androidx.appcompat.widget.AppCompatImageView>
+        <View
+            android:layout_width="@dimen/margin_20"
+            android:layout_height="@dimen/margin_20"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

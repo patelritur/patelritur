@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto" >
+
+   <data>
+      <variable name="handlers" type="com.demo.registrationLogin.RegistrationActivity"/>
+      <variable
+          name="registrationmodel"
+          type="com.demo.registrationLogin.model.RegistrationRequestModel" />
+      <variable
+          name="headermodel"
+          type="com.demo.registrationLogin.model.HeaderModel" />
+   </data>
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+      <androidx.appcompat.widget.LinearLayoutCompat
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+         <include layout="@layout/comman_header_layout"
+             bind:headermodel="@{headermodel}" >
+         </include>
+         <androidx.appcompat.widget.LinearLayoutCompat
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:orientation="vertical"
+             android:layout_margin="@dimen/margin_20">
+
+
+
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/edittext_fname"
+                   android:imeOptions="actionNext"
+                   style="@style/register_input"
+                   android:hint="@string/first_name"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="@={registrationmodel.firstName}"
+                   android:maxLength="20"
+                   android:backgroundTint="@color/color_3d3d3d"
+                   />
+
+
+
+
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:backgroundTint="@color/color_3d3d3d"
+
+                   android:id="@+id/edittext_lname"
+                   android:imeOptions="actionNext"
+                   android:text="@={registrationmodel.lastName}"
+                   style="@style/register_input"
+                   android:maxLength="20"
+                   android:hint="@string/last_name"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+
+
+
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/edittext_email"
+                   android:imeOptions="actionNext"
+                   android:text="@={registrationmodel.email}"
+                   style="@style/register_input"
+                   android:hint="@string/email"
+                   android:backgroundTint="@color/color_3d3d3d"
+                   android:layout_width="match_parent"
+                   android:inputType="textEmailAddress"
+                   android:layout_height="wrap_content"/>
+
+
+
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/edittext_pin"
+                   android:imeOptions="actionDone"
+                   android:inputType="number"
+                   android:hint="@string/pin"
+                   android:backgroundTint="@color/color_3d3d3d"
+                   style="@style/register_input"
+                   android:text="@={registrationmodel.pin}"
+                   android:maxLength="@integer/pin_length"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+
+         </androidx.appcompat.widget.LinearLayoutCompat>
+         <androidx.appcompat.widget.LinearLayoutCompat
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:orientation="horizontal">
+               <com.google.android.material.checkbox.MaterialCheckBox
+                   android:layout_width="35dp"
+                   android:layout_height="@dimen/margin_30"
+                   android:checked="@={registrationmodel.toReceiveOffers}"
+                   android:backgroundTint="@color/color_E8505B"
+                   >
+
+               </com.google.android.material.checkbox.MaterialCheckBox>
+               <androidx.appcompat.widget.AppCompatTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/registration_condition"
+                   android:text="@string/i_would_like_to_receive_offers_upates"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:orientation="horizontal">
+               <com.google.android.material.checkbox.MaterialCheckBox
+                   android:layout_width="35dp"
+                   android:layout_height="@dimen/margin_30"
+                   android:checked="@={registrationmodel.tnCAccepted}"
+                   android:backgroundTint="@color/color_E8505B"
+                   >
+
+               </com.google.android.material.checkbox.MaterialCheckBox>
+               <androidx.appcompat.widget.AppCompatTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/registration_condition"
+                   android:text="@string/i_agree_to_the_tnc"/>
+
+               <androidx.appcompat.widget.AppCompatTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/registration_condition"
+                   android:text="@string/tnc"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:orientation="horizontal">
+               <com.google.android.material.checkbox.MaterialCheckBox
+                   android:layout_width="35dp"
+                   android:layout_height="@dimen/margin_30"
+                   android:checked="@={registrationmodel.vaccinated}"
+                   android:backgroundTint="@color/color_E8505B"
+                   >
+
+               </com.google.android.material.checkbox.MaterialCheckBox>
+               <androidx.appcompat.widget.AppCompatTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/registration_condition"
+                   android:text="@string/i_have_been_vaccinated"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+         </androidx.appcompat.widget.LinearLayoutCompat>
+         <androidx.appcompat.widget.AppCompatTextView
+             android:id="@+id/textview_continue"
+             android:layout_marginTop="@dimen/margin_20"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             style="@style/redButton"
+             android:text="@string/continue_"
+             android:layout_marginBottom="@dimen/margin_20"
+             android:onClick="@{handlers::onClickContinue}"
+             />
+      </androidx.appcompat.widget.LinearLayoutCompat>
+   </ScrollView>
+</layout>

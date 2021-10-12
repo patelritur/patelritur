@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.demo">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"
+        tools:ignore="ProtectedPermissions" />
+    <application
+        android:name=".DemoApp"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:allowBackup="false"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.DemoApp">
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".tutorial.TutorialActivity" />
+        <activity android:name=".home.HomeActivitykotlin" />
+        <activity android:name=".registrationLogin.LoginActivity" />
+        <activity android:name=".registrationLogin.VerificationCodeActivity" />
+        <activity android:name=".registrationLogin.RegistrationActivity" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme"
+                     />
+            </intent-filter>
+        </activity>
+        <activity android:name=".home.HomeActivity">
+
+        </activity>
+        <activity android:name=".carDetails.CarDetailsActivity" />
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
+        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
+        <meta-data android:name="com.google.android.gms.appstate.APP_ID" android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+    </application>
+
+
+</manifest>

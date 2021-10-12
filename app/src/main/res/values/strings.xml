@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">DemoApp</string>
+
+    <string name="facebook_app_id">416049966550914</string>
+    <string name="fb_login_protocol_scheme">fb416049966550914</string>
+    <!--SignUp-->
+
+    <string name="set_up_your_account">Set up your \naccount</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="i_would_like_to_receive_offers_upates">I would like to receive offers &amp; upates</string>
+
+
+    <string name="i_agree_to_the_tnc">I agree to the </string>
+    <string name="tnc"><font fgcolor='#E8505B'> Terms and conditions</font></string>
+
+    <string name="i_have_been_vaccinated">I have been vaccinated</string>
+    <string name="enter_verification_code">Enter \n verification code</string>
+    <string name="did_not_receive_the_otp">Didn\'t receive the OTP?</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="verify_proceed">verify &amp; proceed</string>
+    <string name="otp_entere_incorrect">The OTP entered by you is incorrect</string>
+    <string name="continue_">continue</string>
+
+    <!--SignIn-->
+    <string name="already_a_user_signin">Already a user? SIGN In</string>
+    <string name="already_a_user">Already a user?</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="sign_in">Sign in</string>
+    <string name="new_user_sign_up">New User?Sign up?</string>
+    <string name="or_connect_with">Or Connect with</string>
+
+    <!--Enterpin-->
+
+    <string name="enter_pin">Enter pin</string>
+    <string name="pin">Pin</string>
+    <string name="forgot_pin">FORGOT PIN?</string>
+    <string name="proceed">Proceed</string>
+    <string name="skip">skip ></string>
+    <string name="send_otp">send OTP</string>
+    <string name="don_t_worry_it_happens_you_are_good">Don\'t worry!it happens, you are good!</string>
+    <string name="enter_your_registered_number_below_to_retrive_your_account">Enter your registered number\n below to retrive your account</string>
+    <string name="you_re_just_one_step_away_to_book_your_new_demo">You\'re just one step away to book \n your new DEMO</string>
+    <string name="your_password_has_been_reset">Your password has been \n reset successfully</string>
+
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="upload_your_vaccination_certificate">Upload your Vaccination Certificate</string>
+    <string name="upload_file">upload file</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="new_user">new user?</string>
+
+    <string name="ttl_connection_not_available">Connection Error!</string>
+    <string name="msg_connection_not_available">This App requires an Internet Connection. Make sure you have cell service or Wifi connection and give it another try. </string>
+    <string name="sign_up">Sign Up</string>
+    <string name="validation_enter_mobile_number">Please enter valid mobile number</string>
+    <string name="module_name">moduleName</string>
+    <string name="validation_enter_otp">Please Enter Valid OTP</string>
+    <string name="user_id">UserID</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="validation_password_length">Password length must be 4</string>
+    <string name="validation_confirm_password">Please Enter confirm password</string>
+    <string name="validation_new_password">Please Enter new password</string>
+    <string name="validation_same_password">Confirm password is not same as new password</string>
+    <string name="login">Login</string>
+    <string name="otp_entered_is_incorrect">The OTP entered by you is incorrect</string>
+    <string name="please_enter_mobile_number">Please enter Mobile Number to Continue</string>
+    <string name="msg_connection_timeout">Could not connect to server, Please try after sometime</string>
+    <string name="home">Home</string>
+    <string name="mydemos">My Demos</string>
+    <string name="takedemos">Take a  Demo</string>
+    <string name="drive_my_demo">Drive my Demo</string>
+    <string name="i_would_like_to">I would like to:</string>
+    <string name="meet_a_specialist">Meet a Specialist</string>
+
+    <integer name="pin_length">4</integer>
+
+    <string name="space">\u0020</string>
+    <string name="personalize_your_car_to_take_a_demo">PERSONALIZE YOUR CAR TO TAKE A DEMO</string>
+    <string name="search_for_product_or_brand">Search for a Product or Brand</string>
+    <string name="book_a_demo">Take A Demo</string>
+    <string name="yay_we_have_suggestions">CUSTOMERS ARE EXCITED FOR THESE DEMO CARS</string>
+    <string name="top_dealers_for_demo">TOP DEALERS FOR DEMO</string>
+    <string name="schedule">Schedule</string>
+    <string name="where_do_yo_want_the_demo"><![CDATA[< Where do yo want the Demo?]]></string>
+    <string name="you_will_get_top_model_for_demo">You will get top model for Demo</string>
+    <string name="let_us_help_you_choose_your_perfect_car_to_take_a_demo_personalise_here">Let us help you choose your perfect car to take a Demo. <font color='#E8505B'>Personalise Here </font></string>
+    <string name="new_launch">NEW LAUNCH</string>
+    <string name="reviews">Reviews</string>
+    <string name="specifications">Specifications</string>
+    <string name="mcd_parking_charges">MCD Parking Charges</string>
+    <string name="fastag">Fastag</string>
+    <string name="basic_kit">Basic Kit</string>
+    <string name="total_benefits">Total Benefits</string>
+    <string name="on_road_price">On Road Price</string>
+    <string name="porfoma_invoice">Porfoma Invoice</string>
+    <string name="you_will_get_the_best_demo_variants_available_with_our_demo_partners">You will get the best Demo variants available with our Demo Partners</string>
+    <string name="demos_completed">Demos Completed</string>
+    <string name="virtual_meet">Virtual Meet</string>
+
+</resources>

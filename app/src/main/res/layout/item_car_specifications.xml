@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="carDetailSpecification"
+            type="com.demo.carDetails.model.CarDetailsSpecificationModel.Carspecification" />
+    </data>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_20"
+    android:stretchColumns="2"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="40dp"
+        android:layout_height="32dp"
+        app:homeOptionsImage="@{carDetailSpecification.specificationImage}"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/montserrat_regular"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:textColor="#a3a3a3"
+        android:text="@{carDetailSpecification.SpecificationTitle}"
+        android:layout_marginTop="@dimen/margin_10"
+        tools:text="Mileage"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textStyle="normal"
+        android:textSize="20sp"
+        android:text="@{carDetailSpecification.SpecificationValue}"
+        android:textColor="#323643"
+        tools:text="20.65 kmpl"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable name="handlers" type="com.demo.registrationLogin.ForgotPinFragment"/>
+        <variable
+            name="headermodel"
+            type="com.demo.registrationLogin.model.HeaderModel" />
+    </data>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+        <include layout="@layout/comman_header_layout"
+            bind:headermodel="@{headermodel}" >
+        </include>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/forgot_password_text"
+            android:gravity="center_horizontal"
+            android:text="@string/don_t_worry_it_happens_you_are_good"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/forgot_password_text"
+            android:text="@string/enter_your_registered_number_below_to_retrive_your_account"
+           />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edittext_mobile"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mobile_number"
+            android:inputType="number"
+            android:maxLength="10"
+            app:backgroundTint="@color/color_3e3e3e"
+            android:textStyle="normal"
+            android:textColorHint="@color/color_66030303"/>
+
+        <TextView
+            android:onClick="@{handlers::onClickSendOTP}"
+            style="@style/redButton"
+            android:letterSpacing="-0.02"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/send_otp"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

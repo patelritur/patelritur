@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_f7f7f7"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="@dimen/margin_65"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginRight="@dimen/margin_20"
+        android:textColor="#323643"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="@string/top_dealers_for_demo"/>
+
+    <View
+        style="@style/divider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_topdealers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_top_dealers"
+        />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

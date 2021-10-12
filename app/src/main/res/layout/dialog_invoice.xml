@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <data>
+        <import type="com.demo.carDetails.model.CarPorfomaInvoiceModel.Porfomainvoice"/>
+        <variable
+            name="carInvoice"
+            type="com.demo.carDetails.model.CarPorfomaInvoiceModel.Porfomainvoice" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:homeOptionsImage="@{carInvoice.carImage}"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textStyle="normal"
+                android:layout_gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#333333"
+                android:text='@{carInvoice.carName+" "+carInvoice.carModel}'
+                android:letterSpacing="0.01"
+                tools:text="Maruti Ciaz LXI"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:textStyle="normal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+
+                android:textColor="#333333"
+                android:letterSpacing="0.01"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@{carInvoice.fuelType}"
+                tools:text="Petrol"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginLeft="@dimen/margin_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:gravity="start"
+                    android:text="Ex-Showroom Price"
+                    android:textColor="#323643"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@{carInvoice.exShowroomPrice}"
+                    android:textColor="#323643"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+
+                    android:textStyle="bold"
+                    tools:text="4.79 Lakh*" />
+
+            </RelativeLayout>
+            <View
+                android:layout_margin="@dimen/margin_15"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E8505B">
+            </View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    style="@style/perfomainvoicetextName"
+                    android:text="Cash Discount" />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.cashDiscount}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    style="@style/perfomainvoicetextName"
+                    android:text="Exchange Bonus"
+                    />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.exchangeBonus}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    style="@style/perfomainvoicetextName"
+                    android:text="Corporate/Govt. Emp Offer"
+                    />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.corporateGovEmpOffer}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    style="@style/perfomainvoicetextName"
+                    android:text="Insurance"
+                    />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.insurance}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    style="@style/perfomainvoicetextName"
+                    android:text="Extended Warranty"
+                    />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.extendedWarranty}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    style="@style/perfomainvoicetextName"
+                    android:text="RTO" />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.rTO}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    android:text="@string/basic_kit"
+                    style="@style/perfomainvoicetextName"
+                    android:textStyle="normal" />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.basicKit}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    android:text="@string/mcd_parking_charges"
+                    style="@style/perfomainvoicetextName"
+                    android:textStyle="normal" />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+                    android:text="@{carInvoice.mCDParkingCharges}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10">
+
+                <TextView
+                    android:text="@string/fastag"
+                    style="@style/perfomainvoicetextName"
+                    android:textSize="@dimen/textsize_15"
+                    />
+                <TextView
+                    style="@style/perfomainvoicetextValue"
+
+                    android:text="@{carInvoice.fastag}"
+                    tools:text="4.79 Lakh*"/>
+
+            </RelativeLayout>
+            <View
+                android:layout_margin="@dimen/margin_15"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E8505B">
+            </View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10"
+                >
+
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/total_benefits"
+                    android:textColor="#e8505b"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="normal" />
+                <TextView
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textStyle="bold"
+                    android:textColor="#e8505b"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:text="@{carInvoice.totalBenefits}"
+                    tools:text="45,100*"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_20"
+                >
+
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/on_road_price"
+                    android:textColor="#e8505b"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@{carInvoice.onRoadPrice}"
+                    android:textColor="#e8505b"
+                    android:textSize="20sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    tools:text="45,100*" />
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+</layout>

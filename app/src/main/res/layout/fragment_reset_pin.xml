@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable name="handlers" type="com.demo.registrationLogin.ResetPinFragment"/>
+        <variable
+            name="headermodel"
+            type="com.demo.registrationLogin.model.HeaderModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <include layout="@layout/comman_header_layout"
+                bind:headermodel="@{headermodel}" >
+            </include>
+
+
+            <TextView
+                android:id="@+id/second_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/forgot_password_text"
+                android:gravity="center_horizontal"
+                android:text="@string/you_re_just_one_step_away_to_book_your_new_demo"
+                />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/new_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:hint="@string/new_password"
+                    style="@style/edittext_style"
+                    app:backgroundTint="@color/color_3e3e3e"
+
+                    >
+                    <requestFocus/>
+                </androidx.appcompat.widget.AppCompatEditText>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/confirm_password"
+                    android:layout_marginTop="@dimen/margin_20"
+                    style="@style/edittext_style"
+                    android:imeOptions="actionDone"
+                    app:backgroundTint="@color/color_3e3e3e"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <TextView
+                android:onClick="@{handlers::onClickContinue}"
+                style="@style/redButton"
+                android:letterSpacing="-0.02"
+                android:layout_gravity="center_horizontal"
+                android:text="@{headermodel.buttonText}"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

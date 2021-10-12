@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="homeModel"
+            type="com.demo.home.model.HomeModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_marginTop="@dimen/margin_10"
+            android:paddingLeft="@dimen/margin_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textStyle="normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#323643"
+            android:text="@string/i_would_like_to"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_margin="@dimen/margin_20"
+            android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                android:clipToPadding="true"
+                android:clipChildren="true"
+                >
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_meetspecialists"
+                android:onClick="@{homeModel::onClick}"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/margin_20"
+                    android:layout_height="@dimen/margin_40"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    app:homeOptionsImage="@{homeModel.homeMenuFirstImage}"
+                    >
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textStyle="normal"
+                    style="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:autoSizeTextType="uniform"
+                    tools:text="meet a specialist"
+                    android:textColor="#363636"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:text="@{homeModel.homeMenuFirstName}"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                android:clipToPadding="true"
+                android:clipChildren="true"
+               >
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_drivemydemo"
+                android:background="@drawable/white_border"
+                android:onClick="@{homeModel::onClick}"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="38dp"
+                    android:layout_height="@dimen/margin_40"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    app:homeOptionsImage="@{homeModel.homeMenuSecondImage}"
+                    >
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textStyle="normal"
+                    style="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:textColor="#363636"
+                    android:text="@{homeModel.homeMenuSecondName}"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.cardview.widget.CardView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

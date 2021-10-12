@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="imageUrl"
+            type="java.lang.String" />
+    </data>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_30"
+    android:layout_marginBottom="@dimen/margin_30"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:homeOptionsImage="@{imageUrl}"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

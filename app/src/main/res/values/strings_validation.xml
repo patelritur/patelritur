@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="validation_enter_pin">Please Enter PIN</string>
+    <string name="validation_enter_valid_pin">Please Enter Valid PIN</string>
+    <string name="validation_enter_fname">Please Enter First Name</string>
+    <string name="validation_enter_lname">Please Enter Last Name</string>
+    <string name="validation_enter_email">Please Enter Email Address</string>
+    <string name="validation_enter_valid_email">Please Enter Valid Email Address</string>
+
+</resources>

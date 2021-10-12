@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="handlers" type="com.demo.registrationLogin.VerificationCodeActivity"/>
+
+        <variable
+            name="headermodel"
+            type="com.demo.registrationLogin.model.HeaderModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/forgot_pin_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+        </FrameLayout>
+        <include layout="@layout/comman_header_layout"
+            bind:headermodel="@{headermodel}" >
+        </include>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:visibility="gone"
+            android:id="@+id/enter_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:hint="@string/pin"
+            style="@style/edittext_style"
+            app:backgroundTint="@color/color_3e3e3e"
+            >
+            <requestFocus/>
+        </androidx.appcompat.widget.AppCompatEditText>
+        <LinearLayout
+            android:id="@+id/root_otp_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <androidx.appcompat.widget.AppCompatEditText
+
+                android:id="@+id/otp_edit_box1"
+                android:focusedByDefault="true"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:imeOptions="actionNext"
+
+                android:textSize="30sp">
+                <requestFocus />
+
+            </androidx.appcompat.widget.AppCompatEditText>
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:imeOptions="actionNext"
+                android:id="@+id/otp_edit_box2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:inputType="number"
+                android:maxLength="1"
+                />
+
+            <androidx.appcompat.widget.AppCompatEditText
+
+                android:id="@+id/otp_edit_box3"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:inputType="number"
+                android:maxLength="1"
+                android:imeOptions="actionNext"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/otp_edit_box4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:maxLength="1"
+                android:imeOptions="actionDone"
+                />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/didnt_receive_otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_131313"
+            android:lineSpacingExtra="2.5sp"
+            android:textSize="@dimen/textsize_15"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:text="@string/did_not_receive_the_otp"/>
+        <TextView
+            android:onClick="@{handlers::resendOtp}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_E8505B"
+            android:layout_marginBottom="16dp"
+            android:textSize="@dimen/textsize_15"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="@{headermodel.bottomText}"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:onClick="@{handlers::onClickVerify}"
+
+            android:text="@{headermodel.buttonText}"
+            style="@style/redButton"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

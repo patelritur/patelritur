@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable name="handlers" type="com.demo.registrationLogin.LoginActivity"/>
+        <variable name="loginrequestmodel" type="com.demo.registrationLogin.model.CommanRequestModel"/>
+        <variable
+            name="isregister"
+            type="java.lang.Boolean" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:src="@mipmap/new_user"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="223dp"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_marginTop="@dimen/margin_40"
+                android:layout_width="110dp"
+                android:layout_height="36dp"
+                android:layout_marginBottom="@dimen/margin_40"
+                android:src="@mipmap/demo_logo"/>
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_title"
+                android:text="@{isregister ? @string/new_user : @string/already_a_user}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                style="@style/page_header"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edittext_mobile"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mobile_number"
+            android:fontFamily="@font/montserrat_regular"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:backgroundTint="@color/color_66030303"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textStyle="normal"
+            android:letterSpacing="-0.02"
+            android:textColor="@color/color_030303"
+            android:text="@={loginrequestmodel.mobile}"
+            android:textColorHint="@color/color_66030303"/>
+
+        <TextView
+            android:onClick="@{handlers::onClickSignup}"
+           android:layout_marginTop="@dimen/margin_8"
+            android:layout_height="wrap_content"
+            style="@style/redButton"
+            android:letterSpacing="-0.02"
+            android:layout_gravity="center_horizontal"
+            android:text="@{isregister ? @string/sign_up : @string/sign_in}"
+            />
+
+        <TextView
+            android:onClick="@{handlers::onClickSignInSignUp}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_E8505B"
+            android:layout_marginTop="@dimen/margin_40"
+            android:textAllCaps="true"
+            android:textSize="@dimen/textsize_18"
+            android:letterSpacing="-0.02"
+            android:layout_gravity="center_horizontal"
+            android:text="@{isregister ? @string/already_a_user_signin : @string/new_user_sign_up}"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_social"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_40"
+            android:layout_gravity="bottom">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or_connect_with"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/color_030303"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginBottom="@dimen/margin_25"
+                android:layout_gravity="center_horizontal"
+                />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:onClick="@{handlers::onFacebookClick}"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/facebook_rounded_corner"
+                    android:src="@mipmap/facebook"
+                    />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:onClick="@{handlers::onGoogleSignIn}"
+                    android:background="@drawable/google_rounded_corner"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/google"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:paddingTop="@dimen/margin_10"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_gravity="center_horizontal"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
