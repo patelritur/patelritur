@@ -1,0 +1,110 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<data>
+    <import type="com.demo.home.model.HomeModel"/>
+    <variable
+        name="homeModel"
+        type="com.demo.home.model.HomeModel" />
+</data>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/header_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/margin_60"
+            android:layout_height="60dp"
+            android:layout_marginEnd="@dimen/margin_10"
+            app:roundHomeOptionsImage="@{homeModel.image}" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@{homeModel.greetingMessage}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#c0c0c0"
+                android:textStyle="normal"
+                tools:text="Good Evening," />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text='@{homeModel.fName+" "+homeModel.lName}'
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#2b2b2b"
+                android:textStyle="normal"
+                tools:text="Jay Anand" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="17dp"
+                android:layout_marginTop="@dimen/margin_10"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="See Profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#e8505b"
+                android:textStyle="normal" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menu_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_ll"
+        android:layout_below="@+id/header_ll"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_menu" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/bottom_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:orientation="vertical">
+
+        <View
+            style="@style/divider"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_20" />
+
+        <TextView
+            android:onClick="@{homeModel::onClick}"
+            android:id="@+id/tv_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.01"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#e8505b"
+            android:background="?selectableItemBackground"
+            android:textStyle="bold"
+            android:text="@string/sign_out" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>
+</layout>

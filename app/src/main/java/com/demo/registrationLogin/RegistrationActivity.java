@@ -170,6 +170,7 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
         RegistrationResponse registrationResponse = (RegistrationResponse) response;
         if (reqCode == UPLOAD_DOC) {
             Utils.showToast(context, registrationResponse.getDescriptions());
+            sharedPrefUtils.saveData(Constants.ISVACCINATED,"Y");
             if(uploadDocDialog!=null)
             {
                 uploadDocDialog.dismiss();
@@ -178,10 +179,13 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
         } else if (reqCode == SETUP_ACCOUT) {
             if (registrationResponse.getResponseCode().equalsIgnoreCase("200")) {
                 Utils.showToast(context, registrationResponse.getDescriptions());
+                sharedPrefUtils.saveData( Constants.USER_ID, registrationResponse.getUserID());
+                sharedPrefUtils.saveData( Constants.FNAME, registrationRequestModel.getFirstName());
+                sharedPrefUtils.saveData( Constants.LNAME, registrationRequestModel.getLastName());
+                sharedPrefUtils.saveData(Constants.ISVACCINATED,"N");
+
                 if(registrationRequestModel.isVaccinated()) {
-                    sharedPrefUtils.saveData( Constants.USER_ID, registrationResponse.getUserID());
-                    sharedPrefUtils.saveData( Constants.FNAME, registrationRequestModel.getFirstName());
-                    sharedPrefUtils.saveData( Constants.LNAME, registrationRequestModel.getLastName());
+
                     if (!Permissionsutils.CheckForStoragePermission(context)) {
                         Permissionsutils.askForStoragePermission(context);
                     } else {
@@ -192,6 +196,7 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
                 {
                     startHomeActivity();
                 }
+
             }
 
         }

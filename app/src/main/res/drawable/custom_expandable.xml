@@ -1,0 +1,31 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_empty="true">
+        <layer-list>
+            <item
+                android:left="0dp"
+                android:right="3dp"
+                android:top="20dp"
+                android:bottom="20dp"
+                android:width="@dimen/margin_30"
+                android:height="@dimen/margin_30"
+                android:drawable="@drawable/ic_baseline_keyboard_arrow_down_24">
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_expanded="true">
+        <layer-list>
+            <item
+                android:left="0dp"
+                android:right="3dp"
+                android:top="20dp"
+                android:bottom="20dp"
+                android:width="@dimen/margin_30"
+                android:height="@dimen/margin_30"
+                android:drawable="@drawable/ic_baseline_keyboard_arrow_up_24">
+            </item>
+        </layer-list>
+    </item>
+    <item android:drawable="@drawable/ic_baseline_keyboard_arrow_up_24"/>
+
+</selector>

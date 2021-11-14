@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.demo.R;
 import com.demo.databinding.DialogUploadCertificateBinding;
+import com.demo.home.HomeActivity;
 
 public class UploadDocDialog extends Dialog  {
     DialogUploadCertificateBinding dialogUploadCertificateBinding;
@@ -50,6 +51,8 @@ public class UploadDocDialog extends Dialog  {
     public void onSkipClick(View view)
     {
         this.dismiss();
+        ((Activity)context).startActivity(new Intent(context, HomeActivity.class));
+        ((Activity)context).finish();
     }
 
 

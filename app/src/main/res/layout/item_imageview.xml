@@ -6,11 +6,28 @@
             name="imageUrl"
             type="java.lang.String" />
     </data>
-    <androidx.appcompat.widget.AppCompatImageView android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:homeOptionsImage="@{imageUrl}"
-        android:scaleType="centerCrop"
-        >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    </androidx.appcompat.widget.AppCompatImageView>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:homeOptionsImage="@{imageUrl}"
+            android:scaleType="centerCrop"
+            >
+        </androidx.appcompat.widget.AppCompatImageView>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/thumb"
+            android:visibility="gone"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_play_circle_filled_24"
+            >
+        </androidx.appcompat.widget.AppCompatImageView>
+    </FrameLayout>
+
+
 </layout>

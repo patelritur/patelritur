@@ -26,7 +26,8 @@
         <item name="android:textColor">@color/color_222831</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
-        <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>-->
+
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
 
     </style>
 
@@ -104,6 +105,13 @@
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/ced0d2</item>
         <item name="colorControlActivated">@color/ffca00</item>
+    </style>
+
+    <style name="customratingbar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/food_rating_bar_full</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="colorControlNormal">@color/ced0d2</item>
+        <item name="android:maxHeight">22dip</item>
     </style>
 
     <style name="divider">

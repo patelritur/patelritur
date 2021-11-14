@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textStyle="normal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#2f2f2f"
+        android:id="@+id/listTitle"
+        android:text="How can we get a demo at home?"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

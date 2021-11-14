@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+
+    >
+    <data>
+        <variable
+            name="homeModel"
+            type="com.demo.home.model.HomeModel" />
+    </data>
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLy"
+        android:windowDrawsSystemBarBackgrounds="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="#00000000"
+            android:layout_height="match_parent">
+            <include layout="@layout/header_layout"
+                bind:homeModel="@{homeModel}"
+                android:id="@+id/header_ll"
+                />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_above="@+id/ll_bottom"
+                android:layout_below="@+id/header_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <com.google.android.material.tabs.TabLayout
+                        app:tabIndicatorColor="@color/color_E8505B"
+                        android:background="@drawable/tab_backgroud"
+                        app:tabIndicatorHeight="1dp"
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                </androidx.viewpager.widget.ViewPager>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <include
+                android:id="@+id/ll_bottom"
+                layout="@layout/bottom_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:homeModel="@{homeModel}" />
+        </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/right_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/white"
+            android:elevation="50dp"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" >
+            <include layout="@layout/layout_menu"
+                android:id="@+id/left_menu"
+                app:homeModel="@{homeModel}"/>
+        </FrameLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

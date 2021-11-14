@@ -51,18 +51,17 @@
                         android:textColor="#aaaaaa"
                         android:textStyle="normal"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        tools:text="2K Demos  " />
+                        tools:text="2K   " />
 
                     <RatingBar
-                        android:layout_marginTop="@dimen/margin_10"
                         android:id="@+id/rating"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/demoscount"
                         android:layout_alignLeft="@+id/demoscount"
-                        android:layout_alignRight="@+id/demoscount"
                         android:layout_gravity="start"
+                        android:layout_marginTop="@dimen/margin_10"
                         android:numStars="5"
                         android:stepSize="0.5"
                         android:theme="@style/RatingBar"

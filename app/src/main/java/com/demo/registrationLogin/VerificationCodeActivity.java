@@ -255,6 +255,8 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                 sharedPrefUtils.saveData(Constants.FNAME,pinResponseModel.getUsersInfo().getFirstName());
                 sharedPrefUtils.saveData(Constants.LNAME,pinResponseModel.getUsersInfo().getLastName());
                 sharedPrefUtils.saveData(Constants.EMAIL,pinResponseModel.getUsersInfo().getEmail());
+                sharedPrefUtils.saveData(Constants.IMAGE,pinResponseModel.getUsersInfo().getUserProfileImagel());
+                sharedPrefUtils.saveData(Constants.ISVACCINATED,pinResponseModel.getUsersInfo().getIsVaccinated());
 
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

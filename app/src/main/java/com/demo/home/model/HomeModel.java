@@ -17,7 +17,17 @@ import com.google.android.gms.common.annotation.KeepName;
 @Keep
 @KeepName
 public class HomeModel  {
-    public String fName,lName;
+    public String fName,lName;;
+    public String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public String homeMenuFirstName;
     private String bottomMenuFirstName;
     private String bottomMenuSecondName;

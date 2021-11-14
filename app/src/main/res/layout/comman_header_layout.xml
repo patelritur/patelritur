@@ -35,7 +35,6 @@
             android:visibility="@{headermodel.title!=null? View.VISIBLE : View.GONE}"
             android:layout_marginBottom="@dimen/margin_10"
             tools:text="@string/confirm_password"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
 
             style="@style/page_header"
             />

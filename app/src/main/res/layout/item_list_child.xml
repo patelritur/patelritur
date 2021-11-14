@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_margin="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:textStyle="normal"
+        android:id="@+id/expandedListItem"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#323643"
+        android:lineSpacingExtra="5sp"
+        android:text="It’s very easy, just go to home page and click on the Demo icon from bottom left, it will ask you to choose from one of the …"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

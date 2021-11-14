@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/parent_ll"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_20"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_20"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textStyle="normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#393939"
+            android:letterSpacing="0.01"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:text="Schedule your Demo:"/>
+
+        <TextView
+            android:id="@+id/today_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textStyle="normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#393939"
+            android:letterSpacing="0.01"
+            tools:text="Today, Date"/>
+
+        <com.demo.home.booking.datePicker.HorizontalPicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/horizontal_datepicker"/>
+        <View
+            style="@style/divider"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Time Slots"/>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_timeSlot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+
+        </HorizontalScrollView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/redButton"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/schedue"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_20"
+            android:fontFamily="@font/montserrat_regular"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@string/if_your_desired_date_and_timing_is_not_available_then_try_another_car_schedule"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

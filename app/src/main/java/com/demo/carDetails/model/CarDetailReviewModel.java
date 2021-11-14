@@ -1,9 +1,13 @@
 package com.demo.carDetails.model;
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
+@Keep
 public class CarDetailReviewModel {
 
+    @Keep
     public class Carreview{
         public String UserName;
         public String ProfileImage;

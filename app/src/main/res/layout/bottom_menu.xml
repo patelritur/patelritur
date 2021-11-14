@@ -20,6 +20,10 @@
         android:weightSum="4">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_home"
+            android:onClick="@{homeModel::onClick}"
+            android:background="?selectableItemBackgroundBorderless"
+
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -30,7 +34,7 @@
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
                 app:homeOptionsImage="@{homeModel.bottomMenuFirstImage}"
-                android:src="@mipmap/home_icon" />
+                />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/bottom_barnavigation"
@@ -44,6 +48,9 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="?selectableItemBackgroundBorderless"
+            android:id="@+id/ll_mydemos"
+            android:onClick="@{homeModel::onClick}"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -54,7 +61,7 @@
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
                 app:homeOptionsImage="@{homeModel.bottomMenuSecondImage}"
-                android:src="@mipmap/mydemo_icon" />
+               />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/bottom_barnavigation"
@@ -68,6 +75,9 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="?selectableItemBackgroundBorderless"
+            android:id="@+id/ll_takedemo"
+            android:onClick="@{homeModel::onClick}"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -79,12 +89,14 @@
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
                 app:homeOptionsImage="@{homeModel.bottomMenuThirdImage}"
-                android:src="@mipmap/takedemo_icon" />
+                />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:autoSizeTextType="uniform"
                 style="@style/bottom_barnavigation"
                 android:layout_width="wrap_content"
                 tools:text="Take a Demo"
+                android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:text="@{homeModel.bottomMenuThirdName}">
 
@@ -92,6 +104,8 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="?selectableItemBackgroundBorderless"
+
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

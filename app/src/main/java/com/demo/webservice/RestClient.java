@@ -231,8 +231,7 @@ public class RestClient {
                     @Override
                     public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
                         //There is more than just a failing request (like: no internet connection)
-                        PrintLog.e("error", "" + t.toString());
-                        showProgress(activity, false);
+                        PrintLog.e("error", "" + t.toString());showProgress(activity, false);
                         DialogUtils.showAlertDialog(activity, activity.getString(R.string.ttl_connection_not_available), activity.getString(R.string.msg_connection_timeout));
 
                         try {

@@ -11,19 +11,26 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false"/>
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"
         tools:ignore="ProtectedPermissions" />
     <application
+        tools:replace="android:allowBackup"
         android:name=".DemoApp"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
+        android:roundIcon="@mipmap/ic_launcher_round"
+
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:allowBackup="false"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.DemoApp">
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -34,7 +41,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".tutorial.TutorialActivity" />
-        <activity android:name=".home.HomeActivitykotlin" />
         <activity android:name=".registrationLogin.LoginActivity" />
         <activity android:name=".registrationLogin.VerificationCodeActivity" />
         <activity android:name=".registrationLogin.RegistrationActivity" />
@@ -59,14 +65,42 @@
         <activity android:name=".home.HomeActivity">
 
         </activity>
-        <activity android:name=".carDetails.CarDetailsActivity" />
+        <activity android:name=".carDetails.CarDetailsActivity"
+            android:noHistory="true"/>
+        <activity android:name=".notifications.NotificationActivity"
+            android:noHistory="true"/>
+        <activity android:name=".home.profile.MyDemoActivity"
+            android:noHistory="true"/>
+        <activity android:name=".faq.FAQActiviity"
+            android:noHistory="true"/>
+        <activity android:name=".launch.LaunchActivity"
+            android:noHistory="true"/>
+        <activity android:name=".news.NewsActivity"
+            android:noHistory="true"/>
+        <activity android:name=".rewards.s.RewardsActivity" />
+        <activity android:name=".news.NewsPagerActivity" />
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
         <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
         <meta-data android:name="com.google.android.gms.appstate.APP_ID" android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+
+        <service
+            android:name=".utils.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".utils.statusJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+    <receiver android:name=".utils.MyStartServiceReceiver" >
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+    </receiver>
     </application>
-
-
 </manifest>

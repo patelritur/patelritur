@@ -53,8 +53,27 @@ public class PINResponseModel {
         public String ShowroomID;
         public String EmployeeID;
         public String DOB;
-        public String State;
 
+        public String getIsVaccinated() {
+            return IsVaccinated;
+        }
+
+        public void setIsVaccinated(String isVaccinated) {
+            IsVaccinated = isVaccinated;
+        }
+
+        public String State;
+        public String IsVaccinated;
+
+        public String getUserProfileImagel() {
+            return UserProfileImage;
+        }
+
+        public void setUserProfileImagel(String userProfileImagel) {
+            UserProfileImage = userProfileImagel;
+        }
+
+        public String UserProfileImage;
         public long getUserID() {
             return UserID;
         }

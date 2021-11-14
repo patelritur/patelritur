@@ -46,8 +46,8 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="80dp"
-                    android:layout_height="@dimen/margin_40"
+                    android:layout_width="60dp"
+                    android:layout_height="@dimen/margin_30"
                     android:layout_gravity="center_vertical"
                     app:homeOptionsImage="@{carImage}" />
 
@@ -60,11 +60,11 @@
                     android:rotation="180" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
+                    android:layout_width="60dp"
+                    android:layout_height="@dimen/margin_30"
                     android:layout_gravity="center_vertical"
-                    android:tint="#000000"
                     android:alpha="91"
+                    android:tint="#000000"
                     app:homeOptionsImage="@{bikeImage}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -99,9 +99,9 @@
                     android:imeOptions="actionDone"
                     android:maxLength="40"
                     android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#9d9d9d"
                     android:textColorHint="#9d9d9d"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textStyle="normal" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -109,8 +109,34 @@
                 android:id="@+id/divider"
                 style="@style/divider"
                 android:layout_marginBottom="@dimen/margin_2"
-                android:layout_below="@+id/ll_search" />
+                android:layout_below="@+id/recent_search_ll" />
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_20"
+                android:id="@+id/recent_search_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_search"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Recent Search -"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#323643"
+                    android:textStyle="bold" />
+
+                <com.demo.utils.customviews.FlowLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:id="@+id/recent_search_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/carsearch_recyclerview"
                 android:layout_width="match_parent"

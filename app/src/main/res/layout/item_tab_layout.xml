@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:src="@color/color_E8505B"
+        android:id="@+id/iamgeview"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/margin_25"
+        android:layout_height="@dimen/margin_25"/>
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_50"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/montserrat_regular"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#222831"
+        android:textStyle="normal"
+        tools:text="My sdsfdfdfdf \nfgggggggggggggggggg " />
+
+</FrameLayout>

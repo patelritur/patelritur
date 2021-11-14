@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="@dimen/margin_20"
+    android:orientation="vertical">
+
+    <View style="@style/drawer"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_marginBottom="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:fontFamily="@font/montserrat_semibold"
+            android:textStyle="normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#393939"
+            android:letterSpacing="0.01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/please_select_a_reason_to_cancel"
+            />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginBottom="@dimen/margin_20"
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_cancel_reason"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox_block_dealer"
+            android:layout_width="35dp"
+            android:layout_height="@dimen/margin_30"
+            android:backgroundTint="@color/color_E8505B"
+            >
+
+        </com.google.android.material.checkbox.MaterialCheckBox>
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="normal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#3f3f3f"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center"
+            android:text="Block this Dealer for future"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <TextView
+        android:id="@+id/textview_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/redButton"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/confirm_cancel"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

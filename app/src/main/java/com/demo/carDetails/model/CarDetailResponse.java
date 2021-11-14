@@ -127,12 +127,32 @@ public class CarDetailResponse {
     public class Cardetail{
         public String CarID;
         public String CarName;
+
+        public String getCarDescription() {
+            return CarDescription;
+        }
+
+        public void setCarDescription(String carDescription) {
+            CarDescription = carDescription;
+        }
+
+        public String CarDescription;
         public String CarModel;
         public String Brand;
         public String CarRateing;
         public String CarPrice;
         public String CarFeatures;
+
+        public String getReviewCount() {
+            return ReviewCount;
+        }
+
+        public void setReviewCount(String reviewCount) {
+            ReviewCount = reviewCount;
+        }
+
         public String CarColors;
+        public String ReviewCount;
 
         public String getCarID() {
             return CarID;

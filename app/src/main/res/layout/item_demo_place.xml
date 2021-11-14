@@ -14,7 +14,7 @@
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
-        android:layout_weight="1.4"
+        android:layout_weight="1.9"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_10"
@@ -28,7 +28,7 @@
             android:id="@+id/ll_book_demo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_10"
+            android:padding="@dimen/margin_15"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_marginEnd="@dimen/margin_5"
@@ -52,18 +52,16 @@
                     android:layout_height="wrap_content"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
-                    android:text="15 minutes away from you"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:fontFamily="@font/montserrat_semibold"
                     android:textColor="#333333"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-
-        android:layout_weight="0.6"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:cardCornerRadius="@dimen/margin_10"
         android:layout_marginStart="@dimen/margin_5"
@@ -74,24 +72,23 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_schedule"
             android:padding="@dimen/margin_10"
-            android:layout_margin="@dimen/textsize_10"
+            android:layout_margin="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
             >
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:src="@mipmap/takedemo_icon"
+                android:layout_width="17dp"
+                android:src="@drawable/ic_image_schedule"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content"/>
+                android:layout_height="17dp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/schedule"
                 android:fontFamily="@font/montserrat_semibold"
-                android:autoSizeTextType="uniform"
                 android:singleLine="true"
                 android:textColor="@color/color_E8505B"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"

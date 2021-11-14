@@ -25,28 +25,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     />
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/textview_previous"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
-                    android:textSize="@dimen/textsize_30"
-                    android:textColor="#ffffff"
                     android:padding="@dimen/margin_10"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
                     android:layout_gravity="start|center_vertical"
-                    android:text="&#60;"/>
+                    />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/textview_next"
-                    android:layout_gravity="end|center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
-                    android:textSize="@dimen/textsize_30"
-                    android:textColor="#ffffff"
                     android:padding="@dimen/margin_10"
+                    android:tint="@color/white"
                     android:rotation="180"
-                    android:text="&#60;"/>
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                    android:layout_gravity="end|center_vertical"
+                    />
                 <com.google.android.material.tabs.TabLayout
                     android:nestedScrollingEnabled="true"
                     android:layout_marginEnd="@dimen/margin_10"
@@ -64,16 +64,14 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/margin_40"
+                    android:layout_height="@dimen/margin_40"
                     android:fontFamily="@font/montserrat_bold"
-                    android:textStyle="bold"
-                    android:textSize="30sp"
-                    android:textColor="#323643"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="@dimen/margin_10"
-                    android:text="&#60;"/>
+                    android:padding="@dimen/margin_10"
+                    android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
+                    android:layout_gravity="start|center_vertical"
+                    />
                 <TextView
                     android:text="@{carDetailModel.cardetail.carName}"
                     android:layout_width="wrap_content"
@@ -93,9 +91,23 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textColor="#323643"
                     tools:text="LXI"/>
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:onClick="@{carDetailModel::onClick}"
+
+                        android:id="@+id/share_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="@dimen/margin_20"
+                        android:src="@drawable/ic_baseline_share_24" />
+                </RelativeLayout>
+                NewsResponseModel
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -129,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
                 android:textStyle="normal"
-                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_10"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginStart="@dimen/margin_20"
                 android:textColor="#e8505b"
@@ -227,13 +239,14 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:textStyle="normal"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-
                         android:layout_marginStart="@dimen/margin_20"
                         android:textColor="#e8505b"
                         android:onClick="@{carDetailModel::onClick}"
 
-                        android:text="0 Reviews"/>
+                        android:text='@{carDetailModel.cardetail.reviewCount+ " Reviews"}'/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -260,6 +273,9 @@
                         android:text="@string/demos_completed"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                style="@style/divider"
+                />
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -276,7 +292,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
                     android:textStyle="normal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:layout_gravity="center_horizontal"
                     android:textColor="#e8505b"
                     android:text="Colors  |  "/>
@@ -290,7 +306,7 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:textStyle="normal"
                     android:layout_gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
 
                     android:textColor="#e8505b"
                     android:text="Specifications  | "/>
@@ -304,7 +320,7 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:textStyle="normal"
                     android:layout_gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#e8505b"
                     android:text="Features"/>
 
@@ -320,7 +336,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginLeft="@dimen/margin_20"
-               android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:layout_marginRight="@dimen/margin_10"
                 android:htmlText="@{carDetailModel.cardetail.carFeatures}"
                 />

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="homeModel"
+            type="com.demo.home.model.HomeModel" />
+    </data>
+    <androidx.drawerlayout.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawerLy"
+        android:windowDrawsSystemBarBackgrounds="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="#00000000"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/ll_bottom"
+                layout="@layout/bottom_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                bind:homeModel="@{homeModel}" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_above="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_E8505B"
+                    android:weightSum="1"
+                    android:padding="@dimen/margin_20"
+
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_weight="0.9"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textStyle="normal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:textColor="#ffffff"
+                            android:lineSpacingExtra="27sp"
+                            tools:text="Jay Anand"/>
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:src="@drawable/ic_profile_email"
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="20dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_height="@dimen/margin_20"/>
+                            <TextView
+                                android:id="@+id/email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textStyle="normal"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:textColor="#ffffff"
+                                tools:text="jayanad87@gmail.com"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            >
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:src="@drawable/ic_profile_location"
+                                android:layout_width="20dp"
+                                android:layout_height="@dimen/margin_20"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textStyle="normal"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:textColor="#ffffff"
+                                android:text="123, ArunVihar, Noida.Uttar Pradesh
+201301"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_weight="0.2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        android:layout_marginEnd="@dimen/margin_20"
+
+                        android:orientation="vertical">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/profile_image"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp">
+
+                        </androidx.appcompat.widget.AppCompatImageView>
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:background="@drawable/border_white_rounded_corner"
+                            android:padding="@dimen/margin_5"
+                            android:orientation="horizontal">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:src="@mipmap/vaccinated"
+                                android:layout_width="@dimen/margin_10"
+                                android:layout_height="@dimen/margin_10">
+
+                            </androidx.appcompat.widget.AppCompatImageView>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/vaccinated"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:text="Not Vaccinated">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:background="@drawable/tab_backgroud"
+                        app:tabIndicatorColor="@color/color_E8505B"
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </androidx.viewpager.widget.ViewPager>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/right_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/white"
+            android:elevation="50dp"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" >
+            <include layout="@layout/layout_menu"
+                android:id="@+id/left_menu"
+                bind:homeModel="@{homeModel}"/>
+        </FrameLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

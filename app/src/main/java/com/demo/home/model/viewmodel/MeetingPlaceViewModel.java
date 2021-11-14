@@ -17,13 +17,37 @@ import retrofit2.Response;
 
 public class MeetingPlaceViewModel extends AndroidViewModel {
 
-    private LiveData<MenuResponse> menuResponseLiveData;
+    private LiveData<MenuResponse> meetspecalistLiveData;
+    private LiveData<MenuResponse> bookDemoListLiveData;
 
     public MeetingPlaceViewModel(@NonNull Application application) {
         super(application);
-        menuResponseLiveData =getMenuList();
+        meetspecalistLiveData =getMenuList();
+        bookDemoListLiveData = getBookDemoListLiveData();
 
 
+
+    }
+
+    private LiveData<MenuResponse> getBookDemoListLiveData() {
+        final MutableLiveData<MenuResponse> data = new MutableLiveData<>();
+        Call objectCall = RestClient.getApiService().demotype();
+
+        objectCall.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                PrintLog.v("","=====onApiResponse");
+                data.postValue((MenuResponse) response.body());
+                bookDemoListLiveData= data;
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+
+            }
+        });
+
+        return data;
     }
 
     private LiveData<MenuResponse> getMenuList() {
@@ -35,7 +59,7 @@ public class MeetingPlaceViewModel extends AndroidViewModel {
             public void onResponse(Call call, Response response) {
                 PrintLog.v("","=====onApiResponse");
                 data.postValue((MenuResponse) response.body());
-                menuResponseLiveData = data;
+                meetspecalistLiveData = data;
             }
 
             @Override
@@ -53,11 +77,19 @@ public class MeetingPlaceViewModel extends AndroidViewModel {
 
 
     public LiveData<MenuResponse> getMenuType() {
-        if (menuResponseLiveData == null) {
-            menuResponseLiveData = new MutableLiveData<>();
+        if (meetspecalistLiveData == null) {
+            meetspecalistLiveData = new MutableLiveData<>();
         }
-        return menuResponseLiveData;
+        return meetspecalistLiveData;
     }
+
+    public LiveData<MenuResponse> getBookingType() {
+        if (bookDemoListLiveData == null) {
+            bookDemoListLiveData = new MutableLiveData<>();
+        }
+        return bookDemoListLiveData;
+    }
+
 
 
 // Rest of the ViewModel...

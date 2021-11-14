@@ -1,7 +1,10 @@
 package com.demo.carDetails.model;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.SerializedName;
 
+@Keep
 public class CarPorfomaInvoiceModel
 {
 
@@ -34,8 +37,10 @@ public class CarPorfomaInvoiceModel
 
     @SerializedName("Descriptions")
     public String descriptions;
+    @SerializedName("porfomainvoice")
     public Porfomainvoice porfomainvoice;
 
+    @Keep
     public class Porfomainvoice{
         @SerializedName("CarName")
         public String carName;

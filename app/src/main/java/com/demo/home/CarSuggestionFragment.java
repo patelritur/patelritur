@@ -11,14 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.demo.R;
 import com.demo.carDetails.CarDetailsActivity;
@@ -31,7 +27,6 @@ import com.demo.home.model.viewmodel.FuelFilterViewModel;
 import com.demo.home.model.viewmodel.SearchResultViewModel;
 import com.demo.home.model.viewmodel.SearchResultViewModelFactory;
 import com.demo.utils.Constants;
-import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -90,7 +85,7 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), CarDetailsActivity.class);
                     intent.putExtra("carId",item.getCarlist().get(finalI).getCarID());
-                    getActivity().startActivity(intent);
+                    getActivity().startActivityForResult(intent,100);
                 }
             });
 
@@ -110,7 +105,7 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
             carSearchRequestModel.setLongitude("0.0");
 
         }
-        carSearchRequestModel.setUserID(new SharedPrefUtils(getActivity()).getStringData(Constants.USER_ID));
+        carSearchRequestModel.setUserID(((HomeActivity)getActivity()).userId);
 
         return carSearchRequestModel;
 

@@ -1,19 +1,26 @@
 package com.demo.utils;
 
 import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Build;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
 import com.demo.R;
-import com.demo.home.HomeActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -89,6 +96,10 @@ public class Utils {
     public static void showToast(Context context, String msg) {
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
+    public static void showToastComingSoon(Context context) {
+        Toast.makeText(context,"Coming Soon",Toast.LENGTH_LONG).show();
+    }
+
     public static boolean isValidEmail(String email) {
         if (email == null) {
             return false;
@@ -135,5 +146,45 @@ public class Utils {
 
         return greeting;
 
+    }
+
+    public static void cancelJob(Context context) {
+
+        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+        jobScheduler.cancelAll();
+    }
+
+    public static void scheduleJob(Context context, int minutes, int meetingWaitingMsgCount) {
+        ComponentName serviceComponent = new ComponentName(context, statusJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
+        PersistableBundle bundle = new PersistableBundle();
+        bundle.putInt("count",minutes);
+        bundle.putInt("waitCount",meetingWaitingMsgCount);
+        builder.setExtras(bundle);
+        builder.setMinimumLatency(Math.round((minutes*60 * 1000)/meetingWaitingMsgCount)); // wait at least
+        builder.setOverrideDeadline(5 * 1000*60); // maximum delay
+        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+        jobScheduler.schedule(builder.build());
+    }
+
+    public static void shareData(Context context,String title, String message){
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/html");
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+        sendIntent.putExtra(android.content.Intent.EXTRA_TITLE, title);
+        ((Activity) context).startActivity(Intent.createChooser(sendIntent, "Share via"));
+    }
+
+
+    public static void openChromewithUrl(Context context,String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setPackage("com.android.chrome");
+        try {
+            context.startActivity(i);
+        } catch (ActivityNotFoundException e) {
+            i.setPackage(null);
+           context.startActivity(i);
+        }
     }
 }

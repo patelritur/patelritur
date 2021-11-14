@@ -22,22 +22,19 @@
 
         </androidx.appcompat.widget.AppCompatImageView>
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/etSearch"
             android:backgroundTint="@color/white"
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
-            android:textStyle="normal"
-            android:maxLength="40"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColorHint="#9d9d9d"
-            android:hint="@string/search_for_product_or_brand"/>
+            android:textColor="#9d9d9d"
+            android:text="@string/search_for_product_or_brand"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/search_button"
         android:background="@{etSearch.text.length() > 0 ? @drawable/rounded_corner : @drawable/disable_rounded_corner}"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"

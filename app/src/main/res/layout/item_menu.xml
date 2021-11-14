@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.demo.utils.Utils"/>
+        <variable
+            name="menu"
+            type="com.demo.home.model.AppContentModel.Label" />
+    </data>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/ll"
+    android:layout_margin="@dimen/margin_20"
+    android:background="?selectableItemBackground"
+    android:padding="@dimen/margin_10"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.AppCompatImageView
+        app:homeOptionsImage="@{menu.LabelImage}"
+        tools:src="@mipmap/takedemo_icon"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <TextView
+        android:text="@{menu.labelInLanguage}"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textStyle="normal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#222831"
+        tools:text="My Demos"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

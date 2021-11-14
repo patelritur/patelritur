@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="homeModel"
+            type="com.demo.home.model.HomeModel" />
+    </data>
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,6 +25,9 @@
             />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_notification"
+            android:background="?selectableItemBackgroundBorderless"
+            android:onClick="@{homeModel::onClick}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -27,3 +36,4 @@
 
             />
     </RelativeLayout>
+</layout>

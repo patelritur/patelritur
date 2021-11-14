@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="#323643"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:lineSpacingExtra="14sp"
+        android:text="Frequently Asked Questions"/>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_margin="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_20"
+        android:background="@drawable/shadowed_background">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_search_black"
+            android:layout_gravity="center_vertical"
+            >
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSearch"
+            android:backgroundTint="@color/white"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="normal"
+            android:maxLength="40"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColorHint="#9d9d9d"
+            android:hint="@string/search_for_question"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <ExpandableListView
+        android:layoutDirection="rtl"
+        android:groupIndicator="@drawable/custom_expandable"
+        android:layout_margin="@dimen/margin_20"
+        android:id="@+id/expandable_listview"
+        android:layout_width="wrap_content"
+        android:divider="@null"
+        android:layout_height="wrap_content"
+        />
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

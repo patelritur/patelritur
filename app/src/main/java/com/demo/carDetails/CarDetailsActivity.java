@@ -4,29 +4,19 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.demo.BaseActivity;
 import com.demo.R;
@@ -38,14 +28,13 @@ import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.databinding.ActivityCarDetailsBinding;
 import com.demo.databinding.DialogReviewsBinding;
 import com.demo.databinding.ItemImageviewBannerBinding;
-import com.demo.databinding.ItemImageviewBinding;
-import com.demo.databinding.ItemSuggestionCarsBinding;
-import com.demo.home.CarDealerAdapter;
-import com.demo.home.PersonalisedCarOptionsFragment;
-import com.demo.home.model.CarDealerResponseModel;
-import com.demo.tutorial.TutorialPagerAdapter;
 import com.demo.utils.Constants;
+import com.demo.utils.DialogUtils;
+import com.demo.utils.DownloadFileFromURL;
+import com.demo.utils.FileDownloadReady;
+import com.demo.utils.Permissionsutils;
 import com.demo.utils.SharedPrefUtils;
+import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
@@ -55,18 +44,25 @@ import retrofit2.Call;
 
 public class CarDetailsActivity  extends BaseActivity implements ApiResponseListener{
 
-
     private ActivityCarDetailsBinding activityCarDetailsBinding;
     private String carId;
     private CarDetailResponse carDetailResponse;
     private CarDetailRequest carDetailRequest;
     private DialogReviewsBinding binding;
+    private CarPorfomaInvoiceModel carPorfomaInvoiceModel;
+    private final int DETAIL_REQCODE = 1;
+    private final int REVIEWS = 2;
+    private final int SPECIFICATIONS = 3;
+    private final int PERFORMA_INVOICE = 4;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityCarDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_car_details,null);
         carId = getIntent().getExtras().getString("carId");
+        if(Constants.BOOK_TYPE.equalsIgnoreCase("Meeting"))
+            activityCarDetailsBinding.takeademo.setText("Book A Meeting");
         callDetailApi();
     }
 
@@ -77,7 +73,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         carDetailRequest.setLongitude(String.valueOf(Constants.LONGITUDE));
         carDetailRequest.setCarID(carId);
         Call objectCall = RestClient.getApiService().getCarDetail(carDetailRequest);
-        RestClient.makeApiRequest(this, objectCall, this, 1, true);
+        RestClient.makeApiRequest(this, objectCall, this, DETAIL_REQCODE, true);
 
 
     }
@@ -127,7 +123,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     private void setUpAwardsView(CarDetailResponse carDetailResponse) {
         activityCarDetailsBinding.horizontalScrollviewAward.removeAllViews();
-        for(int i=0;i<carDetailResponse.getCardetail().getCarofferbanner().size();i++)
+        for(int i=0;i<carDetailResponse.getCardetail().getCarawardbanner().size();i++)
         {
             LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -143,21 +139,21 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     public void callReviewApi() {
         Call objectCall = RestClient.getApiService().getCarDetailReviews(carDetailRequest);
-        RestClient.makeApiRequest(this, objectCall, this, 2, true);
+        RestClient.makeApiRequest(this, objectCall, this, REVIEWS, true);
 
     }
 
 
     private void callSpecificationApi() {
         Call objectCall = RestClient.getApiService().getCarDetailSpeciification(carDetailRequest);
-        RestClient.makeApiRequest(this, objectCall, this, 3, true);
+        RestClient.makeApiRequest(this, objectCall, this, SPECIFICATIONS, true);
 
 
     }
 
     private void callPorfomaInvoiceApi() {
         Call objectCall = RestClient.getApiService().getCarPorfomainvoice(carDetailRequest);
-        RestClient.makeApiRequest(this, objectCall, this, 4, true);
+        RestClient.makeApiRequest(this, objectCall, this, PERFORMA_INVOICE, true);
 
 
     }
@@ -165,7 +161,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
-        if(reqCode==1) {
+        if(reqCode==DETAIL_REQCODE) {
             carDetailResponse = (CarDetailResponse) response;
             carDetailResponse.setClickHandlers(this);
             activityCarDetailsBinding.setCarDetailModel(carDetailResponse);
@@ -175,17 +171,17 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
             setUpBannerView(carDetailResponse);
             setUpAwardsView(carDetailResponse);
         }
-        else if(reqCode==2)
+        else if(reqCode==REVIEWS)
         {
             CarDetailReviewModel carDetailReviewModel = (CarDetailReviewModel) response;
             showReviewDialog(carDetailReviewModel);
         }
-        else if(reqCode==3)
+        else if(reqCode==SPECIFICATIONS)
         {
             CarDetailsSpecificationModel carDetailReviewModel = (CarDetailsSpecificationModel) response;
             showSpecificationDialog(carDetailReviewModel);
         }
-        else if(reqCode==4)
+        else if(reqCode==PERFORMA_INVOICE)
         {
             CarPorfomaInvoiceModel carDetailReviewModel = (CarPorfomaInvoiceModel) response;
             showPorfomaInvoiceDialog(carDetailReviewModel);
@@ -198,11 +194,48 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         Dialog dialog = getDialog();
         binding.textviewTitle.setText(getString(R.string.porfoma_invoice));
         binding.setCarInvoice(carPorfomaInvoiceModel.getPorfomainvoice());
+        this.carPorfomaInvoiceModel = carPorfomaInvoiceModel;
         binding.layoutInvoice.getRoot().setVisibility(View.VISIBLE);
         binding.recyclerviewReview.setVisibility(View.GONE);
+        binding.imageviewDownload.setVisibility(View.VISIBLE);
+        binding.imageviewDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Permissionsutils.CheckForStoragePermission(CarDetailsActivity.this)) {
+                    Permissionsutils.askForStoragePermission(CarDetailsActivity.this);
+                } else {
+                    DownloadFileFromURL();
+                }
+
+
+            }
+        });
         binding.executePendingBindings();
         dialog.show();
     }
+
+    private void DownloadFileFromURL() {
+        new DownloadFileFromURL(carPorfomaInvoiceModel.getPorfomainvoice().downloadInvoiceURL, carPorfomaInvoiceModel.getPorfomainvoice().getCarName(), new FileDownloadReady() {
+            @Override
+            public void onFileDownloaded(String fileId) {
+                Utils.showToast(CarDetailsActivity.this,"Performa invoice is downloaded successfullly");
+            }
+        }).execute();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            //resume tasks needing this permission
+            DownloadFileFromURL();
+        } else {
+
+            DialogUtils.showAlertInfo(CarDetailsActivity.this, "Please accept storage permission to download invoice.");
+        }
+    }
+
     private void showReviewDialog(CarDetailReviewModel carDetailReviewModel) {
         Dialog dialog = getDialog();
         binding.textviewTitle.setText(getString(R.string.reviews));
@@ -256,6 +289,15 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
     public void onClick(View view) {
         switch(view.getId())
         {
+            case R.id.share_iv:
+                Utils.shareData(this,carDetailResponse.getCardetail().getCarName(),carDetailResponse.getCardetail().getCarDescription());
+                break;
+            case R.id.takeademo:
+                Constants.CARID = carId;
+                setResult(100);
+                finish();
+                break;
+
             case R.id.reviews:
                 callReviewApi();
                 break;
@@ -276,4 +318,9 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

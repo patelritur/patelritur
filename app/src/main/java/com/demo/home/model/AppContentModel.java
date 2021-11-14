@@ -28,6 +28,7 @@ public class AppContentModel {
         Descriptions = descriptions;
     }
 
+    @SerializedName("Descriptions")
     public String Descriptions;
 
     public List<Label> getLabels() {
@@ -38,10 +39,24 @@ public class AppContentModel {
         Labels = labels;
     }
 
+    @SerializedName("Labels")
     public List<Label> Labels;
 
-    public class Label {
+    @Keep
+    public class Label
+    {
+        @SerializedName("Page")
         public String Page;
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+
+        public boolean isChecked;
 
         public String getPage() {
             return Page;
@@ -75,8 +90,11 @@ public class AppContentModel {
             LabelImage = labelImage;
         }
 
+        @SerializedName("LabelName")
         public String LabelName;
+        @SerializedName("LabelInLanguage")
         public String LabelInLanguage;
+        @SerializedName("LabelImage")
         public String LabelImage;
     }
 }

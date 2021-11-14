@@ -16,6 +16,7 @@ import com.demo.databinding.ItemSearchListBinding;
 import com.demo.databinding.ItemTopDealersBinding;
 import com.demo.home.model.CarDealerModel;
 import com.demo.home.model.CarSearchResultModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class CarSearchResultAdapter extends RecyclerView.Adapter<CarSearchResult
 
     private final Context context;
     private ArrayList<CarSearchResultModel.Carlist> dataModelList = new ArrayList<>();
+    private BottomSheetDialog bottomSheetDialog;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -42,9 +44,10 @@ public class CarSearchResultAdapter extends RecyclerView.Adapter<CarSearchResult
         }
     }
 
-    public CarSearchResultAdapter(Context context, ArrayList<CarSearchResultModel.Carlist> carDealerModelsList) {
+    public CarSearchResultAdapter(Context context, ArrayList<CarSearchResultModel.Carlist> carDealerModelsList, BottomSheetDialog bottomSheetDialog) {
         this.context = context;
         dataModelList = carDealerModelsList;
+        this.bottomSheetDialog = bottomSheetDialog;
     }
 
     // Create new views (invoked by the layout manager)
@@ -66,7 +69,9 @@ public class CarSearchResultAdapter extends RecyclerView.Adapter<CarSearchResult
             public void onClick(View v) {
                 Intent intent = new Intent(context, CarDetailsActivity.class);
                 intent.putExtra("carId",dataModel.getCarID());
-                context.startActivity(intent);
+
+                ((HomeActivity)context).startActivityForResult(intent,100);
+                bottomSheetDialog.dismiss();
             }
         });
     }

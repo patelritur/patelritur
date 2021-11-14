@@ -2,7 +2,6 @@ package com.demo.home;
 
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.demo.R;
 import com.demo.databinding.FragmentPersonalisedOptionsBinding;
-import com.demo.home.model.CarSearchRequestModel;
 import com.demo.home.model.CarSearchResultModel;
 import com.demo.home.model.viewmodel.CarFilterViewModel;
-import com.demo.home.model.viewmodel.SearchResultViewModel;
-import com.demo.home.model.viewmodel.SearchResultViewModelFactory;
-import com.demo.utils.Constants;
-import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class PersonalisedCarOptionsFragment extends Fragment {
     private FragmentPersonalisedOptionsBinding fragmentPersonalisedOptionsBinding;
     private int pos;
     private CarFilterViewModel model;
-    private SharedPrefUtils sharedPrefUtils;
 
 
     public static PersonalisedCarOptionsFragment newInstance(int pos) {
@@ -53,7 +40,6 @@ public class PersonalisedCarOptionsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         pos = getArguments().getInt("pos");
         model = new ViewModelProvider(requireActivity()).get(CarFilterViewModel.class);
-        sharedPrefUtils = new SharedPrefUtils(getActivity());
 
     }
 

@@ -49,15 +49,15 @@ public class CarDealersFragment extends Fragment implements ApiResponseListener 
     private void callDelaerApi() {
         if(((HomeActivity)getActivity()).locationUtils.getLoc()!=null) {
             carSearchRequestModel.setLatitude(String.valueOf(((HomeActivity) getActivity()).locationUtils.getLoc().getLatitude()));
-            carSearchRequestModel.setLatitude(String.valueOf(((HomeActivity) getActivity()).locationUtils.getLoc().getLongitude()));
+            carSearchRequestModel.setLongitude(String.valueOf(((HomeActivity) getActivity()).locationUtils.getLoc().getLongitude()));
         }
         else
         {
             carSearchRequestModel.setLatitude("0.0");
-            carSearchRequestModel.setLatitude("0.0");
+            carSearchRequestModel.setLongitude("0.0");
 
         }
-        carSearchRequestModel.setUserID(((HomeActivity)getActivity()).sharedPrefUtils.getStringData(Constants.USER_ID));
+        carSearchRequestModel.setUserID(((HomeActivity)getActivity()).userId);
 
         Call objectCall = RestClient.getApiService().getCarDealer(carSearchRequestModel);
         RestClient.makeApiRequest(getActivity(), objectCall, this, 1, true);

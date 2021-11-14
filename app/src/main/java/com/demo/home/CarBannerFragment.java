@@ -18,6 +18,7 @@ import com.demo.databinding.FragmentBannerBinding;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
 import com.demo.home.model.viewmodel.MeetingPlaceViewModel;
+import com.demo.utils.Constants;
 import com.demo.utils.PrintLog;
 
 public class CarBannerFragment extends Fragment implements LifecycleOwner {
@@ -44,7 +45,7 @@ public class CarBannerFragment extends Fragment implements LifecycleOwner {
     private void callProductListApi() {
         PrintLog.v("fragment_banner","api");
         getActivity().getViewModelStore().clear();
-        AppContentViewModelFactory factory = new AppContentViewModelFactory(getActivity().getApplication(), "ProductListBanner");
+        AppContentViewModelFactory factory = new AppContentViewModelFactory(getActivity().getApplication(), Constants.BANNER);
         AppContentViewModel appContentViewModel = ViewModelProviders.of(requireActivity(), factory).get(AppContentViewModel.class);
 
         appContentViewModel.getBannerLiveData().observe(getViewLifecycleOwner(), item -> {

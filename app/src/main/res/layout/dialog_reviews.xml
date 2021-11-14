@@ -12,61 +12,78 @@
             type="com.demo.carDetails.model.CarPorfomaInvoiceModel.Porfomainvoice" />
     </data>
 
-<androidx.appcompat.widget.LinearLayoutCompat
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:gravity="end"
-        android:background="#00000000"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/close"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="end"
-        android:src="@drawable/close_white"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/google_rounded_corner"
-        >
-        <TextView
-            android:id="@+id/textview_title"
-            android:layout_marginTop="@dimen/margin_20"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:background="#00000000"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/close"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:src="@drawable/close_white"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semibold"
-            android:textStyle="normal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#e8505b"
-            android:gravity="center_horizontal"
-            android:text="@string/reviews"/>
+            android:orientation="vertical"
+            android:background="@drawable/google_rounded_corner"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-        <View
-            style="@style/divider"
-            />
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/textview_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/reviews"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/color_E8505B"
+                    android:textStyle="normal" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:visibility="gone"
+                    android:id="@+id/imageview_download"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:tint="@color/color_E8505B"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/download"/>
+            </RelativeLayout>
+            <View
+                style="@style/divider"
+                />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_review"
-            android:layout_margin="@dimen/margin_10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <include
-            android:id="@+id/layout_invoice"
-            layout="@layout/dialog_invoice"
-            android:visibility="gone"
-            app:carInvoice ="@{carInvoice}"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_review"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <include
+                android:id="@+id/layout_invoice"
+                layout="@layout/dialog_invoice"
+                android:visibility="gone"
+                app:carInvoice ="@{carInvoice}"
 
-            />
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

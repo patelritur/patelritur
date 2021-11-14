@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DemoApp</string>
+    <string name="app_name">Demo</string>
 
     <string name="facebook_app_id">416049966550914</string>
     <string name="fb_login_protocol_scheme">fb416049966550914</string>
@@ -83,7 +83,7 @@
     <string name="yay_we_have_suggestions">CUSTOMERS ARE EXCITED FOR THESE DEMO CARS</string>
     <string name="top_dealers_for_demo">TOP DEALERS FOR DEMO</string>
     <string name="schedule">Schedule</string>
-    <string name="where_do_yo_want_the_demo"><![CDATA[< Where do yo want the Demo?]]></string>
+    <string name="where_do_yo_want_the_demo">Where do yo want the Demo?</string>
     <string name="you_will_get_top_model_for_demo">You will get top model for Demo</string>
     <string name="let_us_help_you_choose_your_perfect_car_to_take_a_demo_personalise_here">Let us help you choose your perfect car to take a Demo. <font color='#E8505B'>Personalise Here </font></string>
     <string name="new_launch">NEW LAUNCH</string>
@@ -98,5 +98,26 @@
     <string name="you_will_get_the_best_demo_variants_available_with_our_demo_partners">You will get the best Demo variants available with our Demo Partners</string>
     <string name="demos_completed">Demos Completed</string>
     <string name="virtual_meet">Virtual Meet</string>
+    <string name="schedue">Schedule</string>
+    <string name="if_your_desired_date_and_timing_is_not_available_then_try_another_car_schedule">if your desired date and timing is not available then try <font color='#E8505B'> another car schedule</font></string>
+    <string name="tip_click_here_to_see_how_to_get_the_most_out_of_your_demo_experience">Tip: <font color='#E8505B'> Click here </font>to see how to get the most out of your Demo Experience</string>
+    <string name="cancel_demo">Cancel Demo</string>
+    <string name="cancel_meeting">Cancel Meeting</string>
+    <string name="notifications">Notifications</string>
+    <string name="sign_out">SIGN OUT</string>
+    <string name="leave_a_voice_message">Leave a Voice Message</string>
+    <string name="please_select_a_reason_to_cancel">Please Select a reason to cancel</string>
+    <string name="support">SUPPORT</string>
+    <string name="try_the_faq_page_for_your_querries">Try the FAQ page for your querries</string>
+    <string name="search_for_question">Search for Question</string>
+    <string name="faqs">FAQs</string>
+    <string name="confirm_cancel">Confirm Cancel</string>
+    <string name="please_feel_free_to_write_to_us_at">Please feel free to write to us at</string>
+    <string name="total_demos">Total Demos  </string>
+    <string name="launch_date">Launch Date</string>
+    <string name="prebook_demo">Prebook Demo</string>
+    <string name="leave_feedback">Leave Feedback</string>
+    <string name="contact">Contact</string>
+    <string name="favourite_demo_specialist">Favorite Demo Specialist</string>
 
 </resources>

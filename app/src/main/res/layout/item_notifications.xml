@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="notifications"
+            type="com.demo.notifications.model.NotificationResponseModel.Notification" />
+    </data>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/margin_10"
+    android:padding="@dimen/margin_20"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textStyle="normal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#333333"
+        android:text="@{notifications.notificationSummary}"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:textStyle="normal"
+        android:layout_marginTop="@dimen/margin_10"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:bindTextTime ="@{notifications.notificationDateTime}"
+        android:textColor="#9f9f9f"
+        tools:text="1 Day ago"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
