@@ -22,7 +22,7 @@
             android:fontFamily="@font/montserrat_semibold"
             android:textStyle="normal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/color_E8505B"
+            android:textColor="@color/color_241e61"
             tools:text="Now"/>
     </androidx.cardview.widget.CardView>
 

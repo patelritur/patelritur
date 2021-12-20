@@ -27,15 +27,12 @@
         android:orientation="vertical">
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_gravity="center_horizontal"
-            android:layout_width="150dp"
-            android:layout_height="90dp"
+            android:layout_width="140dp"
+            android:layout_height="80dp"
             android:id="@+id/imageview_car"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_10"
             app:homeOptionsImage="@{carSearchResult.carImage}"
-            android:src="@mipmap/new_user"
             />
         <TextView
             android:gravity="center_horizontal"
@@ -67,15 +64,14 @@
             tools:text="MARUTI SUZUKI"/>
         <RatingBar
             android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/margin_10"
             android:id="@+id/rating"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:numStars="5"
-            android:scaleY="0.5"
-            android:scaleX="0.5"
-            app:carRating="@{carSearchResult.carRateing}"
+            android:rating="4"
             android:stepSize="1"
-            style="?android:attr/ratingBarStyleIndicator"
+            style="?android:attr/ratingBarStyleSmall"
             android:theme="@style/RatingBar"/>
 
         <TextView
@@ -104,7 +100,7 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginBottom="@dimen/margin_10"
             android:singleLine="true"
-            android:text="Demos taken"/>
+            android:text="@string/demos_taken"/>
         <TextView
             android:visibility='@{carSearchResult.newLaunch.equalsIgnoreCase("y") ? View.VISIBLE : View.INVISIBLE}'
             android:layout_width="match_parent"
@@ -114,7 +110,7 @@
             android:padding="@dimen/margin_5"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:gravity="center"
-            android:background="@color/color_E8505B"
+            android:background="@color/color_241e61"
             android:textColor="#ffffff"
             android:text="@string/new_launch"/>
     </androidx.appcompat.widget.LinearLayoutCompat>

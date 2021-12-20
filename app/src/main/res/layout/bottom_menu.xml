@@ -67,7 +67,7 @@
                 style="@style/bottom_barnavigation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="My demos"
+                tools:text="My Demos"
                 android:text="@{homeModel.bottomMenuSecondName}">
 
             </androidx.appcompat.widget.AppCompatTextView>

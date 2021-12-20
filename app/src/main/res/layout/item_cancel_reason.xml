@@ -12,14 +12,16 @@
 
         <RadioGroup
             android:id="@+id/radio"
-            android:buttonTint="@color/color_E8505B"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:buttonTint="@color/color_241e61"
             android:layout_width="40dp"
             android:clipToPadding="true"
             android:layout_height="40dp">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/color_E8505B"/>
+                android:buttonTint="@color/color_241e61"/>
         </RadioGroup>
         <TextView
             android:gravity="center_vertical"

@@ -40,7 +40,7 @@ public class ResetPinFragment extends Fragment implements ApiResponseListener {
 
     private HeaderModel getHeaderModelforResetPin() {
         HeaderModel headerModel = new HeaderModel();
-        headerModel.setSecondImage(R.mipmap.reset_pin);
+        headerModel.setSecondImage(R.mipmap.reset_password);
         headerModel.setTitle(getString(R.string.reset_password));
         headerModel.setButtonText(getString(R.string.continue_));
         return headerModel;

@@ -2,7 +2,6 @@ package com.demo.binding;
 
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
@@ -31,8 +30,10 @@ public class BindingAdapter {
 
 
 
+
     @androidx.databinding.BindingAdapter("app:homeOptionsImage")
     public static void loadImage(AppCompatImageView view, String imageUrl) {
+        PrintLog.v("00"+imageUrl);
         Glide.with(view.getContext())
                 .load(imageUrl)
                 .into(view);
@@ -63,6 +64,14 @@ public class BindingAdapter {
         if(rating!=null)
       view.setRating(Float.parseFloat(rating));
     }
+
+
+    @androidx.databinding.BindingAdapter("app:addrating")
+    public static void addRating(RatingBar view, String rating) {
+        if(rating!=null)
+            view.setRating(Float.parseFloat(rating));
+    }
+
 
     @androidx.databinding.BindingAdapter({"android:htmlText"})
     public static void setHtmlTextValue(AppCompatTextView textView, String htmlText) {

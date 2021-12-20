@@ -9,22 +9,26 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.R;
 import com.demo.databinding.ItemFavSpecialistsBinding;
 import com.demo.databinding.ItemMyDemoTripsBinding;
+import com.demo.home.HomeActivity;
+import com.demo.home.booking.BookingFeedbackFragment;
 import com.demo.home.profile.model.DemoTripResponseModel;
 import com.demo.home.profile.model.FavoritespecialistModel;
+import com.demo.utils.Constants;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
 public class FavouriteSpecialistsListAdapter extends RecyclerView.Adapter<FavouriteSpecialistsListAdapter.ViewHolder> {
 
-    private final Context context;
+    private final Fragment context;
+    private Context con;
     private ArrayList<FavoritespecialistModel.Favoritespecialist> dataModelList = new ArrayList<>();
-    private BottomSheetDialog bottomSheetDialog;
 
 
     /**
@@ -45,17 +49,17 @@ public class FavouriteSpecialistsListAdapter extends RecyclerView.Adapter<Favour
         }
     }
 
-    public FavouriteSpecialistsListAdapter(Context context, ArrayList<FavoritespecialistModel.Favoritespecialist> carDealerModelsList) {
+    public FavouriteSpecialistsListAdapter(Context con,FavouriteSpecialistFragment context, ArrayList<FavoritespecialistModel.Favoritespecialist> carDealerModelsList) {
+       this.con = con;
         this.context = context;
         dataModelList = carDealerModelsList;
-        this.bottomSheetDialog = bottomSheetDialog;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public FavouriteSpecialistsListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater)con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ItemFavSpecialistsBinding itemSearchListBinding = DataBindingUtil.inflate(inflater, R.layout.item_fav_specialists,viewGroup,false);
 
         return new ViewHolder(itemSearchListBinding);
@@ -65,6 +69,12 @@ public class FavouriteSpecialistsListAdapter extends RecyclerView.Adapter<Favour
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FavoritespecialistModel.Favoritespecialist dataModel = dataModelList.get(position);
         holder.bind(dataModel);
+        holder.itemRowBinding.leaveFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FavouriteSpecialistFragment)context).showFragment(new SpecialistFeedbackFragment(dataModel.getSpecialistName(),dataModel.getSpecialistID()));
+            }
+        });
         holder.itemRowBinding.contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +85,7 @@ public class FavouriteSpecialistsListAdapter extends RecyclerView.Adapter<Favour
         });
 
     }
+
 
 
 

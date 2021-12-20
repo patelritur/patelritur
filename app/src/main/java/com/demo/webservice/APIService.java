@@ -6,6 +6,7 @@ import com.demo.carDetails.model.CarDetailsSpecificationModel;
 import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.faq.model.FAQRequestModel;
 import com.demo.faq.model.FAQResponseModel;
+import com.demo.home.booking.model.ReviewRequestModel;
 import com.demo.home.booking.model.BookingAcceptModel;
 import com.demo.home.booking.model.BookingRequestModel;
 import com.demo.home.booking.model.BookingResponseModel;
@@ -21,6 +22,7 @@ import com.demo.carDetails.model.CarDetailResponse;
 import com.demo.home.model.CarFilterResponse;
 import com.demo.home.model.CarSearchRequestModel;
 import com.demo.home.model.CarSearchResultModel;
+import com.demo.home.model.CarSectionFilterResponse;
 import com.demo.home.model.CategoryResponse;
 import com.demo.home.model.MenuResponse;
 import com.demo.home.profile.model.DemoTripResponseModel;
@@ -87,6 +89,8 @@ public interface APIService {
 
     @GET("car/filter/brand")
     Call<CarFilterResponse> carFilterBrand();
+    @GET("car/filter/section")
+    Call<CarSectionFilterResponse> carFilterSection();
 
 
     @GET("car/filter/fueltype")
@@ -195,5 +199,17 @@ public interface APIService {
 
     @POST("rewardsandoffers")
     Call<RewardsResponseModel> getRewardsOffer(@Body FAQRequestModel userId);
+
+    @POST("car/booking/review")
+    Call<RegistrationResponse> insertDemoBookingReview(@Body ReviewRequestModel userId);
+
+    @POST("car/meet/review")
+    Call<RegistrationResponse> addMeetingBookingReview(@Body ReviewRequestModel userId);
+
+    @POST("car/specialist/feedback")
+    Call<RegistrationResponse> addSpecialistFeedback(@Body ReviewRequestModel userId);
+
+
+
 
 }

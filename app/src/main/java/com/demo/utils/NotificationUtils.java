@@ -1,9 +1,12 @@
 package com.demo.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
 import com.demo.registrationLogin.model.AddTokenRequestModel;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
@@ -15,26 +18,39 @@ import retrofit2.Call;
 
 public class NotificationUtils
 {
-    public static void setUpFCMNotifiction(Context context, String userId) {
-
+    public static void setUpFCMNotifiction(Context context, String userId,String type) {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
+
+
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
                             return;
+
                         }
                         AddTokenRequestModel addTokenRequestModel = new AddTokenRequestModel();
                         addTokenRequestModel.setUserID(userId);
-                        addTokenRequestModel.setTokenType("Add");
+                        addTokenRequestModel.setTokenType(type);
 
                         // Get new FCM registration token
-                        String token = task.getResult();
+                       String  token = task.getResult();
                         addTokenRequestModel.setDeviceToken(token);
                         Call objectCall = RestClient.getApiService().addNotificationToken(addTokenRequestModel);
                         RestClient.makeApiRequest(context, objectCall, new ApiResponseListener() {
                             @Override
                             public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
+                                CometChat.registerTokenForPushNotification(token, new CometChat.CallbackListener<String>() {
+                                    @Override
+                                    public void onSuccess(String s) {
+                                        Log.e("onSuccess: ",s.toString() );
+                                    }
+
+                                    @Override
+                                    public void onError(CometChatException e) {
+                                        Log.e("onErrorPN: ",e.getMessage() );
+                                    }
+                                });
                             }
 
                             @Override
@@ -45,6 +61,8 @@ public class NotificationUtils
                         // Log and toast
                     }
                 });
+
+
     }
 
 

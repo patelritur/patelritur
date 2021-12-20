@@ -1,7 +1,24 @@
 <?xml version="1.0"?>
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge" />
+    <style name="TransparentCompat" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+    </style>
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/google_rounded_corner</item>
+    </style>
     <style name="redButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -109,9 +126,9 @@
 
     <style name="customratingbar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/food_rating_bar_full</item>
-        <item name="android:minHeight">22dip</item>
+        <item name="android:minHeight">18dip</item>
         <item name="colorControlNormal">@color/ced0d2</item>
-        <item name="android:maxHeight">22dip</item>
+        <item name="android:maxHeight">18dip</item>
     </style>
 
     <style name="divider">

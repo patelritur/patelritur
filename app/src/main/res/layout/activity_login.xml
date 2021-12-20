@@ -15,20 +15,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-       <!-- <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            />-->
+        <!-- <androidx.fragment.app.FragmentContainerView
+             android:id="@+id/fragment_container_view"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:visibility="gone"
+             />-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
             <androidx.appcompat.widget.AppCompatImageView
-                android:src="@mipmap/new_user"
-                android:scaleType="centerCrop"
+                android:src="@drawable/ic_registration"
                 android:layout_width="match_parent"
                 android:layout_height="223dp"/>
             <androidx.appcompat.widget.AppCompatImageView
@@ -69,7 +68,7 @@
 
         <TextView
             android:onClick="@{handlers::onClickSignup}"
-           android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
             android:layout_height="wrap_content"
             style="@style/redButton"
             android:letterSpacing="-0.02"
@@ -81,12 +80,13 @@
             android:onClick="@{handlers::onClickSignInSignUp}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_E8505B"
-            android:layout_marginTop="@dimen/margin_40"
+            android:textColor="@color/color_241e61"
+            android:layout_marginTop="@dimen/margin_20"
             android:textAllCaps="true"
             android:textSize="@dimen/textsize_18"
             android:letterSpacing="-0.02"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_25"
             android:text="@{isregister ? @string/already_a_user_signin : @string/new_user_sign_up}"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_social"
@@ -98,38 +98,78 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/or_connect_with"
+                android:layout_marginBottom="@dimen/margin_20"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/color_030303"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_marginBottom="@dimen/margin_25"
+
                 android:layout_gravity="center_horizontal"
                 />
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+                android:padding="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_30"
+                android:layout_marginEnd="@dimen/margin_30"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:background="#0175FF"
+                android:layout_gravity="center_vertical"
+                >
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:onClick="@{handlers::onFacebookClick}"
-                    android:layout_width="160dp"
-                    android:layout_height="50dp"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:layout_marginEnd="@dimen/margin_10"
-                    android:background="@drawable/facebook_rounded_corner"
-                    android:src="@mipmap/facebook"
-                    />
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:onClick="@{handlers::onGoogleSignIn}"
-                    android:background="@drawable/google_rounded_corner"
-                    android:layout_width="160dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/google"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:paddingTop="@dimen/margin_10"
                     android:layout_marginStart="@dimen/margin_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_g"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:onClick="@{handlers::onGoogleSignIn}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:paddingTop="@dimen/margin_10"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:fontFamily="@font/montserrat_bold"
                     android:layout_gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:text="Conitnue with Google"
                     />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_gravity="center_horizontal">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:padding="@dimen/margin_10"
+                    android:layout_marginStart="@dimen/margin_30"
+                    android:layout_marginEnd="@dimen/margin_30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#3B5898"
+                    android:layout_gravity="center_vertical"
+                    >
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_f"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:onClick="@{handlers::onFacebookClick}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Conitnue with Facebook"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>

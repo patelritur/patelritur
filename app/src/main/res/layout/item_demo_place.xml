@@ -44,9 +44,12 @@
                 android:orientation="vertical">
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
-                    tools:text="At DealerShip"
                     android:textColor="#363636"
                     android:fontFamily="@font/montserrat_bold"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeStepGranularity="2sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:text="@{menuModel.MenuName}"
                     android:layout_height="wrap_content"/>
@@ -80,6 +83,7 @@
             >
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="17dp"
+                android:tint="@color/color_241e61"
                 android:src="@drawable/ic_image_schedule"
                 android:layout_gravity="center"
                 android:layout_height="17dp"/>
@@ -90,7 +94,7 @@
                 android:text="@string/schedule"
                 android:fontFamily="@font/montserrat_semibold"
                 android:singleLine="true"
-                android:textColor="@color/color_E8505B"
+                android:textColor="@color/color_241e61"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>

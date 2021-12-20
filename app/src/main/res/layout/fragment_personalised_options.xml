@@ -14,9 +14,9 @@
             android:fontFamily="@font/montserrat_semibold"
             android:layout_gravity="center"
             android:textSize="@dimen/textsize_15"
-            android:textColor="@color/color_E8505B"
+            android:textColor="@color/color_241e61"
             android:textAllCaps="true"
-            android:text="CHOOSE YOUR BUDGET"/>
+            android:text="@string/choose_your_budget"/>
         <GridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

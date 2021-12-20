@@ -3,6 +3,7 @@ package com.demo.home.profile;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.view.LayoutInflater;
@@ -20,7 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.demo.R;
 import com.demo.databinding.DialogMytripsBinding;
 import com.demo.databinding.ItemMyDemoTripsBinding;
+import com.demo.home.HomeActivity;
 import com.demo.home.profile.model.DemoTripResponseModel;
+import com.demo.utils.Constants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -119,7 +122,21 @@ public class DemoTripsListAdapter extends RecyclerView.Adapter<DemoTripsListAdap
         holder.itemRowBinding.parentLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDialog(dataModel).show();
+                if(dataModel.getDemoStatus().contains("Upcoming")){
+                    if(dataModel.getDemoType().equalsIgnoreCase("Meeting")){
+                        Constants.BOOK_TYPE = "Meeting";
+                        Constants.MEETING_ID = dataModel.getDemoID();
+                    }
+                    else if(dataModel.getDemoType().equalsIgnoreCase("Demo")){
+                        Constants.BOOK_TYPE = "Demo";
+                        Constants.BOOKING_ID = dataModel.getDemoID();
+                    }
+                    Intent intent = new Intent(context, HomeActivity.class);
+                    intent.putExtra("comeFrom","notifications");
+                    context.startActivity(intent);
+                }
+                else
+                    getDialog(dataModel).show();
             }
         });
 

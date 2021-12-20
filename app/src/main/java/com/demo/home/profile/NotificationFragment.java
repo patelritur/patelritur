@@ -17,6 +17,7 @@ import com.demo.databinding.FragmentNotificationsBinding;
 import com.demo.notifications.NotificationsAdapter;
 import com.demo.notifications.model.NotificationResponseModel;
 import com.demo.utils.Constants;
+import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
@@ -66,11 +67,20 @@ public class NotificationFragment extends Fragment implements ApiResponseListene
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         NotificationResponseModel notificationResponseModel = (NotificationResponseModel) response;
         if(notificationResponseModel.getResponseCode().equalsIgnoreCase("104")){
+            PrintLog.v("===broadcast00");
             Utils.showToast(getActivity(),notificationResponseModel.getDescriptions());
+            sharedPrefUtils.saveData(Constants.NOTIFICATION_COUNT, "0");
+
         }
         else if(notificationResponseModel.getResponseCode().equalsIgnoreCase("200")) {
-            notificationResponseModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE));
+            PrintLog.v("===broadcast");
+            if (sharedPrefUtils.getStringData(Constants.NOTIFICATION_COUNT) != null && !sharedPrefUtils.getStringData(Constants.NOTIFICATION_COUNT).equalsIgnoreCase(notificationResponseModel.notificationCount))
+            {
+                PrintLog.v("visible");
+                ((MyDemoActivity)getActivity()).updateVisibleDot();
 
+            }
+            sharedPrefUtils.saveData(Constants.NOTIFICATION_COUNT, notificationResponseModel.notificationCount);
             fragmentNotificationsBinding.recyclerview.setAdapter(new NotificationsAdapter(getActivity(), (ArrayList<NotificationResponseModel.Notification>) notificationResponseModel.getNotification()));
             fragmentNotificationsBinding.recyclerview.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         }
@@ -80,4 +90,6 @@ public class NotificationFragment extends Fragment implements ApiResponseListene
     public void onApiError(Call<Object> call, Object response, int reqCode) throws Exception {
 
     }
+
+
 }

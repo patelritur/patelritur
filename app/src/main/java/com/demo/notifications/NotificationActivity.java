@@ -1,3 +1,4 @@
+/*
 package com.demo.notifications;
 
 import android.os.Bundle;
@@ -76,3 +77,4 @@ public class NotificationActivity extends BaseActivity implements ApiResponseLis
 
     }
 }
+*/

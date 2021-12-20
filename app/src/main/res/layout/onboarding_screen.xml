@@ -6,22 +6,23 @@
             name="imageUrl"
             type="java.lang.String" />
     </data>
-<RelativeLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageViewMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitEnd"
-        app:homeOptionsImage="@{imageUrl}"
-        tools:ignore="MissingConstraints" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_marginTop="@dimen/margin_30"
+            android:id="@+id/imageViewMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitStart"
+            app:homeOptionsImage="@{imageUrl}"
+            tools:ignore="MissingConstraints" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
 </layout>

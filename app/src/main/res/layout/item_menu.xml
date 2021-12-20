@@ -11,7 +11,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/ll"
-    android:layout_margin="@dimen/margin_20"
+    android:layout_marginStart="@dimen/margin_20"
+    android:layout_marginTop="@dimen/margin_20"
     android:background="?selectableItemBackground"
     android:padding="@dimen/margin_10"
     xmlns:tools="http://schemas.android.com/tools">
@@ -23,14 +24,15 @@
     <androidx.appcompat.widget.AppCompatImageView
         app:homeOptionsImage="@{menu.LabelImage}"
         tools:src="@mipmap/takedemo_icon"
-        android:layout_width="@dimen/margin_20"
-        android:layout_height="@dimen/margin_20"/>
+        android:layout_width="@dimen/margin_25"
+        android:layout_height="@dimen/margin_25"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <TextView
         android:text="@{menu.labelInLanguage}"
         android:layout_marginStart="@dimen/margin_20"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
@@ -40,5 +42,12 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#222831"
         tools:text="My Demos"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+        android:tint="@color/color_241e61"
+        />
 </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -16,17 +16,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.demo.R;
-import com.demo.carDetails.ScreenSlidePagerAdapter;
-import com.demo.carDetails.model.CarDetailResponse;
 import com.demo.databinding.FragmentPagerLaunchBinding;
+import com.demo.launch.model.LaunchRequestModel;
+import com.demo.launch.model.LaunchResponseModel;
 import com.demo.utils.Constants;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
-
-import com.demo.launch.model.LaunchRequestModel;
-import com.demo.launch.model.LaunchResponseModel;
 
 import java.util.ArrayList;
 

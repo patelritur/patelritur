@@ -65,7 +65,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:textStyle="normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/color_E8505B"
+                android:textColor="@color/color_241e61"
                 tools:text="Jun 01, 2021"/>
 
             <TextView
@@ -111,7 +111,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:textStyle="normal"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#e8505b"
+            android:textColor="@color/color_241e61"
             android:letterSpacing="0.01"
             android:text="@string/prebook_demo"/>
 

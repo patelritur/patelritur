@@ -7,6 +7,7 @@ import androidx.annotation.Keep;
 import com.demo.carDetails.CarDetailsActivity;
 import com.demo.utils.ClickHandlers;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Keep
@@ -58,9 +59,19 @@ public class CarDetailResponse {
     public Cardetail cardetail;
 
     @Keep
-    public class Carbanner{
+    public class Carbanner implements Serializable {
         public String BannerImage;
         public String BannerUrl;
+
+        public String getBannerType() {
+            return BannerType;
+        }
+
+        public void setBannerType(String bannerType) {
+            BannerType = bannerType;
+        }
+
+        public String BannerType;
 
         public String getBannerImage() {
             return BannerImage;
@@ -76,6 +87,37 @@ public class CarDetailResponse {
 
         public void setBannerUrl(String bannerUrl) {
             BannerUrl = bannerUrl;
+        }
+    }
+
+    @Keep
+    public class colorlist{
+        String Color;
+        String HexColorCode;
+        String ColorImage;
+
+        public String getColor() {
+            return Color;
+        }
+
+        public void setColor(String color) {
+            Color = color;
+        }
+
+        public String getHexColorCode() {
+            return HexColorCode;
+        }
+
+        public void setHexColorCode(String hexColorCode) {
+            HexColorCode = hexColorCode;
+        }
+
+        public String getColorImage() {
+            return ColorImage;
+        }
+
+        public void setColorImage(String colorImage) {
+            ColorImage = colorImage;
         }
     }
 
@@ -253,6 +295,34 @@ public class CarDetailResponse {
         public String DemoCount;
         public List<Carbanner> carbanner;
         public List<Carofferbanner> carofferbanner;
+       public String CarOfferBannerTitle;
+       public String CarAwardBannerTitle;
+
+        public String getCarOfferBannerTitle() {
+            return CarOfferBannerTitle;
+        }
+
+        public void setCarOfferBannerTitle(String carOfferBannerTitle) {
+            CarOfferBannerTitle = carOfferBannerTitle;
+        }
+
+        public String getCarAwardBannerTitle() {
+            return CarAwardBannerTitle;
+        }
+
+        public void setCarAwardBannerTitle(String carAwardBannerTitle) {
+            CarAwardBannerTitle = carAwardBannerTitle;
+        }
+
+        public List<CarDetailResponse.colorlist> getColorlist() {
+            return colorlist;
+        }
+
+        public void setColorlist(List<CarDetailResponse.colorlist> colorlist) {
+            this.colorlist = colorlist;
+        }
+
+        public List<colorlist> colorlist;
         public List<Carawardbanner> carawardbanner;
     }
 

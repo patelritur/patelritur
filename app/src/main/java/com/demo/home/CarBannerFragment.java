@@ -43,7 +43,6 @@ public class CarBannerFragment extends Fragment implements LifecycleOwner {
     }
 
     private void callProductListApi() {
-        PrintLog.v("fragment_banner","api");
         getActivity().getViewModelStore().clear();
         AppContentViewModelFactory factory = new AppContentViewModelFactory(getActivity().getApplication(), Constants.BANNER);
         AppContentViewModel appContentViewModel = ViewModelProviders.of(requireActivity(), factory).get(AppContentViewModel.class);

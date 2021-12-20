@@ -5,10 +5,11 @@ import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Keep
-public class AppContentModel {
+public class AppContentModel implements Serializable {
     @SerializedName("ResponseCode")
     public String ResponseCode;
 
@@ -43,7 +44,7 @@ public class AppContentModel {
     public List<Label> Labels;
 
     @Keep
-    public class Label
+    public class Label implements  Serializable
     {
         @SerializedName("Page")
         public String Page;

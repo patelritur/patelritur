@@ -19,6 +19,15 @@ import com.google.android.gms.common.annotation.KeepName;
 public class HomeModel  {
     public String fName,lName;;
     public String image;
+    public String descriptions;
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
 
     public String getImage() {
         return image;

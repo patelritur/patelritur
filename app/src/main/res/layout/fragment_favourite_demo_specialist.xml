@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,6 +10,8 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/title"
+        android:layout_alignParentTop="true"
         android:layout_margin="@dimen/margin_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,11 +22,30 @@
         android:text="@string/favourite_demo_specialist"/>
 
     <androidx.recyclerview.widget.RecyclerView
+
+        android:layout_below="@+id/title"
         android:id="@+id/recyclerview_favouritespecialist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_fav_specialists"
         />
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:visibility="gone"
+        android:layout_below="@+id/title"
+        android:id="@+id/coordinator11"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:behavior_hideable="true"
+            android:background="@drawable/behavior_rounded_corner"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>
 </layout>

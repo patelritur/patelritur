@@ -15,13 +15,11 @@ import androidx.lifecycle.ViewModelProviders;
 import com.demo.R;
 import com.demo.databinding.FragmentCancelDemoBinding;
 import com.demo.home.HomeActivity;
-import com.demo.home.HomeMenuAdapter;
 import com.demo.home.booking.model.BookingResponseModel;
 import com.demo.home.booking.model.CancelBookingModel;
 import com.demo.home.model.AppContentModel;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
-import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
@@ -56,13 +54,11 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
 
     private void callCancelApi() {
         CancelBookingModel cancelBookingModel = new CancelBookingModel();
-
-
         cancelBookingModel.setCancelReason(cancelReasonAdapter.getSelectedReason());
         cancelBookingModel.setBlockDealerStatus(fragmentCancelDemoBinding.checkboxBlockDealer.isChecked()?"Y":"N");
         Call objectCall;
         if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
-            cancelBookingModel.bookingID = Constants.BOOKINGID;
+            cancelBookingModel.bookingID = Constants.BOOKING_ID;
             objectCall = RestClient.getApiService().cancelBooking(cancelBookingModel);
         }
         else {
@@ -83,6 +79,8 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
         appContentViewModel.getCancelreasonLiveData().observe(requireActivity(), item -> {
             cancelReasonAdapter = new CancelReasonAdapter(getActivity(), (ArrayList<AppContentModel.Label>) item.getLabels());
             fragmentCancelDemoBinding.recyclerview.setAdapter(cancelReasonAdapter);
+            ((HomeActivity) getActivity()).setPeekheight(fragmentCancelDemoBinding.parentLl.getMeasuredHeight());
+
         });
     }
 

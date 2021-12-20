@@ -100,10 +100,10 @@ public class CancelReasonAdapter extends RecyclerView.Adapter<CancelReasonAdapte
         try {
             if (lastCheckedRadioGroup != null) {
                 if (lastCheckedRadioGroup.getCheckedRadioButtonId() > getItemCount()) {
-                    return dataModelList.get(lastCheckedRadioGroup.getCheckedRadioButtonId() - getItemCount() - 1).LabelInLanguage;
+                    return dataModelList.get(lastCheckedRadioGroup.getCheckedRadioButtonId() - getItemCount() - 1).getLabelInLanguage();
                 }
 
-                return dataModelList.get(lastCheckedRadioGroup.getCheckedRadioButtonId() - 1).LabelInLanguage;
+                return dataModelList.get(lastCheckedRadioGroup.getCheckedRadioButtonId() - 1).getLabelInLanguage();
             }
         }
         catch (Exception e){

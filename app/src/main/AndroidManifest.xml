@@ -12,7 +12,9 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false"/>
@@ -59,36 +61,51 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="@string/fb_login_protocol_scheme"
-                     />
+                    />
             </intent-filter>
         </activity>
         <activity android:name=".home.HomeActivity">
 
         </activity>
         <activity android:name=".carDetails.CarDetailsActivity"
-            android:noHistory="true"/>
-        <activity android:name=".notifications.NotificationActivity"
-            android:noHistory="true"/>
+            />
+
         <activity android:name=".home.profile.MyDemoActivity"
-            android:noHistory="true"/>
+            />
         <activity android:name=".faq.FAQActiviity"
-            android:noHistory="true"/>
+            />
         <activity android:name=".launch.LaunchActivity"
-            android:noHistory="true"/>
+           />
         <activity android:name=".news.NewsActivity"
-            android:noHistory="true"/>
+           />
         <activity android:name=".rewards.s.RewardsActivity" />
         <activity android:name=".news.NewsPagerActivity" />
+        <activity android:name=".utils.CometChatCallActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:theme="@style/TransparentCompat">
+            <intent-filter>
+                <action android:name="utils.CometChatCallActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".utils.comectChat.call_manager.CometChatStartCallActivity" />
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
         <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
         <meta-data android:name="com.google.android.gms.appstate.APP_ID" android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/app_icon" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
 
         <service
             android:name=".utils.MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -96,11 +113,7 @@
 
         <service android:name=".utils.statusJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <receiver android:name=".utils.CallNotificationAction" />
 
-    <receiver android:name=".utils.MyStartServiceReceiver" >
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-        </intent-filter>
-    </receiver>
     </application>
 </manifest>

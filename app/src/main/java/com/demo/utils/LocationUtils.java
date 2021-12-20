@@ -326,19 +326,18 @@ public class LocationUtils implements OnMapReadyCallback {
         // Style the polyline.
 
 // Getting URL to the Google Directions API
-        /*String url =  getDirectionsUrl(new LatLng(loc.getLatitude(),loc.getLongitude()),new LatLng(latitude,longitude));
-        DownloadTask downloadTask =new DownloadTask();
-        downloadTask.execute(url);*/
+
 
     }
 
     public void clearmap() {
+        if(map!=null)
         map.clear();
         if(currentMarker!=null)
         map.addMarker(currentMarker);
     }
 
-    /*private String getDirectionsUrl(LatLng origin, LatLng dest) {
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
 // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -353,6 +352,7 @@ public class LocationUtils implements OnMapReadyCallback {
         return url;
     }
 
+/*
     public class DownloadTask extends AsyncTask<String, Void, String> {
 
         // Downloading data in non-ui thread
@@ -384,6 +384,7 @@ public class LocationUtils implements OnMapReadyCallback {
 
         }
     }
+*/
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
@@ -420,6 +421,7 @@ public class LocationUtils implements OnMapReadyCallback {
             urlConnection.disconnect();
         }
         return data;
-    }*/
+    }
+
 
 }

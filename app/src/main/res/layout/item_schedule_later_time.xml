@@ -24,7 +24,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvWeekDay"
-android:textColor="@color/color_E8505B"
+android:textColor="@color/color_241e61"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
@@ -38,7 +38,7 @@ android:textColor="@color/color_E8505B"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
             android:textStyle="normal"
-            android:textColor="@color/color_E8505B"
+            android:textColor="@color/color_241e61"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="Now"/>
         </androidx.appcompat.widget.LinearLayoutCompat>

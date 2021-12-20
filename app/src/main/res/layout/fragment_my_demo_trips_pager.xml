@@ -28,11 +28,11 @@
             android:fontFamily="@font/montserrat_regular"
             android:textStyle="normal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#e8505b"
+            android:textColor="@color/color_241e61"
             android:letterSpacing="0.01"
             android:checked="false"
             tools:text="Demo"
-            android:backgroundTint="@color/color_E8505B"
+            android:backgroundTint="@color/color_241e61"
             android:text="@{filter.Labels.get(0).labelInLanguage}"/>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="wrap_content"
@@ -41,10 +41,10 @@
             android:fontFamily="@font/montserrat_regular"
             android:textStyle="normal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#e8505b"
+            android:textColor="@color/color_241e61"
             android:letterSpacing="0.01"
             android:checked="false"
-            android:backgroundTint="@color/color_E8505B"
+            android:backgroundTint="@color/color_241e61"
             tools:text="MEetong"
             android:text="@{filter.Labels.get(1).labelInLanguage}"/>
         <com.google.android.material.checkbox.MaterialCheckBox
@@ -54,11 +54,11 @@
             android:fontFamily="@font/montserrat_regular"
             android:textStyle="normal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#e8505b"
             android:letterSpacing="0.01"
+            android:textColor="@color/color_241e61"
             android:checked="false"
             tools:text="Virtual Meet"
-            android:backgroundTint="@color/color_E8505B"
+            android:backgroundTint="@color/color_241e61"
             android:text="@{filter.Labels.get(2).labelInLanguage}"/>
 
 

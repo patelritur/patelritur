@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.demo.BaseActivity;
 import com.demo.R;
 import com.demo.databinding.ActivityRegistrationBinding;
@@ -19,6 +23,7 @@ import com.demo.registrationLogin.model.HeaderModel;
 import com.demo.registrationLogin.model.RegistrationRequestModel;
 import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
+import com.demo.utils.NotificationUtils;
 import com.demo.utils.Permissionsutils;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.UriUtils;
@@ -65,7 +70,7 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
 
     private HeaderModel getHeaderModelforRegistrationActivity() {
         HeaderModel headerModel = new HeaderModel();
-        headerModel.setSecondImage(R.mipmap.setup_account);
+        headerModel.setSecondImage(R.drawable.ic_setup_account);
         headerModel.setTitle(getString(R.string.set_up_your_account));
         return headerModel;
     }
@@ -179,6 +184,22 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
         } else if (reqCode == SETUP_ACCOUT) {
             if (registrationResponse.getResponseCode().equalsIgnoreCase("200")) {
                 Utils.showToast(context, registrationResponse.getDescriptions());
+                User user = new User();
+                user.setUid(registrationResponse.getUserID());
+                user.setName(registrationRequestModel.getFirstName());
+                CometChat.createUser(user, Constants.AUTH_KEY, new CometChat.CallbackListener<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        if (CometChat.getLoggedInUser() == null)
+                            login(user);
+
+                    }
+
+                    @Override
+                    public void onError(CometChatException e) {
+
+                    }
+                });
                 sharedPrefUtils.saveData( Constants.USER_ID, registrationResponse.getUserID());
                 sharedPrefUtils.saveData( Constants.FNAME, registrationRequestModel.getFirstName());
                 sharedPrefUtils.saveData( Constants.LNAME, registrationRequestModel.getLastName());
@@ -201,8 +222,22 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
 
         }
     }
+    private void login(User user) {
+        CometChat.login(user.getUid(), Constants.AUTH_KEY, new CometChat.CallbackListener<User>() {
 
+            @Override
+            public void onSuccess(User user) {
+                Log.d("TAG", "Login Successful : " + user.toString());
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d("TAG", "Login failed with exception: " + e.getMessage());
+            }
+        });
+    }
     private void startHomeActivity() {
+        NotificationUtils.setUpFCMNotifiction(this,sharedPrefUtils.getStringData(Constants.USER_ID),"Add");
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

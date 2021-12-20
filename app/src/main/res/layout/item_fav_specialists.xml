@@ -82,6 +82,7 @@
                     android:weightSum="1"
                     >
                     <TextView
+                        android:id="@+id/leave_feedback"
                         android:gravity="center_horizontal"
                         android:layout_weight="0.5"
                         android:layout_width="0dp"
@@ -92,7 +93,7 @@
                         android:textStyle="normal"
                         android:singleLine="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="#cf4032"
+                        android:textColor="@color/color_241e61"
                         android:text="@string/leave_feedback"/>
                     <TextView
                         android:id="@+id/contact"
@@ -106,7 +107,7 @@
                         android:layout_marginStart="@dimen/margin_10"
                         android:background="@drawable/border_red_deep_rounded_corner"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="#cf4032"
+                        android:textColor="@color/color_241e61"
                         android:text="@string/contact"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -31,6 +31,9 @@ public class AppContentViewModel extends AndroidViewModel {
     private LiveData<AppContentModel> myDemoMenuLiveData;
     private LiveData<AppContentModel> myDemoTripsFilterLiveData;
     private LiveData<AppContentModel> supportEmailLiveData;
+    private LiveData<AppContentModel> myDemoTripsMenuLiveData;
+    private LiveData<AppContentModel> myDemoDescriptionsLiveData;
+    private LiveData<AppContentModel> specialistsDescriptionsLiveData;
 
     public AppContentViewModel(@NonNull Application application, String mParam) {
         super(application);
@@ -55,6 +58,12 @@ public class AppContentViewModel extends AndroidViewModel {
             myDemoTripsFilterLiveData =getHomeMenuList(mParam);
         else if(mParam.equalsIgnoreCase(Constants.SUPPORT_EMAIL))
             myDemoTripsFilterLiveData =getHomeMenuList(mParam);
+        else if(mParam.equalsIgnoreCase(Constants.MYDEMO_TRIPS_MENU))
+            myDemoTripsMenuLiveData = getHomeMenuList(mParam);
+        else if(mParam.equalsIgnoreCase(Constants.MYDEMO_DESCRIPTIONS))
+            myDemoDescriptionsLiveData = getHomeMenuList(mParam);
+        else if(mParam.equalsIgnoreCase(Constants.SPECIALIST_DESCRIPTIONS))
+            specialistsDescriptionsLiveData = getHomeMenuList(mParam);
 
     }
 
@@ -96,6 +105,20 @@ public class AppContentViewModel extends AndroidViewModel {
     }
 
 
+    public LiveData<AppContentModel> getMyDemoDescriptionsLiveData() {
+        if (myDemoDescriptionsLiveData == null)
+        {
+            myDemoDescriptionsLiveData = new MutableLiveData<>();
+        }
+        return myDemoDescriptionsLiveData;
+    }
+    public LiveData<AppContentModel> getSpecialistsDescriptionsLiveData() {
+        if (specialistsDescriptionsLiveData == null)
+        {
+            specialistsDescriptionsLiveData = new MutableLiveData<>();
+        }
+        return specialistsDescriptionsLiveData;
+    }
     public LiveData<AppContentModel> getHomeMenuLiveData() {
         if (homeMenuLiveData == null)
         {
@@ -166,6 +189,14 @@ public class AppContentViewModel extends AndroidViewModel {
             supportEmailLiveData = new MutableLiveData<>();
         }
         return supportEmailLiveData;
+    }
+
+    public LiveData<AppContentModel> getMyDemoTripsMenuLiveData() {
+        if (myDemoTripsMenuLiveData == null)
+        {
+            myDemoTripsMenuLiveData = new MutableLiveData<>();
+        }
+        return myDemoTripsMenuLiveData;
     }
 }
 

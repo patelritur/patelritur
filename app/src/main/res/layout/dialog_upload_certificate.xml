@@ -39,14 +39,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_20"
-        android:src="@mipmap/upload_certi"/>
+        android:src="@drawable/upload_certi"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:onClick="@{handler::onUploadDocClick}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="true"
-        android:textColor="@color/color_E8505B"
+        android:textColor="@color/color_241e61"
         android:paddingRight="@dimen/margin_20"
         android:paddingLeft="@dimen/margin_20"
         android:paddingTop="@dimen/margin_10"
@@ -54,7 +54,7 @@
         app:fontFamily="@font/montserrat_regular"
         android:textStyle="bold"
         android:letterSpacing="0.01"
-        android:background="@drawable/border_red_rounded_corner"
+        android:background="@drawable/border_red_deep_rounded_corner"
         android:text="@string/upload_file"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/skip_for_now"
-        android:textColor="@color/color_E8505B"
+        android:textColor="@color/color_241e61"
         style="@style/forgot_password_text"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="handlers" type="com.demo.registrationLogin.VerificationCodeActivity"/>
 
@@ -117,16 +118,30 @@
             android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_20"
             android:text="@string/did_not_receive_the_otp"/>
+
         <TextView
             android:onClick="@{handlers::resendOtp}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_E8505B"
-            android:layout_marginBottom="16dp"
+            android:textColor="@color/color_241e61"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="10dp"
             android:textSize="@dimen/textsize_15"
+            tools:text="Resend OTP"
             android:fontFamily="@font/montserrat_regular"
             android:text="@{headermodel.bottomText}"/>
-
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/timer_otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_131313"
+            android:lineSpacingExtra="2.5sp"
+            android:textSize="@dimen/textsize_15"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:text="OTP valid for 2:30"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:onClick="@{handlers::onClickVerify}"
 

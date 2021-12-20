@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
@@ -18,8 +19,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 
+import com.cometchat.pro.helpers.Logger;
 import com.demo.R;
 
 import java.util.Calendar;
@@ -36,7 +39,7 @@ public class Utils {
      * @param context the context
      */
     public static void setFocusedPinBg(EditText view, Context context) {
-        ColorStateList colorStateList = ColorStateList.valueOf(context.getColor(R.color.color_E8505B));
+        ColorStateList colorStateList = ColorStateList.valueOf(context.getColor(R.color.color_241e61));
         ViewCompat.setBackgroundTintList(view, colorStateList);
     }
 
@@ -186,5 +189,19 @@ public class Utils {
             i.setPackage(null);
            context.startActivity(i);
         }
+    }
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null
+                && permissions != null) {
+            for (String permission : permissions) {
+                Logger.error("TAG", " hasPermissions() : Permission : " + permission
+                        + "checkSelfPermission : " + ActivityCompat.checkSelfPermission(context, permission));
+                if (ActivityCompat.checkSelfPermission(context, permission) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

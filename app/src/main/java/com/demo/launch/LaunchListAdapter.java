@@ -3,6 +3,7 @@ package com.demo.launch;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.demo.R;
+import com.demo.carDetails.ScreenSlidePageFragment;
 import com.demo.carDetails.ScreenSlidePagerAdapter;
 import com.demo.carDetails.model.CarDetailResponse;
 import com.demo.databinding.ItemLaunchBinding;
@@ -79,14 +81,37 @@ public class LaunchListAdapter extends RecyclerView.Adapter<LaunchListAdapter.Vi
         else
             holder.itemRowBinding.bookDemo.setText("BOOK A DEMO");
 
+        holder.itemRowBinding.bookDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
     private void setUpViewPager(LaunchResponseModel.Latestlaunchlist carDetailResponse, ViewHolder holder) {
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(fragmentManager);
         screenSlidePagerAdapter.count =carDetailResponse.getBannerlist().size();
         screenSlidePagerAdapter.setBannerlist(carDetailResponse);
         holder.itemRowBinding.pager.setAdapter(screenSlidePagerAdapter);
-        holder.itemRowBinding.pager.setOffscreenPageLimit(2);
+        holder.itemRowBinding.pager.setOffscreenPageLimit(carDetailResponse.getBannerlist().size());
         holder.itemRowBinding.intoTabLayout.setupWithViewPager(holder.itemRowBinding.pager);
+        holder.itemRowBinding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((ScreenSlidePageFragment) screenSlidePagerAdapter.getFragment(position)).updateView(carDetailResponse.getBannerlist().get(position).getBannerType());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2237442922374429" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/behavior_rounded_corner.xml" value="0.19907407407407407" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/border_red_deep_rounded_corner.xml" value="0.19907407407407407" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/border_red_rounded_corner.xml" value="0.21851851851851853" />
@@ -19,45 +20,64 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/google_rounded_corner.xml" value="0.21296296296296297" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/half_rounded_corner.xml" value="0.18888888888888888" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_arrow.xml" value="0.2462962962962963" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.2237442922374429" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.20277777777777778" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_baseline_pause_circle_filled_24.xml" value="0.2324074074074074" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.20787037037037037" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_call_end_white_24dp.xml" value="0.2237442922374429" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_create_account.xml" value="0.2237442922374429" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_incoming_call.xml" value="0.23148148148148148" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_incoming_video_call.xml" value="0.2" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2375" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_record.xml" value="0.22592592592592592" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_video_call.xml" value="0.23148148148148148" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_video_call_selected.xml" value="0.23148148148148148" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ic_videocall.xml" value="0.23148148148148148" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/line.xml" value="0.21296296296296297" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/menu_drawable.xml" value="0.1701388888888889" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ratingbar_empty.xml" value="0.18888888888888888" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/ratingbar_filled.xml" value="0.18888888888888888" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/rectangle_copy.xml" value="0.22685185185185186" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/red_circle.xml" value="0.15677083333333333" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/rounded_corner.xml" value="0.2708333333333333" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/selected_dot.xml" value="0.2462962962962963" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/selected_dot_white.xml" value="0.21777777777777776" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/shadowed_background.xml" value="0.1701388888888889" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/shadowed_background.xml" value="0.268" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/shadowed_square_background.xml" value="0.22685185185185186" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/small_rounded_corner.xml" value="0.1935185185185185" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/tab_backgroud.xml" value="0.1953125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/tab_pager_selector.xml" value="0.12760416666666666" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/tab_selector.xml" value="0.14583333333333334" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/tab_selector_white.xml" value="0.21777777777777776" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/white_border.xml" value="0.2512820512820513" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_car_details.xml" value="0.25868725868725867" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_cometchat_callmanager.xml" value="0.2125" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_cometchat_start_call.xml" value="0.13796296296296295" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_faqs.xml" value="0.23055555555555557" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_forgot_password.xml" value="0.2232876712328767" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_home.xml" value="0.268" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_launch.xml" value="0.2390625" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_news.xml" value="0.21064814814814814" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_news_pager.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_notifications.xml" value="0.2" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_registration.xml" value="0.19027777777777777" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_rewards.xml" value="0.132" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_splash.xml" value="0.2" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_tutorial.xml" value="0.13020833333333334" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_tutorial.xml" value="0.36689814814814814" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/app_bar_root.xml" value="0.22027027027027027" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/bottom_menu.xml" value="0.4" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/cometchat_avatar.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/comman_header_layout.xml" value="0.19027777777777777" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/custom_call_notification.xml" value="0.2125" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_color.xml" value="0.2125" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_home_know_more.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_invoice.xml" value="0.20675675675675675" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_mytrips.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_reviews.xml" value="0.268" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_search_car.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_upload_certificate.xml" value="0.2232876712328767" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_youtube.xml" value="0.18518518518518517" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_youtube.xml" value="0.1" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/enter_verification_code.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_banner.xml" value="0.18243243243243243" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_booking_booked.xml" value="0.3" />
@@ -65,6 +85,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_car_suggestion.xml" value="0.2296875" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_faq_question.xml" value="0.23055555555555557" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_favourite_demo_specialist.xml" value="0.23802083333333332" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_feedback.xml" value="0.17916666666666667" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_forgot_pin.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_home_search.xml" value="0.132" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_my_demo_trips.xml" value="0.23802083333333332" />
@@ -82,8 +103,11 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/header_layout.xml" value="0.21733333333333332" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/horizontal_picker.xml" value="0.268" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_cancel_reason.xml" value="0.23055555555555557" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_car_facilities.xml" value="0.268" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_car_reviews.xml" value="0.20675675675675675" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_car_specifications.xml" value="0.20675675675675675" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_color.xml" value="0.4" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_color_imagview.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_demo_place.xml" value="0.268" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_fav_specialists.xml" value="0.22760416666666666" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_fueltype.xml" value="0.2546875" />
@@ -92,7 +116,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_launch.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_list_child.xml" value="0.23055555555555557" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_list_header.xml" value="0.23055555555555557" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_menu.xml" value="0.36" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_menu.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_my_demo_trips.xml" value="0.23802083333333332" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_news.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_news_pager.xml" value="0.2125" />
@@ -108,7 +132,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_tutorial.xml" value="0.22135416666666666" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/item_virtualmeet.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/layout_demo_details.xml" value="0.2" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/layout_demo_options.xml" value="0.2" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/layout_demo_options.xml" value="0.125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/layout_demo_place.xml" value="0.2" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/layout_menu.xml" value="0.26242774566473986" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/layout_personalised_car.xml" value="0.1553784860557769" />
@@ -119,7 +143,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/new_book_demo_customize.xml" value="0.20270270270270271" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/nneww.xml" value="0.2232876712328767" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/onboarding_first_screen.xml" value="0.19947916666666668" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/onboarding_screen.xml" value="0.2263888888888889" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/onboarding_screen.xml" value="0.2" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/reset_password_activity.xml" value="0.2232876712328767" />
         <entry key="..\:/App/DemoApp/app/src/main/res/menu/activity_root_drawer.xml" value="0.22027027027027027" />
         <entry key="..\:/App/DemoApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2375" />

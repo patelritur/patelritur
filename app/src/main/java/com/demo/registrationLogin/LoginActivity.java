@@ -27,7 +27,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -97,7 +96,6 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
 
     public void onFacebookClick(View view)
     {
-
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
 
@@ -202,7 +200,7 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
             if (loginResponseModel.getResponseCode().equalsIgnoreCase("102")) {
                 navigateToVerificationCodeActivity(MODULE_TYPE_REGISTER, commanRequestModel.getMobile());
             } else {
-               navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,commanRequestModel.getMobile());
+                navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,commanRequestModel.getMobile());
             }
         }
         else if(reqCode==SOCIAL_REQ_CODE)
@@ -211,10 +209,12 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
                 onClickSignup(null);
                 updateUI();
             } else {
+
                 navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,loginResponseModel.getMobile());
             }
         }
     }
+
 
     private void updateUI() {
         activityLoginBinding.llSocial.setVisibility(View.GONE);
@@ -223,13 +223,18 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
 
 
     private void navigateToVerificationCodeActivity(String moduleName, String mobile) {
+
+
         Intent intent = new Intent(this, VerificationCodeActivity.class);
         intent.putExtra(getString(R.string.mobile_number),mobile);
         intent.putExtra(getString(R.string.module_name),moduleName);
         sharedPrefUtils.saveData( Constants.MOBILE_NO,activityLoginBinding.edittextMobile.getText().toString());
         NavigateToActivity(intent);
+        finish();
 
     }
+
+
 
     @Override
     public void onApiError(Call<Object> call, Object response, int reqCode) throws Exception {

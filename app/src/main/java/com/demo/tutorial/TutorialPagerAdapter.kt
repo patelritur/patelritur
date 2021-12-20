@@ -1,18 +1,19 @@
 package com.demo.tutorial
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.viewpager.widget.PagerAdapter
 import com.demo.databinding.OnboardingScreenBinding
+import com.demo.home.model.AppContentModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 class TutorialPagerAdapter(// Context object
     var context: Context, // Array of images
-    var images: ArrayList<String>
+    var images: ArrayList<AppContentModel.Label>
 ) : PagerAdapter() {
 
 
@@ -34,8 +35,9 @@ class TutorialPagerAdapter(// Context object
 
         mLayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val onboardingFirstScreenBinding: OnboardingScreenBinding = OnboardingScreenBinding.inflate(mLayoutInflater, container, false)
-//        onboardingFirstScreenBinding.imageViewMain.setImageResource(images.get(position))
-        onboardingFirstScreenBinding.imageUrl = images.get(position)
+//        onboardingFirstScreenBinding.imageViewMain.setImageResource(im
+//        ages.get(position))
+        onboardingFirstScreenBinding.imageUrl = images.get(position).labelImage
         onboardingFirstScreenBinding.executePendingBindings()
         Objects.requireNonNull(container).addView(onboardingFirstScreenBinding.root)
         return onboardingFirstScreenBinding.root

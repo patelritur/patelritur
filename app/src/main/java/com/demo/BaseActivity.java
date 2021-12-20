@@ -13,6 +13,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
 import com.demo.databinding.BottomMenuBinding;
 import com.demo.home.HomeMenuAdapter;
 import com.demo.home.model.AppContentModel;
@@ -20,10 +22,13 @@ import com.demo.home.model.HomeModel;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
 import com.demo.home.profile.MyDemoActivity;
+import com.demo.registrationLogin.LoginActivity;
 import com.demo.utils.ClickHandlers;
 import com.demo.utils.Constants;
+import com.demo.utils.NotificationUtils;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +96,25 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
         super.attachBaseContext(context);
     }
 
+    public void performLogout() {
 
+        NotificationUtils.setUpFCMNotifiction(this,sharedPrefUtils.getStringData(Constants.USER_ID),"Remove");
 
+        CometChat.logout(new CometChat.CallbackListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+            }
+        });
+        sharedPrefUtils.clearData(this);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        NavigateToActivity(intent);
+        finish();
+    }
 
 }

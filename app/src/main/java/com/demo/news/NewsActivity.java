@@ -14,10 +14,8 @@ import com.demo.databinding.ActivityNewsBinding;
 import com.demo.faq.model.FAQRequestModel;
 import com.demo.home.HomeActivity;
 import com.demo.home.profile.MyDemoActivity;
-import com.demo.notifications.NotificationActivity;
 import com.demo.utils.Constants;
 import com.demo.utils.SharedPrefUtils;
-import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
@@ -59,15 +57,22 @@ public class NewsActivity extends BaseActivity implements ApiResponseListener {
                 finish();
                 break;
             case R.id.ll_takedemo:
-                Utils.showToastComingSoon(this);
+                startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","takeAdemo"));
+                finish();
                 break;
             case R.id.imageview_menu:
                 activityNewsBinding.drawerLy.openDrawer(GravityCompat.END);
                 break;
-            case R.id.iv_notification:
-                startActivity(new Intent(this, NotificationActivity.class));
+            case R.id.tv_logout:
+                performLogout();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override

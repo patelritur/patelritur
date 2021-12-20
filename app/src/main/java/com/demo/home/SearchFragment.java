@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -50,13 +53,12 @@ public class SearchFragment extends Fragment {
     private RecyclerView carsearchRecyslerview;
     ArrayList<String> recentSearch = new ArrayList<>();
     private Gson gson;
+    private String vehicleType="2";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentHomeSearchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_search,container,false);
-        if(Constants.BOOK_TYPE.equalsIgnoreCase("Meeting"))
-            fragmentHomeSearchBinding.searchButton.setText("Book A Meeting");
 
         return fragmentHomeSearchBinding.getRoot();
 
@@ -115,11 +117,44 @@ public class SearchFragment extends Fragment {
         callVehicleType(dialogSearchCarBinding);
         setRecentSearch(dialogSearchCarBinding);
         carsearchRecyslerview = dialogSearchCarBinding.carsearchRecyclerview;
+        dialogSearchCarBinding.vehicleswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dialogSearchCarBinding.etSearch.setText(null);
+                  if(isChecked)
+                  {
+                      vehicleType="2";
+                  }
+                  else
+                  {
+                      vehicleType="1";
+                  }
+            }
+        });
         dialogSearchCarBinding.textviewPersonalise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 ((HomeActivity)getActivity()).showSelectFilerCars();
+
+            }
+        });
+        dialogSearchCarBinding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()>3){
+                    extracted(dialogSearchCarBinding, bottomSheetDialog);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -130,27 +165,7 @@ public class SearchFragment extends Fragment {
                     InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                    ((HomeActivity)getActivity()).carSearchRequestModel.setSearchValue(dialogSearchCarBinding.etSearch.getText().toString());
-                    ((HomeActivity)getActivity()).callSearchApi(new SearchResultInterface() {
-                        @Override
-                        public void onSearch(CarSearchResultModel carSearchResultModel) {
-                            if(carSearchResultModel.getResponseCode().equalsIgnoreCase("200"))
-                            {
-                                if(!recentSearch.contains(dialogSearchCarBinding.etSearch.getText().toString()))
-                                {
-                                    if(recentSearch.size()>5)
-                                        recentSearch.remove(0);
-                                    recentSearch.add(dialogSearchCarBinding.etSearch.getText().toString());
-                                    ((HomeActivity)getActivity()).sharedPrefUtils.saveData(Constants.RECENT_SEARCH,gson.toJson(recentSearch));
-                                }
-                            }
-                            carsearchRecyslerview.setAdapter(new CarSearchResultAdapter(getActivity(), (ArrayList<CarSearchResultModel.Carlist>) carSearchResultModel.getCarlist(),bottomSheetDialog));
-                            carsearchRecyslerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            carsearchRecyslerview.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
-
-
-                        }
-                    });
+                    extracted(dialogSearchCarBinding, bottomSheetDialog);
 
                     return true;
                 }
@@ -165,6 +180,31 @@ public class SearchFragment extends Fragment {
         });
         bottomSheetDialog.show();
         setupFullHeight(bottomSheetDialog);
+    }
+
+    private void extracted(DialogSearchCarBinding dialogSearchCarBinding, BottomSheetDialog bottomSheetDialog) {
+        ((HomeActivity)getActivity()).carSearchRequestModel.setSearchValue(dialogSearchCarBinding.etSearch.getText().toString());
+
+        ((HomeActivity)getActivity()).callSearchApi(vehicleType,new SearchResultInterface() {
+            @Override
+            public void onSearch(CarSearchResultModel carSearchResultModel) {
+                if(carSearchResultModel.getResponseCode().equalsIgnoreCase("200"))
+                {
+                    if(!recentSearch.contains(dialogSearchCarBinding.etSearch.getText().toString()))
+                    {
+                        if(recentSearch.size()>5)
+                            recentSearch.remove(0);
+                        recentSearch.add(dialogSearchCarBinding.etSearch.getText().toString());
+                        ((HomeActivity)getActivity()).sharedPrefUtils.saveData(Constants.RECENT_SEARCH,gson.toJson(recentSearch));
+                    }
+                }
+                carsearchRecyslerview.setAdapter(new CarSearchResultAdapter(getActivity(), (ArrayList<CarSearchResultModel.Carlist>) carSearchResultModel.getCarlist(), bottomSheetDialog));
+                carsearchRecyslerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+                carsearchRecyslerview.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+
+
+            }
+        });
     }
 
     private void callVehicleType(DialogSearchCarBinding dialogSearchCarBinding) {

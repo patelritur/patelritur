@@ -1,17 +1,21 @@
 package com.demo.utils
 
 object Constants {
-    lateinit var RECENT_SEARCH: String
-    lateinit var ISVACCINATED: String
+
+    const val appID = "197240ced112b088" // Replace with your App ID
+    const val region = "us" // Replace with your App Region ("eu" or "us")
+    const val AUTH_KEY = "65c73b75cae5a65e82723c5c6e08dd2848a7c010"
+    const val RECENT_SEARCH = "RECENT_SEARCH"
+    const val ISVACCINATED= "ISVACCINATED"
     lateinit var VIRTUAL_MEET_TYPE: String
     lateinit var BOOK_TYPE :String
     lateinit var MEETING_ID: String
     lateinit var MEETING_TYPE_ID: String
     lateinit var MEETING_PLACE_TYPE_ID: String
-    lateinit var BOOKINGID: String
+    lateinit var BOOKING_ID: String
     lateinit var TIME: String
     lateinit var DATE: String
-    lateinit var IMAGE: String
+
     lateinit var BOOKING_TYPE_ID: String
     lateinit var BOOKING_PLACE_TYPE_ID: String
     lateinit var CARID: String
@@ -24,6 +28,10 @@ object Constants {
     const val CANCEL_REASON = "CancelReason"
     const val MYDEMO_MENU = "MyDemosMenu"
     const val MYDEMO_TRIPS_FILTER = "MyDemosTripsFilter"
+    const val MYDEMO_TRIPS_MENU = "MyDemosTripsMenu"
+    const val MYDEMO_DESCRIPTIONS = "DriveaDemoDesc"
+    const val SPECIALIST_DESCRIPTIONS ="MeetaSpecialistDesc"
+
     const val SUPPORT_EMAIL = "SupportEmail"
 
     lateinit var LATITUDE: String
@@ -41,5 +49,9 @@ object Constants {
     const val IMAG="image"
     const val ID = "id"
     const val SOCIAL_TYPE = "type"
-
+    const val STATUS = "status"
+    const val UID = "uid"
+    const val SESSION_ID = "sessionId"
+    const val NOTIFICATION_COUNT ="0"
+    const val IMAGE= "IMAGE"
 }

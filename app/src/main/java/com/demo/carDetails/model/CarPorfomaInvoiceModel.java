@@ -223,5 +223,18 @@ public class CarPorfomaInvoiceModel
         public String onRoadPrice;
         @SerializedName("DownloadInvoiceURL")
         public String downloadInvoiceURL;
+
+        public String getDisclaimer() {
+            return Disclaimer;
+        }
+
+        public void setDisclaimer(String disclaimer) {
+            Disclaimer = disclaimer;
+        }
+
+        @SerializedName("Disclaimer")
+        public String Disclaimer;
+
+
     }
 }

@@ -20,7 +20,7 @@
                 android:textStyle="normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#222831"
-                android:text="My Demo Trips"/>
+                android:text="@string/my_demo_trips"/>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:gravity="end|center_vertical"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/color_E8505B"
+                android:textColor="@color/color_241e61"
                 android:text="12"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.google.android.material.tabs.TabLayout
-                app:tabIndicatorColor="@color/color_E8505B"
+                app:tabIndicatorColor="@color/color_241e61"
                 android:background="@drawable/tab_backgroud"
                 app:tabIndicatorHeight="1dp"
                 android:id="@+id/tab_layout"

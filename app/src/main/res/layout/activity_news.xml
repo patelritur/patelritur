@@ -22,31 +22,32 @@
                 android:id="@+id/header_ll"
                 />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.LinearLayoutCompat xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_below="@+id/header_ll"
                 android:layout_above="@+id/ll_bottom"
+                android:layout_below="@+id/header_ll"
                 android:orientation="vertical">
+
                 <TextView
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:layout_marginBottom="@dimen/margin_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:textStyle="normal"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Industrial NEWS"
+                    android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#222831"
-                    android:text="NEWS"/>
+                    android:textStyle="normal" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    tools:listitem="@layout/item_news"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:id="@+id/news_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/news_recyclerview"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_news" />
             </androidx.appcompat.widget.LinearLayoutCompat>
             <include
                 android:id="@+id/ll_bottom"

@@ -8,6 +8,7 @@
             type="com.demo.home.model.HomeModel" />
     </data>
     <androidx.drawerlayout.widget.DrawerLayout
+        android:background="@color/white"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawerLy"
         android:windowDrawsSystemBarBackgrounds="true"
@@ -35,11 +36,11 @@
                         android:id="@+id/rl_top"/>
 
                     <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_above="@+id/ll_bottom"
                         android:layout_below="@+id/rl_top"
-                        android:layout_centerHorizontal="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_centerHorizontal="true">
 
 
                         <androidx.appcompat.widget.LinearLayoutCompat
@@ -54,7 +55,7 @@
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_active_support_image" />
+                                android:src="@drawable/ic_active_support" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -94,7 +95,7 @@
                                 android:paddingBottom="@dimen/margin_20"
                                 android:text="@string/faqs"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="#e8505b"
+                                android:textColor="@color/color_241e61"
                                 android:textStyle="bold" />
 
                             <FrameLayout
@@ -117,10 +118,10 @@
                                     android:gravity="center_horizontal"
                                     android:paddingStart="@dimen/margin_20"
                                     android:paddingEnd="@dimen/margin_20"
+                                    android:text="@string/or"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                                     android:textColor="#333333"
-                                    android:textStyle="normal"
-                                    tools:text="or" />
+                                    android:textStyle="normal" />
                             </FrameLayout>
 
                             <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -143,7 +144,7 @@
                                 android:fontFamily="@font/montserrat_semibold"
                                 android:text="support@demo.com"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="#e8505b"
+                                android:textColor="@color/color_241e61"
                                 android:textStyle="normal" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>

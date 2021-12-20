@@ -15,14 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.demo.R;
 import com.demo.databinding.ItemDemoPlaceBinding;
-import com.demo.databinding.ItemVirtualmeetBinding;
 import com.demo.databinding.LayoutDemoPlaceBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.booking.BookingStatusFragment;
 import com.demo.home.booking.ScheduleBookingFragment;
 import com.demo.home.model.MenuResponse;
 import com.demo.home.model.viewmodel.MeetingPlaceViewModel;
-import com.demo.home.model.viewmodel.VirtualMeetingPlaceViewModel;
 import com.demo.utils.Constants;
 
 public class MeetingPlaceFragment extends Fragment {

@@ -1,22 +1,28 @@
 package com.demo.carDetails;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.demo.BaseActivity;
 import com.demo.R;
@@ -26,7 +32,9 @@ import com.demo.carDetails.model.CarDetailReviewModel;
 import com.demo.carDetails.model.CarDetailsSpecificationModel;
 import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.databinding.ActivityCarDetailsBinding;
+import com.demo.databinding.DialogColorBinding;
 import com.demo.databinding.DialogReviewsBinding;
+import com.demo.databinding.ItemColorBinding;
 import com.demo.databinding.ItemImageviewBannerBinding;
 import com.demo.utils.Constants;
 import com.demo.utils.DialogUtils;
@@ -56,13 +64,14 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
     private final int PERFORMA_INVOICE = 4;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityCarDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_car_details,null);
         carId = getIntent().getExtras().getString("carId");
         if(Constants.BOOK_TYPE.equalsIgnoreCase("Meeting"))
-            activityCarDetailsBinding.takeademo.setText("Book A Meeting");
+            activityCarDetailsBinding.takeademo.setText(getString(R.string.book_a_meeting));
         callDetailApi();
     }
 
@@ -83,7 +92,23 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         screenSlidePagerAdapter.count = carDetailResponse.getCardetail().carbanner.size();
         screenSlidePagerAdapter.setCarDetailResponse(carDetailResponse);
         activityCarDetailsBinding.viewpager.setAdapter(screenSlidePagerAdapter);
-        activityCarDetailsBinding.viewpager.setOffscreenPageLimit(2);
+        activityCarDetailsBinding.viewpager.setOffscreenPageLimit(carDetailResponse.getCardetail().carbanner.size());
+        activityCarDetailsBinding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((ScreenSlidePageFragment) screenSlidePagerAdapter.getFragment(position)).updateView(carDetailResponse.getCardetail().getCarbanner().get(position).getBannerType());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         activityCarDetailsBinding.intoTabLayout.setupWithViewPager(activityCarDetailsBinding.viewpager);
     }
 
@@ -158,7 +183,15 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     }
 
-
+    @JavascriptInterface
+    public void resize(final float height) {
+        CarDetailsActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activityCarDetailsBinding.featureColors.setLayoutParams(new LinearLayoutCompat.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int) (height * getResources().getDisplayMetrics().density)));
+            }
+        });
+    }
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         if(reqCode==DETAIL_REQCODE) {
@@ -166,8 +199,8 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
             carDetailResponse.setClickHandlers(this);
             activityCarDetailsBinding.setCarDetailModel(carDetailResponse);
             setUpViewPager(carDetailResponse);
-
-            activityCarDetailsBinding.ratingbar.setRating(Float.parseFloat(carDetailResponse.getCardetail().getCarRateing()));
+           setWebview();
+             activityCarDetailsBinding.ratingbar.setRating(Float.parseFloat(carDetailResponse.getCardetail().getCarRateing()));
             setUpBannerView(carDetailResponse);
             setUpAwardsView(carDetailResponse);
         }
@@ -189,11 +222,29 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     }
 
+    private void setWebview() {
+       /* activityCarDetailsBinding.featureColors.getSettings().setJavaScriptEnabled(true);
+        activityCarDetailsBinding.featureColors.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                activityCarDetailsBinding.featureColors.loadUrl("javascript:MyApp.resize(document.body.getBoundingClientRect().height)");
+                super.onPageFinished(view, url);
+            }
+        });
+        activityCarDetailsBinding.featureColors.addJavascriptInterface(CarDetailsActivity.this, "MyApp");
+*/
+        activityCarDetailsBinding.featureColors.setWebChromeClient(new WebChromeClient());
+
+        activityCarDetailsBinding.featureColors.loadDataWithBaseURL(null,carDetailResponse.getCardetail().getCarFeatures(), "text/html", "utf-8",null);
+
+    }
+
     private void showPorfomaInvoiceDialog(CarPorfomaInvoiceModel carPorfomaInvoiceModel)
     {
         Dialog dialog = getDialog();
         binding.textviewTitle.setText(getString(R.string.porfoma_invoice));
         binding.setCarInvoice(carPorfomaInvoiceModel.getPorfomainvoice());
+        binding.disclaimerText.setVisibility(View.VISIBLE);
         this.carPorfomaInvoiceModel = carPorfomaInvoiceModel;
         binding.layoutInvoice.getRoot().setVisibility(View.VISIBLE);
         binding.recyclerviewReview.setVisibility(View.GONE);
@@ -261,19 +312,92 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         Dialog dialog = new Dialog(this);
         binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout. dialog_reviews, null, false);
         dialog.setContentView(binding.getRoot());
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         lp.dimAmount = 0.8f;
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         return dialog;
+    }
+
+    private void showColorDialog(){
+        final int[] previousI = new int[1];
+        Dialog dialog = new Dialog(this);
+        DialogColorBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout. dialog_color, null, false);
+        dialog.setContentView(binding.getRoot());
+        ImageAdapter screenSlidePagerAdapter = new ImageAdapter(this, (ArrayList<CarDetailResponse.colorlist>) carDetailResponse.getCardetail().getColorlist());
+        binding.viewpager.setAdapter(screenSlidePagerAdapter);
+        binding.viewpager.setCurrentItem(0);
+        previousI[0] = 0;
+        binding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                binding.colorName.setText(carDetailResponse.getCardetail().getColorlist().get(position).getColor());
+                if(carDetailResponse.getCardetail().getColorlist().get(position).getColor().equalsIgnoreCase("white"))
+                    ((ImageView) binding.llColors.getChildAt(position).findViewById(R.id.tick)).setColorFilter(Color.rgb( 0, 0, 0));
+
+                binding.llColors.getChildAt(position).findViewById(R.id.tick).setVisibility(View.VISIBLE);
+                binding.llColors.getChildAt(previousI[0]).findViewById(R.id.tick).setVisibility(View.INVISIBLE);
+                previousI[0] = position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        for(int i = 0; i< carDetailResponse.getCardetail().getColorlist().size(); i++) {
+            LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            ItemColorBinding itemSuggestionCarsBinding = DataBindingUtil.inflate(inflater, R.layout.item_color,null,false);
+            itemSuggestionCarsBinding.carColor.setBackgroundColor(Color.parseColor(carDetailResponse.getCardetail().getColorlist().get(i).getHexColorCode()));
+            int finalI1 = i;
+            if(i==0) {
+                itemSuggestionCarsBinding.tick.setVisibility(View.VISIBLE);
+                if (carDetailResponse.getCardetail().getColorlist().get(0).getColor().equalsIgnoreCase("white"))
+                    itemSuggestionCarsBinding.tick.setColorFilter(Color.rgb( 0, 0, 0));
+            }
+            itemSuggestionCarsBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    binding.viewpager.setCurrentItem(finalI1);
+                }
+
+
+            });
+
+
+            binding.llColors.addView(itemSuggestionCarsBinding.getRoot());
+        }
+
+        binding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        lp.dimAmount = 0.8f;
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.show();
     }
 
     @Override
@@ -289,6 +413,16 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
     public void onClick(View view) {
         switch(view.getId())
         {
+            case R.id.textview_previous:
+                if(activityCarDetailsBinding.viewpager.getCurrentItem()>0){
+                    activityCarDetailsBinding.viewpager.setCurrentItem(activityCarDetailsBinding.viewpager.getCurrentItem()-1);
+                }
+                break;
+            case R.id.textview_next:
+                if(activityCarDetailsBinding.viewpager.getCurrentItem()<carDetailResponse.getCardetail().carbanner.size()-1){
+                    activityCarDetailsBinding.viewpager.setCurrentItem(activityCarDetailsBinding.viewpager.getCurrentItem()+1);
+                }
+                break;
             case R.id.share_iv:
                 Utils.shareData(this,carDetailResponse.getCardetail().getCarName(),carDetailResponse.getCardetail().getCarDescription());
                 break;
@@ -308,10 +442,9 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
                 callPorfomaInvoiceApi();
                 break;
             case R.id.features:
-                activityCarDetailsBinding.featureColors.setText(Html.fromHtml(carDetailResponse.getCardetail().getCarFeatures()));
                 break;
             case R.id.colors:
-                activityCarDetailsBinding.featureColors.setText(carDetailResponse.getCardetail().getCarColors());
+                showColorDialog();
                 break;
 
         }

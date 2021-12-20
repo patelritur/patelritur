@@ -13,13 +13,10 @@ import com.demo.BaseActivity;
 import com.demo.R;
 import com.demo.databinding.ActivityFaqsBinding;
 import com.demo.home.HomeActivity;
-import com.demo.home.model.HomeModel;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
 import com.demo.home.profile.MyDemoActivity;
-import com.demo.notifications.NotificationActivity;
 import com.demo.utils.Constants;
-import com.demo.utils.Utils;
 
 public class FAQActiviity extends BaseActivity {
 
@@ -65,13 +62,14 @@ public class FAQActiviity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_takedemo:
-                Utils.showToastComingSoon(this);
+                startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","takeAdemo"));
+                finish();
                 break;
             case R.id.imageview_menu:
                 activityFaqsBinding.drawerLy.openDrawer(GravityCompat.END);
                 break;
-            case R.id.iv_notification:
-                startActivity(new Intent(this, NotificationActivity.class));
+            case R.id.tv_logout:
+                performLogout();
                 break;
         }
 
@@ -80,6 +78,7 @@ public class FAQActiviity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
 
     }
 }

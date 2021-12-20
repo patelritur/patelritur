@@ -14,10 +14,16 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.demo.R;
 import com.demo.databinding.FragmentTakedemoBinding;
+import com.demo.home.model.CarFilterResponse;
+import com.demo.home.model.CarSectionFilterResponse;
+import com.demo.home.model.viewmodel.CarFilterViewModel;
+import com.demo.home.model.viewmodel.CarSectionFilterViewModel;
 import com.demo.utils.ClickHandlers;
 import com.demo.utils.PrintLog;
 
@@ -38,6 +44,24 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewPagerFragment();
+        callCarSectionApi();
+        ((HomeActivity) getActivity()).setPeekheight(fragmentTakedemoBinding.parentLl.getMeasuredHeight());
+    }
+
+    private void callCarSectionApi() {
+        new ViewModelProvider(requireActivity()).get(CarSectionFilterViewModel.class).getSectionListData().observe(getViewLifecycleOwner(), item -> {
+            for(int i=0;i<item.getDemomenu().size();i++){
+                CarSectionFragment myf = new CarSectionFragment();
+                Bundle b = new Bundle();
+                b.putString("carSectionId",item.getDemomenu().get(i).getMenuID());
+                b.putString("carSectionTitle",item.getDemomenu().get(i).getMenuName());
+                myf.setArguments(b);
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.add(R.id.dynamic_car_section, myf);
+                transaction.commit();
+            }
+        });
+
     }
 
     private void setViewPagerFragment() {

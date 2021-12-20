@@ -7,14 +7,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.demo.BaseActivity;
 import com.demo.R;
 import com.demo.databinding.EnterVerificationCodeBinding;
@@ -25,12 +30,14 @@ import com.demo.registrationLogin.model.LoginResponseModel;
 import com.demo.registrationLogin.model.OtpResponseModel;
 import com.demo.registrationLogin.model.PINResponseModel;
 import com.demo.utils.Constants;
+import com.demo.utils.NotificationUtils;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 
@@ -43,9 +50,10 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
     private final int PIN_VALIDATION=2;
     private final int OTP_VALIDATION=1;
     private final int SEND_OTP=3;
-    private final int SEND_OTP_FORGOT=4;
     private CommanRequestModel commanRequestModel;
     private  SharedPrefUtils sharedPrefUtils;
+    private boolean isPinForgot;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +73,12 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
             enterVerificationCodeBinding.setHeadermodel(getHeaderModelforVerificationActivity());
             if(moduleName.equalsIgnoreCase(MODULE_TYPE_REGISTER))
                 sendOTP(SEND_OTP);
+            else
+            {
+                if(mobileNumber==null || mobileNumber.toString().trim().length()==0)
+                mobileNumber = sharedPrefUtils.getStringData(context,Constants.MOBILE_NO);
+                enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
+            }
         }
         else
         {
@@ -87,9 +101,13 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
     }
 
     private HeaderModel getHeaderModelforVerificationActivity() {
+        isShowEnterPIN=false;
         HeaderModel headerModel = new HeaderModel();
-        headerModel.setSecondImage(R.mipmap.enter_verification_code);
+        headerModel.setSecondImage(R.drawable.ic_verification);
+        enterVerificationCodeBinding.rootOtpLayout.setVisibility(View.VISIBLE);
+        enterVerificationCodeBinding.timerOtp.setVisibility(View.VISIBLE);
         enterVerificationCodeBinding.enterPassword.setVisibility(View.GONE);
+        enterVerificationCodeBinding.didntReceiveOtp.setVisibility(View.VISIBLE);
         headerModel.setTitle(getString(R.string.enter_verification_code));
         headerModel.setButtonText(getString(R.string.verify_proceed));
         headerModel.setBottomText(getString(R.string.resend_otp));
@@ -99,9 +117,10 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
     private HeaderModel getHeaderModelforPINVerificationActivity() {
         isShowEnterPIN = true;
         enterVerificationCodeBinding.rootOtpLayout.setVisibility(View.GONE);
+        enterVerificationCodeBinding.timerOtp.setVisibility(View.GONE);
         enterVerificationCodeBinding.enterPassword.setVisibility(View.VISIBLE);
         HeaderModel headerModel = new HeaderModel();
-        headerModel.setSecondImage(R.mipmap.enter_verification_code);
+        headerModel.setSecondImage(R.drawable.ic_verification);
         headerModel.setTitle(getString(R.string.enter_pin));
         headerModel.setButtonText(getString(R.string.proceed));
         headerModel.setBottomText(getString(R.string.forgot_pin));
@@ -113,12 +132,18 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
 
     public void resendOtp(View view){
         if(!isShowEnterPIN){
+            countDownTimer.cancel();
             sendOTP(SEND_OTP);
         } else {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            //Change in flow ask for OTP in case of PIN forgot
+            isPinForgot = true;
+            enterVerificationCodeBinding.setHeadermodel(getHeaderModelforVerificationActivity());
+            sendOTP(SEND_OTP);
+
+            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.forgot_pin_container, new ResetPinFragment());
             ft.commit();
-            enterVerificationCodeBinding.forgotPinContainer.setVisibility(View.VISIBLE);
+            enterVerificationCodeBinding.forgotPinContainer.setVisibility(View.VISIBLE);*/
         }
     }
     public void onClickVerify(View view)
@@ -126,6 +151,8 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         {
             if (!isShowEnterPIN) {
                 if (isOTPEntered()) {
+                    if(countDownTimer!=null)
+                        countDownTimer.cancel();
                     commanRequestModel.setMobile(mobileNumber);
                     commanRequestModel.setModuleName(moduleName);
                     final StringBuilder builder = new StringBuilder();
@@ -231,13 +258,21 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         if(reqCode==OTP_VALIDATION) {
             LoginResponseModel loginResponseModel = (LoginResponseModel) response;
             if (loginResponseModel.getResponseCode().equalsIgnoreCase("200")) {
-                if (moduleName.equalsIgnoreCase(Constants.MODULE_TYPE_LOGIN)) {
-                    clearAll4Field();
-                    enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
+                if(isPinForgot){
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.add(R.id.forgot_pin_container, new ResetPinFragment());
+                    ft.commit();
+                    enterVerificationCodeBinding.forgotPinContainer.setVisibility(View.VISIBLE);
+                }
+                else {
+                    if (moduleName.equalsIgnoreCase(Constants.MODULE_TYPE_LOGIN)) {
+                        clearAll4Field();
+                        enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
 
-                } else {
+                    } else {
 
-                    startRegistrationActivity();
+                        startRegistrationActivity();
+                    }
                 }
             } else if (loginResponseModel.getResponseCode().equalsIgnoreCase("300")) {
                 Utils.showToast(context, loginResponseModel.getDescriptions());
@@ -250,6 +285,25 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         else if(reqCode==PIN_VALIDATION){
             PINResponseModel pinResponseModel = (PINResponseModel) response;
             if (pinResponseModel.getResponseCode().equalsIgnoreCase("200")) {
+                User user = new User();
+                user.setName(pinResponseModel.getUsersInfo().getFirstName());
+                user.setUid(pinResponseModel.getUsersInfo().getUserID()+"");
+                CometChat.createUser(user, Constants.AUTH_KEY, new CometChat.CallbackListener<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        if (CometChat.getLoggedInUser() == null)
+                            login(user);
+
+                    }
+
+                    @Override
+                    public void onError(CometChatException e) {
+                        if (CometChat.getLoggedInUser() == null)
+                            login(user);
+
+
+                    }
+                });
                 sharedPrefUtils.saveData( Constants.USER_ID,pinResponseModel.getUsersInfo().getUserID()+"");
                 sharedPrefUtils.saveData(Constants.MOBILE_NO,mobileNumber);
                 sharedPrefUtils.saveData(Constants.FNAME,pinResponseModel.getUsersInfo().getFirstName());
@@ -257,11 +311,12 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                 sharedPrefUtils.saveData(Constants.EMAIL,pinResponseModel.getUsersInfo().getEmail());
                 sharedPrefUtils.saveData(Constants.IMAGE,pinResponseModel.getUsersInfo().getUserProfileImagel());
                 sharedPrefUtils.saveData(Constants.ISVACCINATED,pinResponseModel.getUsersInfo().getIsVaccinated());
-
+                NotificationUtils.setUpFCMNotifiction(this,pinResponseModel.getUsersInfo().getUserID()+"","Add");
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+                if(countDownTimer!=null)
+                    countDownTimer.cancel();
                 NavigateToActivity(intent);
                 finish();
             }
@@ -272,13 +327,46 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         else if(reqCode==SEND_OTP)
         {
             OtpResponseModel otpResponseModel = (OtpResponseModel) response;
+            startOTPTimer();
             if(otpResponseModel.getResponseCode().equalsIgnoreCase("103"))
                 Utils.showToast(context,otpResponseModel.getDescriptions());
-        }
-        else if(reqCode==SEND_OTP_FORGOT)
-        {
 
         }
+
+    }
+
+    private void startOTPTimer() {
+        countDownTimer =    new CountDownTimer(150000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                long minutes = (millisUntilFinished / 1000)  / 60;
+                int seconds = (int)((millisUntilFinished / 1000) % 60);
+                enterVerificationCodeBinding.timerOtp.setText("OTP valid for: " + minutes+":"+seconds);
+                //here you can have your logic to set text to edittext
+            }
+
+            public void onFinish() {
+                enterVerificationCodeBinding.timerOtp.setText("OTP Expired!");
+                sendOTP(SEND_OTP);
+            }
+
+        }.start();
+    }
+
+    private void login(User user) {
+        CometChat.login(user.getUid(), Constants.AUTH_KEY, new CometChat.CallbackListener<User>() {
+
+            @Override
+            public void onSuccess(User user) {
+                Log.e("TAG", "Login Successful : " + user.toString());
+                //    MyFirebaseMessagingService.subscribeUserNotification(user.getUid());
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.e("TAG", "Login failed with exception: " + e.getMessage());
+            }
+        });
     }
 
     @Override

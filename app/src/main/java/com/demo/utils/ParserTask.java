@@ -3,6 +3,8 @@ package com.demo.utils;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -14,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /** A class to parse the Google Places in JSON format */
- class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> > {
- GoogleMap map;
+public class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> > {
+    AppCompatTextView map;
 
 
 
-    public ParserTask(GoogleMap googleMap)
+    public ParserTask(AppCompatTextView googleMap)
      {
          map= googleMap;
      }
@@ -63,7 +65,17 @@ import java.util.List;
 
                 double lat = Double.parseDouble(point.get("lat"));
                 double lng = Double.parseDouble(point.get("lng"));
+                PrintLog.v("==path");
                 LatLng position = new LatLng(lat, lng);
+                if(j==0){    // Get distance from the list
+                   String distance = (String)point.get("distance");
+                    continue;
+                }else if(j==1){ // Get duration from the list
+                  String  duration = (String)point.get("duration");
+                  map.setText(duration);
+                    PrintLog.v("==path"+duration);
+                    continue;
+                }
 
                 points.add(position);
             }
@@ -75,6 +87,5 @@ import java.util.List;
         }
 
 // Drawing polyline in the Google Map for the i-th route
-        map.addPolyline(lineOptions);
     }
 }

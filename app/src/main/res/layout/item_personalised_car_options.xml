@@ -29,16 +29,20 @@
             android:src="@drawable/ic_icons_menu"
             android:layout_width="@dimen/margin_80"
             android:layout_marginBottom="@dimen/margin_10"
-            android:layout_height="@dimen/margin_20"/>
+            android:layout_height="@dimen/margin_30"/>
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
             android:textStyle="normal"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeStepGranularity="2sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000000"
-            tools:text="Hatchbacks"/>
+            tools:text="Hatcdddddddddddddd"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>

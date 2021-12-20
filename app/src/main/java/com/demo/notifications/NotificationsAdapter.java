@@ -11,12 +11,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.R;
-import com.demo.carDetails.CarDetailsActivity;
 import com.demo.databinding.ItemNotificationsBinding;
-import com.demo.databinding.ItemSearchListBinding;
 import com.demo.home.HomeActivity;
-import com.demo.home.model.CarSearchResultModel;
 import com.demo.notifications.model.NotificationResponseModel;
+import com.demo.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -62,6 +60,23 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NotificationResponseModel.Notification dataModel = dataModelList.get(position);
         holder.bind(dataModel);
+        holder.itemRowBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dataModel.getNotification().equalsIgnoreCase("AcceptMeetRequest") || dataModel.getNotification().equalsIgnoreCase("ChangeMeetingStatus")){
+                    Constants.BOOK_TYPE = "Meeting";
+                    Constants.MEETING_ID = dataModel.getNotificationUrlID();
+                }
+                else if(dataModel.getNotification().equalsIgnoreCase("AcceptDemoRequest") || dataModel.getNotification().equalsIgnoreCase("ChangeDemoStatus")){
+                    Constants.BOOK_TYPE = "Demo";
+                    Constants.BOOKING_ID = dataModel.getNotificationUrlID();
+                }
+                Intent intent = new Intent(context,HomeActivity.class);
+                intent.putExtra("comeFrom","notifications");
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 

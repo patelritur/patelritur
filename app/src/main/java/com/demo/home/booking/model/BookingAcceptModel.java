@@ -4,6 +4,8 @@ import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 @Keep
 public class BookingAcceptModel {
 
@@ -32,12 +34,18 @@ public class BookingAcceptModel {
     }
 
     public String getBookingMessage() {
+        StringBuilder sb = new StringBuilder(bookingMessage);
+        if(bookingMessage!=null) {
+            sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+            return sb.toString();
+        }
         return bookingMessage;
     }
 
     public void setBookingMessage(String bookingMessage) {
         this.bookingMessage = bookingMessage;
     }
+
 
     public Bookingdetails getBookingdetails() {
         return bookingdetails;
@@ -59,17 +67,97 @@ public class BookingAcceptModel {
     public String bookingID;
     @SerializedName(value = "BookingMessage",alternate = "MeetingMessage")
     public String bookingMessage;
+
+    public String getBookingTime() {
+        return BookingTime;
+    }
+
+    public void setBookingTime(String bookingTime) {
+        BookingTime = bookingTime;
+    }
+
+    @SerializedName(value = "BookingTime",alternate = "MeetingTime")
+    public String BookingTime;
+
+
+
+    public String getBookingSubMessage() {
+        StringBuilder sb = new StringBuilder(bookingSubMessage);
+        if(bookingSubMessage!=null && bookingSubMessage.toString().trim().length()>0) {
+            sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+            return sb.toString();
+        }
+        return bookingSubMessage;
+    }
+
+    public void setBookingSubMessage(String bookingSubMessage) {
+        this.bookingSubMessage = bookingSubMessage;
+    }
+
+    @SerializedName(value = "BookingSubMessage",alternate = "MeetingSubMessage")
+    public String bookingSubMessage;
     @SerializedName(value = "bookingdetails", alternate = "meetingdetails")
     public Bookingdetails bookingdetails;
 
     @Keep
     public class Bookingdetails{
+
+
+        public String getCarID() {
+            return CarID;
+        }
+
+        public void setCarID(String carID) {
+            CarID = carID;
+        }
+
+        public String CarID;
+
+
+        public ArrayList<CarCheckList> getCarchecklist() {
+            return carchecklist;
+        }
+
+        public void setCarchecklist(ArrayList<CarCheckList> carchecklist) {
+            this.carchecklist = carchecklist;
+        }
+
+        public ArrayList<CarCheckList> carchecklist;
+        public String specialistFirstName(){
+            return specialistName.split(" ")[0]+"'s";
+        }
+
+        public boolean isShowTemp(){
+            ArrayList<String> statusIdList = new ArrayList<>();
+            statusIdList.add("2");
+            statusIdList.add("3");
+            statusIdList.add("4");
+            statusIdList.add("5");
+            statusIdList.add("9");
+            statusIdList.add("10");
+
+            if(statusIdList.contains(demoStatusId))
+                return true;
+
+            return false;
+        }
         @SerializedName("UserID")
         public String userID;
         @SerializedName("SpecialistID")
         public String specialistID;
         @SerializedName("CarName")
         public String carName;
+
+        public String getMeetingType() {
+            return MeetingType;
+        }
+
+        public void setMeetingType(String meetingType) {
+            MeetingType = meetingType;
+        }
+
+        @SerializedName("MeetingType")
+        public String MeetingType;
 
         public String getUserID() {
             return userID;
@@ -257,6 +345,18 @@ public class BookingAcceptModel {
         public String specialistRating;
         @SerializedName(value = "SpecialistTotalBooking",alternate = "SpecialistTotalMeeting")
         public String specialistTotalBooking;
+
+        public String getDemoStatusId() {
+            return demoStatusId;
+        }
+
+        public void setDemoStatusId(String demoStatusId) {
+            this.demoStatusId = demoStatusId;
+        }
+
+        @SerializedName(value = "DemoStatusID",alternate = "MeetStatusID")
+        public String demoStatusId;
+
         @SerializedName("VoiceMessageStatus")
         public String voiceMessageStatus;
         @SerializedName("CancelBtnStatus")
@@ -319,21 +419,44 @@ public class BookingAcceptModel {
         public void setVirtualMeetStatus(String virtualMeetStatus) {
             VirtualMeetStatus = virtualMeetStatus;
         }
-
+/*
         public String getMeetStatusID() {
             return MeetStatusID;
         }
 
         public void setMeetStatusID(String meetStatusID) {
             MeetStatusID = meetStatusID;
-        }
+        }*/
 
         @SerializedName("VirtualMeetStatus")
         public String VirtualMeetStatus;
-        @SerializedName("MeetStatusID")
-        public String MeetStatusID;
+        @Keep
+        public class CarCheckList {
+            @SerializedName("CheckListValue")
+            public String CheckListValue;
+            @SerializedName("CheckListIcon")
+            public String  CheckListIcon;
+
+            public String getCheckListValue() {
+                return CheckListValue;
+            }
+
+            public void setCheckListValue(String checkListValue) {
+                CheckListValue = checkListValue;
+            }
+
+            public String getCheckListIcon() {
+                return CheckListIcon;
+            }
+
+            public void setCheckListIcon(String checkListIcon) {
+                CheckListIcon = checkListIcon;
+            }
+        }
+        /*@SerializedName("MeetStatusID")
+        public String MeetStatusID;*/
 
     }
 
-    
+
 }

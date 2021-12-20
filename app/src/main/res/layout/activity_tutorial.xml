@@ -6,19 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/textview_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:elevation="@dimen/margin_10"
-        android:textSize="@dimen/textsize_20"
-        android:layout_alignParentEnd="true"
-        android:padding="@dimen/margin_10"
-        android:layout_margin="@dimen/margin_20"
-        android:textColor="@color/color_7d7d7d"
-        android:text="@string/skip"
-        tools:ignore="RelativeOverlap" />
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vpPager"
@@ -29,6 +17,31 @@
 
 
     </androidx.viewpager.widget.ViewPager>
+    <TextView
+        android:id="@+id/textview_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_20"
+        android:fontFamily="@font/montserrat_regular"
+        android:paddingStart="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_5"
+        android:paddingBottom="@dimen/margin_5"
+        android:textColor="#b0b0b0"
+        android:layout_toStartOf="@id/skip_arrow"
+        android:layout_marginTop="@dimen/margin_10"
+        android:text="@string/skip" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_alignBottom="@id/textview_skip"
+        android:layout_alignTop="@id/textview_skip"
+        android:layout_marginEnd="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_5"
+        android:layout_width="18dp"
+        android:id="@+id/skip_arrow"
+        android:layout_height="wrap_content"
+        android:tint="#b0b0b0"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+        />
     <com.google.android.material.tabs.TabLayout
         android:background="#00000000"
         android:id="@+id/tablayout"
@@ -36,20 +49,46 @@
         android:layout_height="wrap_content"
         app:tabBackground="@drawable/tab_selector"
         app:tabGravity="center"
-        android:layout_above="@+id/imageview_next"
+        android:layout_above="@+id/framelayout"
         app:tabIndicatorGravity="bottom"
         app:tabIndicatorHeight="0dp" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageview_next"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_20"
         android:layout_marginEnd="@dimen/margin_20"
         android:layout_marginBottom="@dimen/margin_20"
-        android:src="@drawable/ic_arrow" />
+
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
+            android:id="@+id/textview_last"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            style="@style/redButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="@dimen/margin_20"
+            android:paddingEnd="@dimen/margin_20"
+            android:paddingTop="@dimen/margin_5"
+            android:paddingBottom="@dimen/margin_5"
+            android:layout_margin="@dimen/margin_20"
+            android:textColor="@color/white"
+            android:text="@string/let_s_start" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_gravity="center"
+            android:id="@+id/imageview_next"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+android:tint="@color/color_241e61"
+            android:src="@drawable/ic_arrow" />
+    </FrameLayout>
 </RelativeLayout>
 </layout>

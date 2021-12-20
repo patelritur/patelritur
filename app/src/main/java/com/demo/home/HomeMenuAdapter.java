@@ -77,18 +77,21 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<HomeMenuAdapter.ViewHo
 
                         break;
                     case 1:
-                        ((Activity)context).startActivity(new Intent(context, LaunchActivity.class));
+                        ((Activity)context).startActivity(new Intent(context, MyDemoActivity.class).putExtra("comeFrom","notifications"));
                         break;
                     case 2:
-                        ((Activity)context).startActivity(new Intent(context, RewardsActivity.class));
+                        ((Activity)context).startActivity(new Intent(context, LaunchActivity.class));
                         break;
                     case 3:
-                        ((Activity)context).startActivity(new Intent(context, NewsActivity.class));
+                        ((Activity)context).startActivity(new Intent(context, RewardsActivity.class));
                         break;
                     case 4:
-                        ((Activity)context).startActivity(new Intent(context, FAQActiviity.class));
+                        ((Activity)context).startActivity(new Intent(context, NewsActivity.class));
                         break;
                     case 5:
+                        ((Activity)context).startActivity(new Intent(context, FAQActiviity.class));
+                        break;
+                    case 6:
                         Intent intent = new Intent(context,FAQActiviity.class);
                         intent.putExtra("showFAQList",true);
                         ((Activity)context).startActivity(intent);

@@ -33,17 +33,7 @@
             android:textColor="#9d9d9d"
             android:text="@string/search_for_product_or_brand"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/search_button"
-        android:background="@{etSearch.text.length() > 0 ? @drawable/rounded_corner : @drawable/disable_rounded_corner}"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:text="@string/book_a_demo"
-        style="@style/redButton">
 
-    </androidx.appcompat.widget.AppCompatTextView>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

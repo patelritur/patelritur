@@ -18,8 +18,6 @@ import com.demo.R;
 import com.demo.databinding.ActivityLaunchBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.profile.MyDemoActivity;
-import com.demo.notifications.NotificationActivity;
-import com.demo.utils.Utils;
 import com.google.android.material.tabs.TabLayout;
 
 public class LaunchActivity extends BaseActivity {
@@ -39,6 +37,7 @@ public class LaunchActivity extends BaseActivity {
         activityLaunchBinding.executePendingBindings();
         activityLaunchBinding.pager.setAdapter(adapterViewPager);
         activityLaunchBinding.tabLayout.setupWithViewPager( activityLaunchBinding.pager);
+
         setUpTabLayout();
         activityLaunchBinding.tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -88,13 +87,14 @@ public class LaunchActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_takedemo:
-                Utils.showToastComingSoon(this);
+                startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","takeAdemo"));
+                finish();
                 break;
             case R.id.imageview_menu:
                 activityLaunchBinding.drawerLy.openDrawer(GravityCompat.END);
                 break;
-            case R.id.iv_notification:
-                startActivity(new Intent(this, NotificationActivity.class));
+            case R.id.tv_logout:
+                performLogout();
                 break;
         }
     }

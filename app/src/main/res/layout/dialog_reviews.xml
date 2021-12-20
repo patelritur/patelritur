@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 
     >
     <data>
@@ -44,24 +44,34 @@
                 >
 
                 <TextView
-                    android:layout_centerVertical="true"
                     android:id="@+id/textview_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_20"
                     android:fontFamily="@font/montserrat_semibold"
                     android:gravity="center_horizontal"
                     android:text="@string/reviews"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/color_E8505B"
+                    android:textColor="@color/color_241e61"
                     android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/disclaimer_text"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{"Disclaimer: "+carInvoice.disclaimer}'
+                    tools:text="fdsfdsfdf"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_below="@id/textview_title"/>
                 <androidx.appcompat.widget.AppCompatImageView
                     android:visibility="gone"
                     android:id="@+id/imageview_download"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:tint="@color/color_E8505B"
+                    android:tint="@color/color_241e61"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/download"/>

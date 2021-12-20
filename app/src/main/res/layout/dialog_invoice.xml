@@ -18,6 +18,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_marginBottom="@dimen/margin_10"
                 android:layout_width="200dp"
@@ -86,7 +87,7 @@
                 android:layout_margin="@dimen/margin_15"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/color_E8505B">
+                android:background="@color/color_241e61">
             </View>
 
             <RelativeLayout
@@ -246,7 +247,7 @@
                 android:layout_margin="@dimen/margin_15"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/color_E8505B">
+                android:background="@color/color_241e61">
             </View>
 
             <RelativeLayout
@@ -263,8 +264,8 @@
                     android:layout_alignParentStart="true"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/total_benefits"
-                    android:textColor="#e8505b"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/color_241e61"
                     android:textStyle="normal" />
                 <TextView
                     android:layout_alignParentEnd="true"
@@ -272,7 +273,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:textStyle="bold"
-                    android:textColor="#e8505b"
+                    android:textColor="@color/color_241e61"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:text="@{carInvoice.totalBenefits}"
                     tools:text="45,100*"/>
@@ -293,7 +294,7 @@
                     android:layout_alignParentStart="true"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/on_road_price"
-                    android:textColor="#e8505b"
+                    android:textColor="@color/color_241e61"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textStyle="normal" />
 
@@ -303,7 +304,7 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="@{carInvoice.onRoadPrice}"
-                    android:textColor="#e8505b"
+                    android:textColor="@color/color_241e61"
                     android:textSize="20sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textStyle="bold"

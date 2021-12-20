@@ -126,7 +126,7 @@ public class PersonalisedCarOptionsFragment extends Fragment {
         ((HomeActivity)getActivity()).carSearchRequestModel.setSegmentFilter(commmaSeperatedSegmetList);
         ((HomeActivity)getActivity()).carSearchRequestModel.setPriceFilter(commaseparatedlist);
         ((HomeActivity)getActivity()).carSearchRequestModel.setSearchValue("");
-        ((HomeActivity)getActivity()).callSearchApi(new SearchResultInterface() {
+        ((HomeActivity)getActivity()).callSearchApi("2",new SearchResultInterface() {
             @Override
             public void onSearch(CarSearchResultModel carSearchRequestModel) {
 

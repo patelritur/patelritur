@@ -6,7 +6,16 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:src="@color/color_E8505B"
+        android:id="@+id/dot_iamgeview"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginStart="@dimen/margin_15"
+        android:layout_width="@dimen/margin_10"
+        android:layout_height="@dimen/margin_10"
+        android:background="@drawable/red_circle"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:src="@color/color_241e61"
         android:id="@+id/iamgeview"
         android:layout_marginTop="@dimen/margin_20"
         android:layout_gravity="center_horizontal"

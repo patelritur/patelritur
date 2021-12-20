@@ -1,371 +1,428 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="carDetailModel"
             type="com.demo.carDetails.model.CarDetailResponse" />
     </data>
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <include
+            android:id="@+id/header_ll"
+            layout="@layout/header_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/takeademo"
+            android:layout_below="@+id/header_ll"
             android:orientation="vertical">
-            <include layout="@layout/header_layout"/>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    />
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/textview_previous"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:padding="@dimen/margin_10"
-                    android:tint="@color/white"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-                    android:layout_gravity="start|center_vertical"
-                    />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/textview_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:padding="@dimen/margin_10"
-                    android:tint="@color/white"
-                    android:rotation="180"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-                    android:layout_gravity="end|center_vertical"
-                    />
-                <com.google.android.material.tabs.TabLayout
-                    android:nestedScrollingEnabled="true"
-                    android:layout_marginEnd="@dimen/margin_10"
-                    android:background="#00000000"
-                    android:id="@+id/into_tab_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:tabBackground="@drawable/tab_selector_white"
-                    app:tabGravity="center"
-                    android:layout_gravity="bottom|end"
-                    app:tabIndicatorHeight="0dp" />
-            </FrameLayout>
-
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/margin_40"
-                    android:layout_height="@dimen/margin_40"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:padding="@dimen/margin_10"
-                    android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
-                    android:layout_gravity="start|center_vertical"
-                    />
-                <TextView
-                    android:text="@{carDetailModel.cardetail.carName}"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:textStyle="bold"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="#323643"
-                    tools:text="MARUTI CIAZ"/>
-                <TextView
-                    android:text="@{carDetailModel.cardetail.CarModel}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:textStyle="normal"
-                    android:layout_marginStart="@dimen/margin_10"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="#323643"
-                    tools:text="LXI"/>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:onClick="@{carDetailModel::onClick}"
-
-                        android:id="@+id/share_iv"
+                        android:id="@+id/textview_previous"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="@dimen/margin_20"
-                        android:src="@drawable/ic_baseline_share_24" />
-                </RelativeLayout>
-                NewsResponseModel
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_marginStart="@dimen/margin_20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:textStyle="normal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#323643"
-                    android:text="Ex-showroom:"/>
-                <TextView
-                    android:text='@{"₹" + carDetailModel.cardetail.carPrice}'
-                    android:layout_marginStart="@dimen/margin_20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:textStyle="normal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#323643"
-                    tools:text="Ex-showroom:"/>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <TextView
-                android:id="@+id/invoice"
-                android:onClick="@{carDetailModel::onClick}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:textStyle="normal"
-                android:layout_marginTop="@dimen/margin_10"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_marginStart="@dimen/margin_20"
-                android:textColor="#e8505b"
-                android:text="Profoma Invoice"/>
-            <View
-                style="@style/divider"
-                />
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/horizontal_scrollview_promotion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="@dimen/margin_10"
-                    />
-            </HorizontalScrollView>
-            <View
-                style="@style/divider"
-                />
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/horizontal_scrollview_award"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-
-                    />
-            </HorizontalScrollView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:textStyle="normal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-
-                android:textColor="#e8505b"
-                android:lineSpacingExtra="1.5sp"
-                android:text="Tap to learn more"/>
-            <View
-                style="@style/divider"
-                />
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_20"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:text="@{carDetailModel.cardetail.carRateing}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:textStyle="normal"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                            android:textColor="#323643"
-                            tools:text="4.2"/>
-
-                        <RatingBar
-                            android:id="@+id/ratingbar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:numStars="5"
-                            android:scaleY="0.8"
-                            android:scaleX="0.8"
-                            style="?android:attr/ratingBarStyleIndicator"
-                            android:theme="@style/RatingBar"
-                            android:stepSize="1"
-
-                            />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                    <TextView
-                        android:id="@+id/reviews"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:textStyle="normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:layout_marginStart="@dimen/margin_20"
-                        android:textColor="#e8505b"
+                        android:layout_gravity="start|center_vertical"
+                        android:fontFamily="@font/montserrat_bold"
                         android:onClick="@{carDetailModel::onClick}"
+                        android:padding="@dimen/margin_10"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                        android:tint="@color/white" />
 
-                        android:text='@{carDetailModel.cardetail.reviewCount+ " Reviews"}'/>
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.AppCompatImageView
 
+                        android:id="@+id/textview_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:onClick="@{carDetailModel::onClick}"
+                        android:padding="@dimen/margin_10"
+                        android:rotation="180"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                        android:tint="@color/white" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/into_tab_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        android:background="#00000000"
+                        android:nestedScrollingEnabled="true"
+                        app:tabBackground="@drawable/tab_selector_white"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+                </FrameLayout>
 
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/margin_40"
+                        android:layout_height="@dimen/margin_40"
+                        android:layout_gravity="start|center_vertical"
+                        android:background="@drawable/ic_baseline_keyboard_arrow_left_24"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:padding="@dimen/margin_10" />
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@{carDetailModel.cardetail.carName}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="#323643"
+                        android:textStyle="bold"
+                        tools:text="MARUTI CIAZ" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_10"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:textStyle="normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-
+                        android:text="@{carDetailModel.cardetail.CarModel}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="#323643"
-                        android:text="@{carDetailModel.cardetail.DemoCount}"
-                        tools:text="300"/>
-                    <TextView
+                        android:textStyle="normal"
+                        tools:text="LXI" />
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:textStyle="normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:layout_height="match_parent">
 
-                        android:textColor="#323643"
-                        android:text="@string/demos_completed"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/share_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:onClick="@{carDetailModel::onClick}"
+                            android:src="@drawable/ic_baseline_share_24"
+                            android:tint="@color/color_241e61" />
+                    </RelativeLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="Ex-showroom:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#323643"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text='@{"₹" + carDetailModel.cardetail.carPrice}'
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#323643"
+                        android:textStyle="normal"
+                        tools:text="Ex-showroom:" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:id="@+id/invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:onClick="@{carDetailModel::onClick}"
+                    android:text="@string/profoma_invoice"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/color_241e61"
+                    android:textStyle="normal" />
+
+                <View style="@style/divider" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:text="@{carDetailModel.cardetail.carRateing}"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                android:textColor="#323643"
+                                android:textStyle="normal"
+                                tools:text="4.2" />
+
+                            <RatingBar
+                                android:id="@+id/ratingbar"
+                                style="@style/customratingbar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/margin_10"
+                                android:numStars="5"
+                                android:rating="3"
+                                android:stepSize="1"
+
+                                />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <TextView
+                            android:id="@+id/reviews"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:onClick="@{carDetailModel::onClick}"
+                            android:text='@{carDetailModel.cardetail.reviewCount+ " Reviews"}'
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/color_241e61"
+
+                            android:textStyle="normal" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="@{carDetailModel.cardetail.DemoCount}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+
+                            android:textColor="#323643"
+                            android:textStyle="normal"
+                            tools:text="300" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="@string/demos_completed"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+                            android:textColor="#323643"
+                            android:textStyle="normal" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <View style="@style/divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:text="@{carDetailModel.cardetail.carOfferBannerTitle}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#323643" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="none">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/horizontal_scrollview_promotion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_10"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+                <View style="@style/divider" />
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:text="@{carDetailModel.cardetail.carAwardBannerTitle}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/color_241e61" />
+
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="none">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/horizontal_scrollview_award"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+
+                        />
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:lineSpacingExtra="1.5sp"
+                    android:text="@string/tap_to_learn_more"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#e8505b"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+
+                <View style="@style/divider" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/colors"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:onClick="@{carDetailModel::onClick}"
+                        android:text="Colors  |  "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/color_241e61"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/specifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:onClick="@{carDetailModel::onClick}"
+                        android:text="Specifications  | "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/color_241e61"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/features"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:onClick="@{carDetailModel::onClick}"
+                        android:text="Features"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/color_241e61"
+                        android:textStyle="normal" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <View style="@style/divider" />
+
+                <WebView
+                    android:id="@+id/feature_colors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:onClick="@{carDetailModel::onClick}" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="2.5sp"
+                    android:text="@string/you_will_get_the_best_demo_variants_available_with_our_demo_partners"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#323643"
+                    android:textStyle="normal" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
-            <View
-                style="@style/divider"
-                />
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_10"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/colors"
-                    android:onClick="@{carDetailModel::onClick}"
+        </androidx.core.widget.NestedScrollView>
 
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:textStyle="normal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#e8505b"
-                    android:text="Colors  |  "/>
+        <TextView
+            android:id="@+id/takeademo"
+            android:layout_margin="@dimen/margin_20"
+            style="@style/redButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:onClick="@{carDetailModel::onClick}"
+            android:paddingStart="@dimen/margin_50"
+            android:paddingTop="@dimen/margin_15"
+            android:paddingEnd="@dimen/margin_50"
+            android:paddingBottom="@dimen/margin_15"
+            android:text="@string/book_a_demo" />
 
-                <TextView
-                    android:id="@+id/specifications"
-                    android:onClick="@{carDetailModel::onClick}"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:textStyle="normal"
-                    android:layout_gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-
-                    android:textColor="#e8505b"
-                    android:text="Specifications  | "/>
-
-                <TextView
-                    android:id="@+id/features"
-                    android:onClick="@{carDetailModel::onClick}"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:textStyle="normal"
-                    android:layout_gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#e8505b"
-                    android:text="Features"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <View
-                style="@style/divider"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:onClick="@{carDetailModel::onClick}"
-                android:id="@+id/feature_colors"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_20"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginRight="@dimen/margin_10"
-                android:htmlText="@{carDetailModel.cardetail.carFeatures}"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:textStyle="normal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#323643"
-                android:layout_marginStart="@dimen/margin_20"
-                android:lineSpacingExtra="2.5sp"
-                android:gravity="center_horizontal"
-                android:text="@string/you_will_get_the_best_demo_variants_available_with_our_demo_partners"/>
-
-            <TextView
-                android:id="@+id/takeademo"
-                android:onClick="@{carDetailModel::onClick}"
-                android:layout_marginBottom="@dimen/margin_20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/margin_50"
-                android:paddingEnd="@dimen/margin_50"
-                android:paddingTop="@dimen/margin_15"
-                android:paddingBottom="@dimen/margin_15"
-                style="@style/redButton"
-                android:text="@string/book_a_demo"
-                android:layout_gravity="center_horizontal"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 </layout>

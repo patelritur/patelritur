@@ -52,11 +52,11 @@
                     app:homeOptionsImage="@{carImage}" />
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/vehicleswitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/color_E8505B"
+                    android:backgroundTint="@color/color_241e61"
                     android:checked="true"
-                    android:clickable="false"
                     android:rotation="180" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -99,7 +99,7 @@
                     android:imeOptions="actionDone"
                     android:maxLength="40"
                     android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#9d9d9d"
                     android:textColorHint="#9d9d9d"
                     android:textStyle="normal" />

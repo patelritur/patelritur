@@ -29,4 +29,7 @@
     <color name="color_f7f7f7">#f7f7f7</color>
     <color name="ffca00">#ffca00</color>
     <color name="ced0d2">#ced0d2</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="color_33241e61">#33241e61</color>
+    <color name="color_241e61">#241e61</color>
 </resources>

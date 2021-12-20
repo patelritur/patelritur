@@ -11,15 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.demo.R;
-import com.demo.databinding.ItemDemoPlaceBinding;
 import com.demo.databinding.ItemScheduleLaterBinding;
-import com.demo.databinding.LayoutDemoPlaceBinding;
 import com.demo.databinding.LayoutScheduleBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.model.AppContentModel;

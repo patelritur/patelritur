@@ -10,10 +10,11 @@
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="i_would_like_to_receive_offers_upates">I would like to receive offers &amp; upates</string>
+    <string name="upload_your_vaccination_certificate">Upload your COVID-19 \nVaccination Certificate</string>
 
 
     <string name="i_agree_to_the_tnc">I agree to the </string>
-    <string name="tnc"><font fgcolor='#E8505B'> Terms and conditions</font></string>
+    <string name="tnc"><font fgcolor='#241e61'> Terms and conditions</font></string>
 
     <string name="i_have_been_vaccinated">I have been vaccinated</string>
     <string name="enter_verification_code">Enter \n verification code</string>
@@ -29,7 +30,7 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="sign_in">Sign in</string>
     <string name="new_user_sign_up">New User?Sign up?</string>
-    <string name="or_connect_with">Or Connect with</string>
+    <string name="or_connect_with">Or</string>
 
     <!--Enterpin-->
 
@@ -37,7 +38,7 @@
     <string name="pin">Pin</string>
     <string name="forgot_pin">FORGOT PIN?</string>
     <string name="proceed">Proceed</string>
-    <string name="skip">skip ></string>
+    <string name="skip">Skip</string>
     <string name="send_otp">send OTP</string>
     <string name="don_t_worry_it_happens_you_are_good">Don\'t worry!it happens, you are good!</string>
     <string name="enter_your_registered_number_below_to_retrive_your_account">Enter your registered number\n below to retrive your account</string>
@@ -46,7 +47,6 @@
 
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="upload_your_vaccination_certificate">Upload your Vaccination Certificate</string>
     <string name="upload_file">upload file</string>
     <string name="skip_for_now">Skip for now</string>
     <string name="new_user">new user?</string>
@@ -85,7 +85,7 @@
     <string name="schedule">Schedule</string>
     <string name="where_do_yo_want_the_demo">Where do yo want the Demo?</string>
     <string name="you_will_get_top_model_for_demo">You will get top model for Demo</string>
-    <string name="let_us_help_you_choose_your_perfect_car_to_take_a_demo_personalise_here">Let us help you choose your perfect car to take a Demo. <font color='#E8505B'>Personalise Here </font></string>
+    <string name="let_us_help_you_choose_your_perfect_car_to_take_a_demo_personalise_here">Let us help you choose your perfect car to take a Demo. <font color='#241e61'>Personalise Here </font></string>
     <string name="new_launch">NEW LAUNCH</string>
     <string name="reviews">Reviews</string>
     <string name="specifications">Specifications</string>
@@ -99,8 +99,8 @@
     <string name="demos_completed">Demos Completed</string>
     <string name="virtual_meet">Virtual Meet</string>
     <string name="schedue">Schedule</string>
-    <string name="if_your_desired_date_and_timing_is_not_available_then_try_another_car_schedule">if your desired date and timing is not available then try <font color='#E8505B'> another car schedule</font></string>
-    <string name="tip_click_here_to_see_how_to_get_the_most_out_of_your_demo_experience">Tip: <font color='#E8505B'> Click here </font>to see how to get the most out of your Demo Experience</string>
+    <string name="if_your_desired_date_and_timing_is_not_available_then_try_another_car_schedule">if your desired date and timing is not available then try <font color='#241e61'> another car schedule</font></string>
+    <string name="tip_click_here_to_see_how_to_get_the_most_out_of_your_demo_experience">Tip: <font color='#241e61'> Click here </font>to see how to get the most out of your Demo Experience</string>
     <string name="cancel_demo">Cancel Demo</string>
     <string name="cancel_meeting">Cancel Meeting</string>
     <string name="notifications">Notifications</string>
@@ -119,5 +119,25 @@
     <string name="leave_feedback">Leave Feedback</string>
     <string name="contact">Contact</string>
     <string name="favourite_demo_specialist">Favorite Demo Specialist</string>
+    <string name="default_notification_channel_id">2</string>
+    <string name="tap_to_learn_more">Tap to learn more</string>
+    <string name="colors">Colors</string>
+    <string name="know_more">Know More</string>
+    <string name="see_profile">See Profile</string>
+    <string name="write_incase_any_feedback">Write incase any feedback</string>
+    <string name="submit">Submit</string>
+    <string name="hope_enjoy_demo">Hope you enjoyed your Demo!</string>
+    <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="or">or</string>
+    <string name="demos_taken">Demos taken</string>
+    <string name="profoma_invoice">Profoma Invoice</string>
+    <string name="next">NEXT</string>
+    <string name="previous">PREVIOUS</string>
+    <string name="let_s_start">Let\'s Start</string>
+    <string name="my_demo_trips">My Demo Trips</string>
+    <string name="choose_your_budget">CHOOSE YOUR BUDGET</string>
+    <string name="join_call">Join Call</string>
+    <string name="book_a_meeting">Book A Meeting</string>
+    <string name="performa_invoice">Performa Invoice</string>
 
 </resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/caller_name"
+        style="@style/TextAppearance.Compat.Notification.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/black"
+        tools:text="@tools:sample/full_names" />
+    <TextView
+        style="@style/TextAppearance.Compat.Notification.Title"
+        android:drawablePadding="8dp"
+        android:id="@+id/call_type"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/caller_name"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/black"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        tools:text="@tools:sample/full_names"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/call_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/decline"
+            android:id="@+id/decline_incoming"
+            android:layout_marginTop="16dp"
+            android:background="@color/red"
+            android:layout_marginLeft="16dp"
+            app:cornerRadius="8dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:text="@string/accept"
+            android:id="@+id/accept_incoming"
+            android:layout_marginTop="16dp"
+            android:background="@color/green_600"
+            android:layout_marginLeft="16dp"
+            app:cornerRadius="8dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

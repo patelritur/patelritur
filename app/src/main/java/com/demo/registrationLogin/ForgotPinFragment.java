@@ -25,7 +25,6 @@ public class ForgotPinFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        CommanRequestModel commanRequestModel = new CommanRequestModel();
         fragmentForgotPinBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_forgot_pin,container,false);
         HeaderModel headerModel = getHeaderModelforVerificationActivity();
         fragmentForgotPinBinding.setHeadermodel(headerModel);

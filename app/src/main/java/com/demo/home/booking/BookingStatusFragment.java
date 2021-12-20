@@ -17,19 +17,15 @@ import androidx.fragment.app.Fragment;
 import com.demo.R;
 import com.demo.databinding.LayoutStatusDemoBookingBinding;
 import com.demo.home.HomeActivity;
-import com.demo.home.booking.model.BookingAcceptModel;
 import com.demo.home.booking.model.BookingRequestModel;
 import com.demo.home.booking.model.BookingResponseModel;
 import com.demo.home.booking.model.CurrentStatuSModel;
 import com.demo.home.booking.model.StatusRequestModel;
 import com.demo.utils.Constants;
 import com.demo.utils.PrintLog;
-import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 
@@ -63,6 +59,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         layoutStatusDemoBookingBinding.avi.smoothToShow();
         IntentFilter filter = new IntentFilter();
         filter.addAction("callStatusService");
+        filter.addAction("receiveNotification");
         getActivity().registerReceiver(br, filter);
 
         return layoutStatusDemoBookingBinding.getRoot();
@@ -89,6 +86,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         if(reqCode==1) {
             extracted((BookingResponseModel) response);
+            ((HomeActivity) getActivity()).setPeekheight(layoutStatusDemoBookingBinding.parentLl.getMeasuredHeight());
         }
         else
         {
@@ -114,6 +112,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
                 }
                 else if(currentStatuSModel.getBookingStatus().equalsIgnoreCase("Not Accepted")){
                     Utils.cancelJob(getActivity());
+                    layoutStatusDemoBookingBinding.avi.setVisibility(View.GONE);
                     try{
                         getActivity().unregisterReceiver(br);
                     }
@@ -133,7 +132,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
 
         if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
             bookingid = bookingResponseModel.bookingID;
-            Constants.BOOKINGID = bookingid;
+            Constants.BOOKING_ID = bookingid;
 
         }
         else{
@@ -211,15 +210,28 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            PrintLog.v("receiver");
-            callStatusApi();
+            if(intent.getAction().equalsIgnoreCase("receiveNotification")){
+                Utils.cancelJob(getActivity());
+
+                ((HomeActivity) getActivity()).setBehavior(true);
+                ((HomeActivity) getActivity()).showFragment(new BookingConfirmedFragment());
+                try{
+                    getActivity().unregisterReceiver(br);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+            else
+                callStatusApi();
         }
     }
 
     private void callStatusApi() {
         StatusRequestModel statusRequestModel = new StatusRequestModel();
         if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
-            statusRequestModel.setBookingID(Constants.BOOKINGID);
+            statusRequestModel.setBookingID(Constants.BOOKING_ID);
         else
             statusRequestModel.setMeetingID(Constants.MEETING_ID);
         statusRequestModel.setUserID(((HomeActivity) requireActivity()).userId);
@@ -255,4 +267,6 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
 
         }
     }
+
+
 }

@@ -16,7 +16,7 @@
         android:textColor="#323643"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:lineSpacingExtra="14sp"
-        android:text="Frequently Asked Questions"/>
+        android:text="@string/frequently_asked_questions"/>
 
 
     <androidx.appcompat.widget.LinearLayoutCompat

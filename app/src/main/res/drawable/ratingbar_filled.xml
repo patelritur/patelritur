@@ -3,16 +3,16 @@
 
     <item android:state_pressed="true"
         android:state_window_focused="true"
-        android:drawable="@android:drawable/star_on" />
+        android:drawable="@drawable/star" />
 
     <item android:state_focused="true"
         android:state_window_focused="true"
-        android:drawable="@android:drawable/star_on" />
+        android:drawable="@drawable/star" />
 
     <item android:state_selected="true"
         android:state_window_focused="true"
-        android:drawable="@android:drawable/star_on" />
+        android:drawable="@drawable/star" />
 
-    <item android:drawable="@android:drawable/star_on" />
+    <item android:drawable="@drawable/star" />
 
 </selector>

@@ -27,6 +27,13 @@
             android:src="@drawable/ic_baseline_play_circle_filled_24"
             >
         </androidx.appcompat.widget.AppCompatImageView>
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_player_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             />
+
     </FrameLayout>
 
 

@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <com.google.android.material.tabs.TabLayout
-                        app:tabIndicatorColor="@color/color_E8505B"
+                        app:tabIndicatorColor="@color/color_241e61"
                         android:background="@drawable/tab_backgroud"
                         app:tabIndicatorHeight="1dp"
                         android:id="@+id/tab_layout"

@@ -26,16 +26,14 @@ import com.demo.home.model.CarSearchResultModel;
 import com.demo.home.model.viewmodel.FuelFilterViewModel;
 import com.demo.home.model.viewmodel.SearchResultViewModel;
 import com.demo.home.model.viewmodel.SearchResultViewModelFactory;
-import com.demo.utils.Constants;
-import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 
 public class CarSuggestionFragment extends Fragment implements SearchResultInterface {
-    FragmentCarSuggestionBinding fragmentCarSuggestionBinding;
-    ViewGroup viewGroup;
+    private FragmentCarSuggestionBinding fragmentCarSuggestionBinding;
+   private ViewGroup viewGroup;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -145,7 +143,7 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
                             .replace("]", "")
                             .replace(" ", ""));
                     ((HomeActivity)getActivity()).carSearchRequestModel.setSearchValue("");
-                    ((HomeActivity)getActivity()).callSearchApi(new SearchResultInterface() {
+                    ((HomeActivity)getActivity()).callSearchApi("2",new SearchResultInterface() {
                         @Override
                         public void onSearch(CarSearchResultModel carSearchRequestModel) {
 
