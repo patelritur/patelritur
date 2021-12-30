@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2237442922374429" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/background_status_booking.xml" value="0.2237442922374429" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/behavior_rounded_corner.xml" value="0.19907407407407407" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/border_red_deep_rounded_corner.xml" value="0.19907407407407407" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/border_red_rounded_corner.xml" value="0.21851851851851853" />
@@ -50,6 +51,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/tab_selector.xml" value="0.14583333333333334" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/tab_selector_white.xml" value="0.21777777777777776" />
         <entry key="..\:/App/DemoApp/app/src/main/res/drawable/white_border.xml" value="0.2512820512820513" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/drawable/white_circle.xml" value="0.2237442922374429" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_car_details.xml" value="0.25868725868725867" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_cometchat_callmanager.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/activity_cometchat_start_call.xml" value="0.13796296296296295" />
@@ -80,7 +82,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/dialog_youtube.xml" value="0.1" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/enter_verification_code.xml" value="0.3" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_banner.xml" value="0.18243243243243243" />
-        <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_booking_booked.xml" value="0.3" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_booking_booked.xml" value="0.36" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_cancel_demo.xml" value="0.23055555555555557" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_car_suggestion.xml" value="0.2296875" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_faq_question.xml" value="0.23055555555555557" />
@@ -94,6 +96,7 @@
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_pager_launch.xml" value="0.2390625" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_personalised_options.xml" value="0.2390625" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_reject_reason.xml" value="0.19444444444444445" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_reset_pin.xml" value="0.234375" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_schedule_date.xml" value="0.2125" />
         <entry key="..\:/App/DemoApp/app/src/main/res/layout/fragment_takedemo.xml" value="0.18243243243243243" />

@@ -2,13 +2,14 @@
 <layout>
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent_ll"
+    android:id="@+id/cancel_parent_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="@dimen/margin_20"
+    android:layout_marginEnd="@dimen/margin_20"
     android:orientation="vertical">
 
     <View style="@style/drawer"/>

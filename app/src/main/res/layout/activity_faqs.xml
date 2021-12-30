@@ -35,7 +35,8 @@
                         bind:homeModel="@{homeModel}"
                         android:id="@+id/rl_top"/>
 
-                    <ScrollView
+                    <androidx.core.widget.NestedScrollView
+                        android:layout_marginBottom="@dimen/margin_20"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_above="@+id/ll_bottom"
@@ -148,7 +149,7 @@
                                 android:textStyle="normal" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
-                    </ScrollView>
+                    </androidx.core.widget.NestedScrollView>
 
                     <androidx.fragment.app.FragmentContainerView
                         android:visibility="gone"

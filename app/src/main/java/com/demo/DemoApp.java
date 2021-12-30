@@ -24,6 +24,10 @@ import com.google.firebase.FirebaseApp;
 public class DemoApp extends Application implements LifecycleObserver {
     public static boolean isForeground;
 
+    public static void setBookingConfirmedFragmentVisible(boolean b) {
+
+    }
+
 
     @Override
     public void onCreate() {
@@ -43,35 +47,6 @@ public class DemoApp extends Application implements LifecycleObserver {
         CometChatCallListener.addCallListener("DemoApp",this);
 //        createNotificationChannel();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-    }
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.app_name);
-            String description = getString(R.string.alert_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("2", name, importance);
-            channel.setDescription(description);
-            Uri soundUri = Uri.parse(
-                    "android.resource://" +
-                            getApplicationContext().getPackageName() +
-                            "/" +
-                            R.raw.incoming_call);
-
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .build();
-
-            channel.setSound(soundUri, audioAttributes);
-
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void onMoveToForeground() {

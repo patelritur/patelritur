@@ -139,5 +139,7 @@
     <string name="join_call">Join Call</string>
     <string name="book_a_meeting">Book A Meeting</string>
     <string name="performa_invoice">Performa Invoice</string>
+    <string name="arrived">Arrived</string>
+    <string name="rejected">Rejected</string>
 
 </resources>

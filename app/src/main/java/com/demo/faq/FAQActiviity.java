@@ -38,7 +38,7 @@ public class FAQActiviity extends BaseActivity {
     }
     private void callSupportEmail() {
         getViewModelStore().clear();
-        AppContentViewModelFactory factory = new AppContentViewModelFactory(this.getApplication(), Constants.MYDEMO_MENU);
+        AppContentViewModelFactory factory = new AppContentViewModelFactory(this.getApplication(), Constants.SUPPORT_EMAIL);
         AppContentViewModel appContentViewModel = ViewModelProviders.of(this, factory).get(AppContentViewModel.class);
 
         appContentViewModel.getSupportEmailLiveData().observe(this, item -> {

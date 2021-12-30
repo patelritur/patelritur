@@ -124,6 +124,7 @@ public class BookingAcceptModel {
 
         public ArrayList<CarCheckList> carchecklist;
         public String specialistFirstName(){
+
             return specialistName.split(" ")[0]+"'s";
         }
 
@@ -208,10 +209,16 @@ public class BookingAcceptModel {
         }
 
         public String getSpecialistName() {
+            StringBuilder sb = new StringBuilder(specialistName);
+            if(specialistName!=null) {
+                sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+                return sb.toString();
+            }
             return specialistName;
         }
 
         public void setSpecialistName(String specialistName) {
+
             this.specialistName = specialistName;
         }
 

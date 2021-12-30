@@ -5,7 +5,6 @@ import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,17 +22,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 
 import com.demo.BaseActivity;
 import com.demo.R;
-import com.demo.carDetails.ImageAdapter;
 import com.demo.carDetails.model.CarDetailRequest;
-import com.demo.carDetails.model.CarDetailResponse;
 import com.demo.databinding.ActivityHomeBinding;
-import com.demo.databinding.DialogColorBinding;
 import com.demo.databinding.DialogHomeKnowMoreBinding;
-import com.demo.databinding.ItemColorBinding;
 import com.demo.home.booking.BookingConfirmedFragment;
 import com.demo.home.booking.DemoPlaceBookingFragment;
 import com.demo.home.booking.ScheduleBookingFragment;
@@ -150,7 +143,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             }
         };
         //  behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            viewTreeObserver.addOnGlobalLayoutListener(globalListener);
+        viewTreeObserver.addOnGlobalLayoutListener(globalListener);
         behavior1.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -376,7 +369,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         behavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         activityHomeBinding.fragmentContainerView.setMinimumHeight(height+100);
-           behavior.setPeekHeight(height+100);
+        behavior.setPeekHeight(height+100);
         PrintLog.v("=="+height);
         PrintLog.v("===EE"+fragment,"EEE"+activityHomeBinding.fragmentContainerView.getMeasuredHeight());
     }
@@ -448,17 +441,21 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
     @Override
     public void onBackPressed() {
-        if(fragment==null)
+        if(fragment==null) {
             super.onBackPressed();
-        if(fragment.toString().contains("BookingStatusFragment")){
+            finish();
+        }
+        else if(fragment.toString().contains("BookingStatusFragment") && !behavior.isDraggable()){
             return;
         }
-        if(behavior.getState() == STATE_EXPANDED || behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED)
+        else if(behavior.getState() == STATE_EXPANDED || behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED)
         {
             behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            return;
         }
-        super.onBackPressed();
+        else {
+            super.onBackPressed();
+            finish();
+        }
     }
 
     public Location getLocation()

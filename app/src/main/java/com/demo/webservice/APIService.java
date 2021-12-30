@@ -6,6 +6,7 @@ import com.demo.carDetails.model.CarDetailsSpecificationModel;
 import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.faq.model.FAQRequestModel;
 import com.demo.faq.model.FAQResponseModel;
+import com.demo.home.booking.model.LocationResponse;
 import com.demo.home.booking.model.ReviewRequestModel;
 import com.demo.home.booking.model.BookingAcceptModel;
 import com.demo.home.booking.model.BookingRequestModel;
@@ -49,6 +50,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface APIService {
     @POST("customersingup")
@@ -210,6 +212,7 @@ public interface APIService {
     Call<RegistrationResponse> addSpecialistFeedback(@Body ReviewRequestModel userId);
 
 
-
+    @GET("specialistlocation/{specialist_id}")
+    Call<LocationResponse> getSpecialistLocation(@Path("specialist_id") String specialistId);
 
 }

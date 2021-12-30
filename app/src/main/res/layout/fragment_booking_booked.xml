@@ -54,6 +54,7 @@
                     android:layout_gravity="center"
                     android:textColor="@color/white"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/margin_5"
                     android:fontFamily="@font/montserrat_regular"/>
 
@@ -71,6 +72,56 @@
                     android:layout_marginBottom="@dimen/margin_10"
 
                     style="@style/drawer"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_10"
+                    android:orientation="horizontal">
+                    <FrameLayout
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:background="@drawable/white_circle">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/margin_30"
+                            android:src="@drawable/red_circle"
+                            android:layout_gravity="center"
+                            app:roundHomeOptionsImage="@{bookingDetail.bookingdetails.specialistImage}"
+                            android:layout_height="@dimen/margin_30"
+                            />
+                    </FrameLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/margin_10"
+                        android:layout_height="@dimen/margin_10"
+                        android:tint="@color/white"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:layout_marginEnd="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_vertical"
+                        android:text='@{bookingDetail.bookingSubMessage.trim().length()>0 ? bookingDetail.bookingSubMessage : bookingDetail.bookingdetails.specialistName}'
+                        android:fontFamily="@font/montserrat_regular"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/status"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:padding="@dimen/margin_5"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:textColor="@color/white"
+                        android:background="@drawable/background_status_booking"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/arriving_time"
                     android:layout_width="wrap_content"
@@ -78,6 +129,7 @@
                     android:layout_gravity="center"
                     android:textColor="@color/white"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:fontFamily="@font/montserrat_regular"
                     />
@@ -129,7 +181,7 @@
                     android:layout_height="wrap_content"
                     app:flexWrap="wrap"
                     app:justifyContent="space_around"
-                   >
+                    >
 
                 </com.google.android.flexbox.FlexboxLayout>
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -313,7 +365,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/margin_20"
-                            android:src="@drawable/ic_record"/>
+                            android:src="@drawable/ic_record" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/text_timer"
@@ -467,6 +519,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/join_call"
+                android:layout_gravity="center_horizontal"
+                style="@style/redButton"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginTop="@dimen/margin_20"
+                android:visibility="gone"
+                android:elevation="@dimen/margin_10"
+                android:id="@+id/book_demo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_a_demo"
                 android:layout_gravity="center_horizontal"
                 style="@style/redButton"/>
             <View

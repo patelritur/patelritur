@@ -48,6 +48,7 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
                     Utils.showToast(getActivity(),"Please select one vaid reason to cancel");
             }
         });
+
         return fragmentCancelDemoBinding.getRoot();
 
     }
@@ -79,7 +80,7 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
         appContentViewModel.getCancelreasonLiveData().observe(requireActivity(), item -> {
             cancelReasonAdapter = new CancelReasonAdapter(getActivity(), (ArrayList<AppContentModel.Label>) item.getLabels());
             fragmentCancelDemoBinding.recyclerview.setAdapter(cancelReasonAdapter);
-            ((HomeActivity) getActivity()).setPeekheight(fragmentCancelDemoBinding.parentLl.getMeasuredHeight());
+            ((HomeActivity) getActivity()).setPeekheight(fragmentCancelDemoBinding.cancelParentLl.getMeasuredHeight());
 
         });
     }

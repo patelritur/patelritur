@@ -40,10 +40,11 @@ public  class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
             return  ScreenSlidePageFragment.newInstance(colorlist.get(position).getColorImage());
         else {
             if(bannerlist.getBannerlist().get(position).getBannerType().equalsIgnoreCase("Image"))
-                return ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position).getBanner());
+                 screenSlidePageFragment =  ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position).getBanner());
             else {
-                return  ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position));
+                screenSlidePageFragment=  ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position));
             }
+            return screenSlidePageFragment;
         }
 
     }

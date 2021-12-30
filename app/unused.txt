@@ -12757,7 +12757,7 @@ com.demo.DataBinderMapperImpl:
     public java.lang.String convertBrIdToString(int)
     public int getLayoutId(java.lang.String)
 com.demo.DemoApp:
-    private void createNotificationChannel()
+    public static void setBookingConfirmedFragmentVisible(boolean)
 com.demo.R$anim:
     public static final int abc_fade_in
     public static final int abc_fade_out
@@ -14764,6 +14764,7 @@ com.demo.R$drawable:
     public static final int ayp_ic_play_36dp
     public static final int ayp_ic_youtube_24dp
     public static final int ayp_shape_rounded_corners
+    public static final int background_status_booking
     public static final int behavior_rounded_corner
     public static final int border_red_deep_rounded_corner
     public static final int border_red_rounded_corner
@@ -14972,6 +14973,7 @@ com.demo.R$drawable:
     public static final int upload_certi
     public static final int user_default
     public static final int white_border
+    public static final int white_circle
 com.demo.R$font:
     public static final int mont_bolditalic
     public static final int montserrat_black
@@ -15104,6 +15106,7 @@ com.demo.R$id:
     public static final int camera_frame
     public static final int cancel_action
     public static final int cancel_button
+    public static final int cancel_parent_ll
     public static final int car_color
     public static final int cardView
     public static final int cardetail_ll
@@ -15584,6 +15587,7 @@ com.demo.R$id:
     public static final int startVertical
     public static final int staticLayout
     public static final int staticPostLayout
+    public static final int status
     public static final int status_bar_latest_event_content
     public static final int stop
     public static final int stretch
@@ -16056,6 +16060,7 @@ com.demo.R$string:
     public static final int already_a_user_signin
     public static final int app_name
     public static final int appbar_scrolling_view_behavior
+    public static final int arrived
     public static final int assign_as_admin
     public static final int assign_as_moderator
     public static final int audio_call
@@ -16483,6 +16488,7 @@ com.demo.R$string:
     public static final int question
     public static final int radiogroup_description
     public static final int read
+    public static final int rejected
     public static final int rejected_call
     public static final int rejected_video_call
     public static final int rejected_voice_call
@@ -20352,6 +20358,7 @@ com.demo.utils.statusJobService:
     private static final java.lang.String TAG
 com.demo.webservice.APIService:
     public abstract retrofit2.Call getProductCategoryforSearch()
+    public abstract retrofit2.Call getSpecialistLocation(java.lang.String)
     public abstract retrofit2.Call meetspecialist()
 com.demo.webservice.ApiClient:
     private static final java.lang.String MULTIPART_FORM_DATA
@@ -33584,7 +33591,6 @@ com.google.android.material.bottomsheet.BottomSheetBehavior:
     int getPeekHeightMin()
     public int getSaveFlags()
     public boolean getSkipCollapsed()
-    public boolean isDraggable()
     public boolean isFitToContents()
     public boolean isHideable()
     public void setBottomSheetCallback(com.google.android.material.bottomsheet.BottomSheetBehavior$BottomSheetCallback)
@@ -45909,7 +45915,9 @@ com.demo.databinding.DialogSearchCarBinding:
     public final androidx.appcompat.widget.LinearLayoutCompat llSearch
     public final androidx.appcompat.widget.LinearLayoutCompat recentSearchLl
 com.demo.databinding.FragmentBookingBookedBinding:
+    public final androidx.appcompat.widget.AppCompatTextView arrivingTimestamp
     public final androidx.appcompat.widget.LinearLayoutCompat cardetailLl
+    public final androidx.appcompat.widget.LinearLayoutCompat llTimeSlot
 com.demo.databinding.FragmentFavouriteDemoSpecialistBinding:
     public final android.widget.TextView title
 com.demo.databinding.FragmentPagerLaunchBinding:
@@ -45947,8 +45955,10 @@ com.demo.home.SearchFragment$2:
     public final synthetic com.demo.home.SearchFragment this$0
 com.demo.home.SearchFragment$8:
     public final synthetic com.demo.home.SearchFragment this$0
-com.demo.home.booking.BookingConfirmedFragment$8:
+com.demo.home.booking.BookingConfirmedFragment$4:
     public final synthetic com.demo.home.booking.BookingConfirmedFragment this$0
+com.demo.home.booking.BookingConfirmedFragment:
+    public java.lang.String specialistId
 com.demo.home.booking.datePicker.Day:
     public java.lang.String monthPattern
 com.demo.home.booking.datePicker.HorizontalPicker:

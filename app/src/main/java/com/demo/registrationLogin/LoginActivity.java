@@ -74,6 +74,7 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
     public void onClickSignInSignUp(View view)
     {
         activityLoginBinding.setIsregister(!activityLoginBinding.getIsregister());
+        activityLoginBinding.executePendingBindings();
     }
     public void onClickSignup(View view)
     {

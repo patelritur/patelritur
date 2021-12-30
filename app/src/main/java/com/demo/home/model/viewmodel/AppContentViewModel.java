@@ -57,7 +57,7 @@ public class AppContentViewModel extends AndroidViewModel {
         else if(mParam.equalsIgnoreCase(Constants.MYDEMO_TRIPS_FILTER))
             myDemoTripsFilterLiveData =getHomeMenuList(mParam);
         else if(mParam.equalsIgnoreCase(Constants.SUPPORT_EMAIL))
-            myDemoTripsFilterLiveData =getHomeMenuList(mParam);
+            supportEmailLiveData =getHomeMenuList(mParam);
         else if(mParam.equalsIgnoreCase(Constants.MYDEMO_TRIPS_MENU))
             myDemoTripsMenuLiveData = getHomeMenuList(mParam);
         else if(mParam.equalsIgnoreCase(Constants.MYDEMO_DESCRIPTIONS))
