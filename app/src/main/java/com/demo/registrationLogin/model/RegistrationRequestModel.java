@@ -17,9 +17,9 @@ public class RegistrationRequestModel extends BaseObservable {
     String IsVaccinated=getIsVaccinated();
     String IsSendOfferEmail=getIsSendOfferEmail();
     String IsAcceptTNC=getIsAcceptTNC();
-    boolean isToReceiveOffers;
-    boolean isTnCAccepted;
-    boolean isVaccinated;
+    transient boolean isToReceiveOffers;
+    transient boolean isTnCAccepted;
+    transient boolean isVaccinated;
     @SerializedName("LastName")
     String lastName;
     @SerializedName("Pin")

@@ -65,7 +65,7 @@ public class DownloadFileFromURL extends AsyncTask<Void, Void, String> {
             connection.connect();
 
             final InputStream input = new BufferedInputStream(url.openStream(), 8192);
-            final OutputStream output = new FileOutputStream(new File(getFilepath(csvFileName + "")));
+            final OutputStream output = new FileOutputStream(new File(getFilepath(csvFileName + ".pdf")));
             final byte data[] = new byte[1024];
             while ((count = input.read(data)) != -1) {
                 output.write(data, 0, count);

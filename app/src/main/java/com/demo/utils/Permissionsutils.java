@@ -1,5 +1,6 @@
 package com.demo.utils;
 
+import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
@@ -18,7 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 public class Permissionsutils {
 
 
-    public static boolean CheckForStoragePermission(Context context)
+    public static boolean checkForStoragePermission(Context context)
     {
         //File write logic here
         return checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
@@ -42,12 +43,31 @@ public class Permissionsutils {
     {
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
     }
-
+    public static void askForStoragePermission(Context context,int reqCode)
+    {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, reqCode);
+    }
     public static boolean checkForRecordPermission(Context activity) {
         // this method is used to check permission
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean checkForCameraPermission(Context activity) {
+        // this method is used to check permission
+        return checkSelfPermission(activity, CAMERA) == PackageManager.PERMISSION_GRANTED &&
+        checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                ;
+
+    }
+
+
+    public static void askForCameraPermission(Context context,int reqCode)
+    {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, reqCode);
+
     }
 
     public static void askForRecordPermission(Context context) {

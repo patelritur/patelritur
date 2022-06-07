@@ -20,22 +20,22 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.demo.R;
 import com.demo.databinding.FragmentTakedemoBinding;
-import com.demo.home.model.CarFilterResponse;
-import com.demo.home.model.CarSectionFilterResponse;
-import com.demo.home.model.viewmodel.CarFilterViewModel;
 import com.demo.home.model.viewmodel.CarSectionFilterViewModel;
 import com.demo.utils.ClickHandlers;
 import com.demo.utils.PrintLog;
 
 public class TakeADemoFragment extends Fragment implements ClickHandlers {
-    FragmentTakedemoBinding fragmentTakedemoBinding;
+    private FragmentTakedemoBinding fragmentTakedemoBinding;
+    private String specialistId;
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentTakedemoBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_takedemo,container,false);
         fragmentTakedemoBinding.setHomeModel(((HomeActivity )getActivity()).homeModel);
-
+        fragmentTakedemoBinding.llName.weatherLl.setVisibility(View.GONE);
         return fragmentTakedemoBinding.getRoot();
 
     }
@@ -65,11 +65,11 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
     }
 
     private void setViewPagerFragment() {
-        FragmentStatePagerAdapter adapterViewPager = new MyPagerAdapter(getChildFragmentManager());
-        fragmentTakedemoBinding.introPager.setAdapter(adapterViewPager);
-        fragmentTakedemoBinding.introPager.setOffscreenPageLimit(3);
-        fragmentTakedemoBinding.intoTabLayout.setupWithViewPager(fragmentTakedemoBinding.introPager);
-        fragmentTakedemoBinding.introPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        FragmentStatePagerAdapter adapterViewPager = new MyFilterPagerAdapter(getChildFragmentManager());
+        fragmentTakedemoBinding.filterPager.setAdapter(adapterViewPager);
+        fragmentTakedemoBinding.filterPager.setOffscreenPageLimit(4);
+        fragmentTakedemoBinding.intoTabLayout.setupWithViewPager(fragmentTakedemoBinding.filterPager);
+        fragmentTakedemoBinding.filterPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -78,7 +78,7 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
             @Override
             public void onPageSelected(int position) {
                 Log.v("position","position"+position);
-                View view =  fragmentTakedemoBinding.introPager.getChildAt(position);
+                View view =  fragmentTakedemoBinding.filterPager.getChildAt(position);
                 try {
                     GridView gridView = (GridView) view.findViewById(R.id.gridview_per_car);
                     TextView textView = (TextView) view.findViewById(R.id.textview_title);
@@ -86,8 +86,8 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
                         return;
                     int rowHeight = gridView.getChildAt(0).getMeasuredHeight() + textView.getHeight() + 40;
                     int height = gridView.getCount() % 3 == 0 ? gridView.getCount() / 3 : (gridView.getCount() / 3) + 1;
-                    int finalheight = Math.max(rowHeight * height, fragmentTakedemoBinding.introPager.getPHeight());
-                    fragmentTakedemoBinding.introPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, finalheight));
+                    int finalheight = Math.max(rowHeight * height, fragmentTakedemoBinding.filterPager.getPHeight());
+                    fragmentTakedemoBinding.filterPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, finalheight));
                 }
                 catch (Exception e)
                 {
@@ -104,9 +104,9 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
     fragmentTakedemoBinding.imageviewNextPage.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(fragmentTakedemoBinding.introPager.getCurrentItem()<2)
+            if(fragmentTakedemoBinding.filterPager.getCurrentItem()<3)
             {
-                fragmentTakedemoBinding.introPager.setCurrentItem(fragmentTakedemoBinding.introPager.getCurrentItem()+1);
+                fragmentTakedemoBinding.filterPager.setCurrentItem(fragmentTakedemoBinding.filterPager.getCurrentItem()+1);
             }
         }
     });

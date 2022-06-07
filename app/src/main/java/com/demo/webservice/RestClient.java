@@ -16,16 +16,11 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -274,55 +269,6 @@ public class RestClient {
 
 
 
-    private OkHttpClient getSSLHttpClient() {
-
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
-                    }
-            };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            OkHttpClient.Builder builderOkHttp = new OkHttpClient.Builder();
-            builderOkHttp.sslSocketFactory(sslSocketFactory);
-            builderOkHttp.hostnameVerifier((hostname, session) -> {
-                HostnameVerifier hv =
-                        HttpsURLConnection.getDefaultHostnameVerifier();
-                return hv.verify("tvsmapp.com", session)
-                        || hv.verify("tvs-sitecore-stg-csp-391530-cm.azurewebsites.net", session)
-                        || hv.verify("tvs-sitecore-stag-372140-cm.azurewebsites.net", session)
-                        || hv.verify("tvssitecorestagacc.blob.core.windows.net", session);
-            });
-
-            {
-                HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-                httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                builderOkHttp.addInterceptor(httpLoggingInterceptor);
-            }
-
-            return builderOkHttp.build();
-        } catch (KeyManagementException | NoSuchAlgorithmException e) {
-            return null;
-        }
-    }
 
     private OkHttpClient getHttpClient() {
         try {
@@ -361,11 +307,10 @@ public class RestClient {
             OkHttpClient.Builder builderOkHttp = new OkHttpClient.Builder();
             builderOkHttp.connectTimeout(45, TimeUnit.SECONDS);
             builderOkHttp.readTimeout(30, TimeUnit.SECONDS);
-
           {
-                HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-                httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                builderOkHttp.addInterceptor(httpLoggingInterceptor);
+              HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+              logging.level(HttpLoggingInterceptor.Level.BODY);
+              builderOkHttp.addInterceptor(logging);
             }
             builderOkHttp.addNetworkInterceptor(provideCacheInterceptor());
             builderOkHttp.cache(provideCache());

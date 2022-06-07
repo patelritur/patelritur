@@ -4,6 +4,7 @@ import static com.demo.utils.Constants.MODULE_TYPE_LOGIN;
 import static com.demo.utils.Constants.MODULE_TYPE_REGISTER;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +66,7 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
         activityLoginBinding.setLoginrequestmodel(commanRequestModel);
         activityLoginBinding.setHandlers(this);
         activityLoginBinding.setIsregister(true);
+        activityLoginBinding.underlineText.setPaintFlags(activityLoginBinding.underlineText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         callbackManager = CallbackManager.Factory.create();
 
     }
@@ -194,19 +196,24 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         //{"ResponseCode":"103","Descriptions":"OTP has successfully sent.","SessionID":"141","Mobile":"1111111112"} for success response with user exists
         LoginResponseModel loginResponseModel = (LoginResponseModel) response;
-        Utils.showToast(this,loginResponseModel.getDescriptions());
-        if(reqCode==MOBILE_REQ_CODE) {
 
+        if(reqCode==MOBILE_REQ_CODE) {
+            sharedPrefUtils.saveData(Constants.TNC,loginResponseModel.getTNCLink());
             PrintLog.v("",""+loginResponseModel.toString());
             if (loginResponseModel.getResponseCode().equalsIgnoreCase("102")) {
+                Utils.showToast(this,loginResponseModel.getDescriptions());
                 navigateToVerificationCodeActivity(MODULE_TYPE_REGISTER, commanRequestModel.getMobile());
             } else {
+                if(activityLoginBinding.getIsregister())
+                 Utils.showToast(this,getString(R.string.already_user_pin_msg));
                 navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,commanRequestModel.getMobile());
             }
         }
         else if(reqCode==SOCIAL_REQ_CODE)
         {
+            sharedPrefUtils.saveData(Constants.TNC,loginResponseModel.getTNCLink());
             if (loginResponseModel.getResponseCode().equalsIgnoreCase("102")) {
+                Utils.showToast(this,loginResponseModel.getDescriptions());
                 onClickSignup(null);
                 updateUI();
             } else {
@@ -229,6 +236,7 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
         Intent intent = new Intent(this, VerificationCodeActivity.class);
         intent.putExtra(getString(R.string.mobile_number),mobile);
         intent.putExtra(getString(R.string.module_name),moduleName);
+
         sharedPrefUtils.saveData( Constants.MOBILE_NO,activityLoginBinding.edittextMobile.getText().toString());
         NavigateToActivity(intent);
         finish();

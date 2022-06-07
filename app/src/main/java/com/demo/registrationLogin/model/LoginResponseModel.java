@@ -44,6 +44,16 @@ public class LoginResponseModel {
 
     public String Mobile;
 
+    public String getTNCLink() {
+        return TNCLink;
+    }
+
+    public void setTNCLink(String TNCLink) {
+        this.TNCLink = TNCLink;
+    }
+
+    public String TNCLink;
+
     public String OTPStatus;
 
 }

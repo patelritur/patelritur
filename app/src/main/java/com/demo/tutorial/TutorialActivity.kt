@@ -14,7 +14,6 @@ import com.demo.home.model.viewmodel.AppContentViewModel
 import com.demo.home.model.viewmodel.AppContentViewModelFactory
 import com.demo.registrationLogin.LoginActivity
 import com.demo.utils.Constants
-import com.demo.utils.PrintLog
 
 class TutorialActivity : AppCompatActivity() {
     /*val images: IntArray = intArrayOf(R.mipmap.tutorial_one, R.mipmap.tutorial_two, R.mipmap.tutorial_three, R.mipmap.tutorial_four

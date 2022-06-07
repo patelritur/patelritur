@@ -42,9 +42,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private PendingIntent resultPendingIntent;
     private JSONObject json;
     private Call call;
-    public static String token;
-    private boolean isCall;
     private static final int REQUEST_CODE = 12;
+    private boolean isRingtone=false;
+    private SharedPrefUtils sharedPrefUtils;
 
 
     @Override
@@ -59,7 +59,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        sharedPrefUtils = new SharedPrefUtils(getApplicationContext());
         Log.e("remoteMessage", String.valueOf(remoteMessage.getData()));
+        isRingtone=false;
         // {"customerid":"48","demoid":"264","contenturl":"","contentTitle":"Change Demo Status","message":"Your Demo is booked!","notificationtype":"ChangeDemoStatus"}
         if(remoteMessage.getData().get("notificationtype")!=null && (remoteMessage.getData().get("notificationtype").equalsIgnoreCase("AcceptDemoRequest") ||
                 remoteMessage.getData().get("notificationtype").equalsIgnoreCase("AcceptMeetRequest"))){
@@ -71,21 +73,41 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntentWithParentStack(notificationIntent);
-            resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            if(remoteMessage.getData().get("notificationtype").equalsIgnoreCase("AcceptMeetRequest")){
+               sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"Meeting");
+            }
+            else
+                sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"Demo");
 
-            extracted(remoteMessage);
+            sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,remoteMessage.getData().get("demoid"));
+            resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            broadcastNotification(remoteMessage);
             sendPushNotification(getApplicationContext(),remoteMessage.getData().get("message"),remoteMessage.getData().get("contentTitle"));
         }
         else  if(remoteMessage.getData().get("notificationtype")!=null && (remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeDemoStatus") ||
-                remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeMeetingStatus"))){
+                remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeMeetingStatus"))
+                ||remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")
+                || remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")){
+            if(remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")||
+                    remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")){
+                isRingtone=true;
+            }
 
-            if(remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeDemoStatus")) {
+            if(remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeDemoStatus") ||
+                    remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")) {
                 Constants.BOOK_TYPE = "Demo";
                 Constants.BOOKING_ID = remoteMessage.getData().get("demoid");
             }
             else {
                 Constants.BOOK_TYPE = "Meeting";
                 Constants.MEETING_ID = remoteMessage.getData().get("demoid");
+            }
+            if(remoteMessage.getData().get("message").contains("Rejected")||
+            remoteMessage.getData().get("message").contains("rejected")
+            || remoteMessage.getData().get("message").contains("completed")
+            || remoteMessage.getData().get("message").contains("Completed")){
+                sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"null");
+                sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,"null");
             }
 
             notificationIntent = new Intent(getApplicationContext(), HomeActivity.class).
@@ -99,7 +121,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             stackBuilder.addNextIntentWithParentStack(notificationIntent);
             resultPendingIntent =
                     stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            extracted(remoteMessage);
+            broadcastNotification(remoteMessage);
             sendPushNotification(getApplicationContext(), remoteMessage.getData().get("message"), remoteMessage.getData().get("contentTitle"));
         }
         else{
@@ -110,7 +132,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 BaseMessage baseMessage = CometChatHelper.processMessage(new JSONObject(remoteMessage.getData().get("message")));
                 if (baseMessage instanceof Call){
                     call = (Call)baseMessage;
-                    isCall=true;
                 }
 
                 showCallNotifcation();
@@ -121,7 +142,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    private void extracted(RemoteMessage remoteMessage) {
+    private void broadcastNotification(RemoteMessage remoteMessage) {
         Intent notificationBroadcastIntent = new Intent("receiveNotification");
         notificationBroadcastIntent.putExtra("demoid", remoteMessage.getData().get("demoid")).
                 putExtra("notificationtype", remoteMessage.getData().get("notificationtype"));
@@ -143,9 +164,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 getNotification1(context, message, remoteMessage);
             } else {
-                Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Uri defaultSoundUri = Uri.parse(
+                        "android.resource://" +
+                                getApplicationContext().getPackageName() +
+                                "/" +
+                                R.raw.notification_sound);
+
                 NotificationCompat.Builder notificationBuilder;
-                int notificationId = 2;
                 notificationBuilder = new NotificationCompat.Builder(context)
                         .setSmallIcon(icon)
                         .setContentTitle(remoteMessage)
@@ -155,12 +181,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setLargeIcon(bitmap)
                         .setColor(R.color.color_241e61)
                         .setSound(defaultSoundUri)
-                        .setPriority(Notification.PRIORITY_MIN)
+                        .setPriority(Notification.DEFAULT_SOUND)
                         .setContentIntent(resultPendingIntent)
                         .setDefaults(Notification.DEFAULT_LIGHTS | Notification.FLAG_NO_CLEAR);
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(notificationId, notificationBuilder.build());
+                if(isRingtone) {
+                    Notification notification = notificationBuilder.build();
+                    notification.flags |= Notification.FLAG_INSISTENT;
+                    notificationManager.notify(1, notification);
+                }
+                else
+                    notificationManager.notify(1, notificationBuilder.build());
 
             }
 
@@ -180,17 +212,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 R.mipmap.app_icon);
         icon = R.mipmap.notification;
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = Uri.parse(
+                "android.resource://" +
+                        getApplicationContext().getPackageName() +
+                        "/" +
+                        R.raw.notification_sound);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1");
         NotificationManagerCompat notificationManagerCompat =  NotificationManagerCompat.from(this);
-        NotificationChannel notificationChannel = new NotificationChannel("1",
+        @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel("1",
 
                 CHANNEL_ONE_NAME, notificationManagerCompat.IMPORTANCE_HIGH);
         notificationChannel.enableLights(true);
         notificationChannel.setLightColor(Color.RED);
         notificationChannel.setShowBadge(true);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+        AudioAttributes audioAttributes;
+
+        audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .build();
@@ -203,12 +242,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setLargeIcon(bitmap)
                 .setAutoCancel(true)
                 .setColor(R.color.color_241e61)
-                .setSound(defaultSoundUri)
+//                .setSound(defaultSoundUri)
                 .setPriority(Notification.PRIORITY_MIN)
                 .setContentIntent(resultPendingIntent)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-        notificationManagerCompat.notify(1, builder.build());
-
+        if(isRingtone) {
+            Notification notification = builder.build();
+            notification.flags |= Notification.FLAG_INSISTENT;
+            notificationManagerCompat.notify(1, notification);
+        }
+        else
+            notificationManagerCompat.notify(1, builder.build());
 
     }
 
@@ -219,7 +263,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showCallNotifcation() {
 
         try {
-        //    if (isCall)
+            //    if (isCall)
             {
                 NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
 
@@ -233,7 +277,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                         .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                         .build();
-                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
+                @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
                         CHANNEL_ONE_NAME, notificationManagerCompat.IMPORTANCE_HIGH);
                 notificationChannel.enableLights(true);
                 notificationChannel.setLightColor(Color.RED);
@@ -265,8 +309,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     builder.setCustomBigContentView(notificationLayout);
                     builder.setCustomContentView(notificationLayout);
                     builder.setSmallIcon(R.mipmap.app_icon);
-                //    builder.addAction(R.id.decline_incoming, "Decline", PendingIntent.getBroadcast(getApplicationContext(), 1, getCallIntent("Decline"), PendingIntent.FLAG_UPDATE_CURRENT));
-                  //  builder.addAction(R.id.accept_incoming, "Answer", PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, getCallIntent("Answers"), PendingIntent.FLAG_UPDATE_CURRENT));
+                    //    builder.addAction(R.id.decline_incoming, "Decline", PendingIntent.getBroadcast(getApplicationContext(), 1, getCallIntent("Decline"), PendingIntent.FLAG_UPDATE_CURRENT));
+                    //  builder.addAction(R.id.accept_incoming, "Answer", PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, getCallIntent("Answers"), PendingIntent.FLAG_UPDATE_CURRENT));
                 }
                 if (!DemoApp.isForeground) {
                     notificationManagerCompat.notify(2, builder.build());

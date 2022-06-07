@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ import com.demo.home.model.AppContentModel;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
 import com.demo.utils.Constants;
+import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
@@ -31,8 +34,8 @@ import retrofit2.Call;
 
 public class CancelDemoFragment extends Fragment implements ApiResponseListener {
 
-    FragmentCancelDemoBinding fragmentCancelDemoBinding;
-    private CancelReasonAdapter cancelReasonAdapter;
+   private FragmentCancelDemoBinding fragmentCancelDemoBinding;
+    private CancelReasonAdapter cancelReasonAdapter=null;
 
     @Nullable
     @Override
@@ -45,7 +48,7 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
                 if(cancelReasonAdapter.getSelectedReason()!=null)
                 callCancelApi();
                 else
-                    Utils.showToast(getActivity(),"Please select one vaid reason to cancel");
+                    Utils.showToast(getActivity(),"Please select one valid reason to cancel");
             }
         });
 
@@ -78,7 +81,7 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
         AppContentViewModel appContentViewModel = ViewModelProviders.of(this, factory).get(AppContentViewModel.class);
 
         appContentViewModel.getCancelreasonLiveData().observe(requireActivity(), item -> {
-            cancelReasonAdapter = new CancelReasonAdapter(getActivity(), (ArrayList<AppContentModel.Label>) item.getLabels());
+            cancelReasonAdapter = new CancelReasonAdapter( (ArrayList<AppContentModel.Label>) item.getLabels(),this);
             fragmentCancelDemoBinding.recyclerview.setAdapter(cancelReasonAdapter);
             ((HomeActivity) getActivity()).setPeekheight(fragmentCancelDemoBinding.cancelParentLl.getMeasuredHeight());
 
@@ -89,17 +92,30 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         BookingResponseModel registrationResponse = (BookingResponseModel) response;
         if(registrationResponse.getResponseCode().equalsIgnoreCase("106")){
+            new SharedPrefUtils(getActivity()).saveData(Constants.BOOKING_ONGOING,"null");
             Utils.showToast(getActivity(),registrationResponse.getDescriptions());
             getActivity().startActivity(new Intent(getActivity(), HomeActivity.class));
             getActivity().finish();
         }
-        else if(registrationResponse.getResponseCode().equalsIgnoreCase("200")){
+        else if(registrationResponse.getResponseCode().equalsIgnoreCase("200")|| registrationResponse.getResponseCode().equalsIgnoreCase("201")){
+            new SharedPrefUtils(getActivity()).saveData(Constants.BOOKING_ONGOING,"null");
             ((HomeActivity)getActivity()).showFragment(new BookingStatusFragment(true,registrationResponse));
+
+
         }
     }
 
     @Override
     public void onApiError(Call<Object> call, Object response, int reqCode) throws Exception {
 
+    }
+
+    public void checkforDelaerblock(String radioGroup) {
+        if(radioGroup.equalsIgnoreCase("Not the preferred Demo Partner")){
+            fragmentCancelDemoBinding.llCheckbox.setVisibility(View.VISIBLE);
+        }
+        else{
+            fragmentCancelDemoBinding.llCheckbox.setVisibility(View.GONE);
+        }
     }
 }

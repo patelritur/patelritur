@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.demo.home.HomeActivity
 import com.demo.tutorial.TutorialActivity
 import com.demo.utils.Constants
+import com.demo.utils.PrintLog
 import com.demo.utils.SharedPrefUtils
+import com.demo.utils.Utils
 import com.skyfishjy.library.RippleBackground
 
 

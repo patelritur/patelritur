@@ -17,7 +17,8 @@ import com.demo.R;
 import com.demo.databinding.FragmentPersonalisedOptionsBinding;
 import com.demo.home.model.CarSearchResultModel;
 import com.demo.home.model.viewmodel.CarFilterViewModel;
-import com.demo.utils.SharedPrefUtils;
+
+import java.util.ArrayList;
 
 public class PersonalisedCarOptionsFragment extends Fragment {
     private FragmentPersonalisedOptionsBinding fragmentPersonalisedOptionsBinding;
@@ -54,38 +55,50 @@ public class PersonalisedCarOptionsFragment extends Fragment {
                 updateView(view, R.drawable.border_red_rounded_corner, 1);
                 String selectedName = view.getTag().toString();
                 if(pos==0){
-                    if(((HomeActivity)getActivity()).BudgetSelectedId.contains(selectedName)) {
-                        ((HomeActivity)getActivity()).BudgetSelectedId.remove(selectedName);
+                    if(((HomeActivity)getActivity()).budgetSelectedId.contains(selectedName)) {
+                        ((HomeActivity)getActivity()).budgetSelectedId.remove(selectedName);
                         updateView(view, R.drawable.white_border, 0.5f);
 
                     }
                     else
                     {
-                        ((HomeActivity)getActivity()).BudgetSelectedId.add(selectedName);
+                        ((HomeActivity)getActivity()).budgetSelectedId.add(selectedName);
                         view.findViewById(R.id.ll_item_personalised_car).setAlpha(1);
                     }
 
                 }
                 else if(pos==1){
-                    if(((HomeActivity)getActivity()).SegmentSelectedId.contains(selectedName)) {
-                        ((HomeActivity)getActivity()).SegmentSelectedId.remove(selectedName);
+                    if(((HomeActivity)getActivity()).segmentSelectedId.contains(selectedName)) {
+                        ((HomeActivity)getActivity()).segmentSelectedId.remove(selectedName);
                         updateView(view, R.drawable.white_border, 0.5f);
                     }
                     else
                     {
-                        ((HomeActivity)getActivity()).SegmentSelectedId.add(selectedName);
+                        ((HomeActivity)getActivity()).segmentSelectedId.add(selectedName);
                         view.findViewById(R.id.ll_item_personalised_car).setAlpha(1);
                     }
 
                 }
                 else if(pos==2){
-                    if(((HomeActivity)getActivity()).BrandSelectedId.contains(selectedName)) {
-                        ((HomeActivity)getActivity()).BrandSelectedId.remove(selectedName);
+                    if(((HomeActivity)getActivity()).brandSelectedId.contains(selectedName)) {
+                        ((HomeActivity)getActivity()).brandSelectedId.remove(selectedName);
                         updateView(view, R.drawable.white_border, 0.5f);
                     }
                     else
                     {
-                        ((HomeActivity)getActivity()).BrandSelectedId.add(selectedName);
+                        ((HomeActivity)getActivity()).brandSelectedId.add(selectedName);
+                        view.findViewById(R.id.ll_item_personalised_car).setAlpha(1);
+                    }
+
+                }
+                else if(pos==3){
+                    if(((HomeActivity)getActivity()).fuelSelectedId.contains(selectedName)) {
+                        ((HomeActivity)getActivity()).fuelSelectedId.remove(selectedName);
+                        updateView(view, R.drawable.white_border, 0.5f);
+                    }
+                    else
+                    {
+                        ((HomeActivity)getActivity()).fuelSelectedId.add(selectedName);
                         view.findViewById(R.id.ll_item_personalised_car).setAlpha(1);
                     }
 
@@ -106,25 +119,17 @@ public class PersonalisedCarOptionsFragment extends Fragment {
 
     private void callSearchApi() {
         getViewModelStore().clear();
-        String commaseparatedlist = ((HomeActivity)getActivity()).BudgetSelectedId.toString();
-        String commaSeperatedBrandLit = ((HomeActivity)getActivity()).BrandSelectedId.toString();
-        String commmaSeperatedSegmetList = ((HomeActivity)getActivity()).SegmentSelectedId.toString();
 
-        commaseparatedlist
-                = commaseparatedlist.replace("[", "")
-                .replace("]", "")
-                .replace(" ", "");
-        commaSeperatedBrandLit
-                = commaSeperatedBrandLit.replace("[", "")
-                .replace("]", "")
-                .replace(" ", "");
-        commmaSeperatedSegmetList
-                = commmaSeperatedSegmetList.replace("[", "")
-                .replace("]", "")
-                .replace(" ", "");
+       String commaSeperatedBudgetList =  replaceCommaSepratedList(((HomeActivity)getActivity()).budgetSelectedId);
+        String commaSeperatedBrandLit =  replaceCommaSepratedList(((HomeActivity)getActivity()).brandSelectedId);
+        String commmaSeperatedSegmetList =  replaceCommaSepratedList(((HomeActivity)getActivity()).segmentSelectedId);
+        String commmaSeperatedFuelList =  replaceCommaSepratedList(((HomeActivity)getActivity()).fuelSelectedId);
+
         ((HomeActivity)getActivity()).carSearchRequestModel.setBrandFilter(commaSeperatedBrandLit);
         ((HomeActivity)getActivity()).carSearchRequestModel.setSegmentFilter(commmaSeperatedSegmetList);
-        ((HomeActivity)getActivity()).carSearchRequestModel.setPriceFilter(commaseparatedlist);
+        ((HomeActivity)getActivity()).carSearchRequestModel.setPriceFilter(commaSeperatedBudgetList);
+        ((HomeActivity)getActivity()).carSearchRequestModel.setFuelType(commmaSeperatedFuelList);
+
         ((HomeActivity)getActivity()).carSearchRequestModel.setSearchValue("");
         ((HomeActivity)getActivity()).callSearchApi("2",new SearchResultInterface() {
             @Override
@@ -132,6 +137,14 @@ public class PersonalisedCarOptionsFragment extends Fragment {
 
             }
         });
+    }
+
+    private String replaceCommaSepratedList(ArrayList<String> stringArrayList) {
+       String commaseparatedlist
+                = stringArrayList.toString().replace("[", "")
+                .replace("]", "")
+                .replace(" ", "");
+        return commaseparatedlist;
     }
 
 
@@ -158,6 +171,13 @@ public class PersonalisedCarOptionsFragment extends Fragment {
             case 2:
                 fragmentPersonalisedOptionsBinding.textviewTitle.setText(Html.fromHtml("Choose Your <b>Brand</b>"));
                 model.getBrandListData().observe(getViewLifecycleOwner(),item ->{
+                    fragmentPersonalisedOptionsBinding.gridviewPerCar.setAdapter(new PersonalisedCarAdapter(getActivity(), item,pos));
+
+                });
+                break;
+            case 3:
+                fragmentPersonalisedOptionsBinding.textviewTitle.setText(Html.fromHtml("<b>Fuel</b> Options"));
+                model.getFuelListData().observe(getViewLifecycleOwner(),item ->{
                     fragmentPersonalisedOptionsBinding.gridviewPerCar.setAdapter(new PersonalisedCarAdapter(getActivity(), item,pos));
 
                 });

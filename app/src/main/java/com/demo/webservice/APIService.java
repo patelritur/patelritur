@@ -6,6 +6,8 @@ import com.demo.carDetails.model.CarDetailsSpecificationModel;
 import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.faq.model.FAQRequestModel;
 import com.demo.faq.model.FAQResponseModel;
+import com.demo.home.booking.model.AddToFavouriteModel;
+import com.demo.home.booking.model.DirectionsGeocodeResponse;
 import com.demo.home.booking.model.LocationResponse;
 import com.demo.home.booking.model.ReviewRequestModel;
 import com.demo.home.booking.model.BookingAcceptModel;
@@ -16,6 +18,7 @@ import com.demo.home.booking.model.CurrentStatuSModel;
 import com.demo.home.booking.model.LaterOptionModel;
 import com.demo.home.booking.model.MapLocationResponseModel;
 import com.demo.home.booking.model.StatusRequestModel;
+import com.demo.home.booking.model.UpdateStatusRequestModel;
 import com.demo.home.model.AppContentModel;
 import com.demo.home.model.AppRequestModel;
 import com.demo.home.model.CarDealerResponseModel;
@@ -25,7 +28,10 @@ import com.demo.home.model.CarSearchRequestModel;
 import com.demo.home.model.CarSearchResultModel;
 import com.demo.home.model.CarSectionFilterResponse;
 import com.demo.home.model.CategoryResponse;
+import com.demo.home.model.DirectionResults;
 import com.demo.home.model.MenuResponse;
+import com.demo.home.model.ProfileModel;
+import com.demo.home.model.WeatherResposneModel;
 import com.demo.home.profile.model.DemoTripResponseModel;
 import com.demo.home.profile.model.FavoritespecialistModel;
 import com.demo.news.NewsResponseModel;
@@ -51,6 +57,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface APIService {
     @POST("customersingup")
@@ -79,9 +86,20 @@ public interface APIService {
     @POST("upload/vaccinedoc")
     Call<RegistrationResponse> uploadAttachment(@Part MultipartBody.Part File, @Part("UserID")RequestBody userid);
 
+
+    @Multipart
+    @POST("upload/profilepicture")
+    Call<RegistrationResponse> uploadProfilePicture(@Part MultipartBody.Part File, @Part("UserID")RequestBody userid);
+
     @Multipart
     @POST("upload/bookingvoicemessage")
     Call<RegistrationResponse> uploadVoiceMessage(@Part MultipartBody.Part File, @Part("UserID")RequestBody userid,@Part("BookingID")RequestBody bookingid);
+
+    @Multipart
+    @POST("upload/meetingvoicemessage")
+    Call<RegistrationResponse> uploadMeetingVoiceMessage(@Part MultipartBody.Part File, @Part("UserID")RequestBody userid,@Part("MeetingID")RequestBody bookingid);
+
+
 
     @GET("car/filter/price")
     Call<CarFilterResponse> carFilterPrice();
@@ -193,6 +211,10 @@ public interface APIService {
     @POST("favoritespecialist")
     Call<FavoritespecialistModel> getFavouriteSpecialist(@Body FAQRequestModel userId);
 
+    @POST("specialist/add/favorite")
+    Call<RegistrationResponse> addToFavouriteSpecialist(@Body AddToFavouriteModel userId);
+
+
     @POST("latestlaunch")
     Call<LaunchResponseModel> getLaunch(@Body LaunchRequestModel userId);
 
@@ -214,5 +236,29 @@ public interface APIService {
 
     @GET("specialistlocation/{specialist_id}")
     Call<LocationResponse> getSpecialistLocation(@Path("specialist_id") String specialistId);
+
+
+    @POST("customer/location")
+    Call<RegistrationResponse> updateCustomerLocation(@Body StatusRequestModel userId);
+
+    @POST("customer/profile/update")
+    Call<RegistrationResponse> updateProfile(@Body ProfileModel profileModel);
+
+    @POST("specialist/change/meet/status")
+    Call<RegistrationResponse> updateMeetStatus(@Body UpdateStatusRequestModel updateStatusRequestModel);
+
+    @POST("specialist/change/demo/status")
+    Call<RegistrationResponse> updateDemoStatus(@Body UpdateStatusRequestModel updateStatusRequestModel);
+
+
+    @GET("http://api.weatherapi.com/v1/current.json?key=05ee9c8494944a94875171757220401&aqi=no")
+    Call<WeatherResposneModel> getWeatherApi(@Query("q") String location);
+
+    @GET("https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyCUFs0ot4kLDWcYm6ZdoR9Ydgthtk-5Imw")
+    Call<DirectionResults> getRoute(@Query("origin") String origin,@Query("destination") String destination);
+
+    @GET("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCUFs0ot4kLDWcYm6ZdoR9Ydgthtk-5Imw")
+    Call<DirectionsGeocodeResponse> getGeocode(@Query("latlng") String origin);
+
 
 }

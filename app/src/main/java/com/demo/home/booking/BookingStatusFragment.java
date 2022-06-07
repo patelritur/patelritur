@@ -23,6 +23,7 @@ import com.demo.home.booking.model.CurrentStatuSModel;
 import com.demo.home.booking.model.StatusRequestModel;
 import com.demo.utils.Constants;
 import com.demo.utils.PrintLog;
+import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
@@ -57,10 +58,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         layoutStatusDemoBookingBinding = DataBindingUtil.inflate(inflater, R.layout.layout_status_demo_booking,container,false);
         layoutStatusDemoBookingBinding.avi.setIndicator("BallSpinFadeLoaderIndicator");
         layoutStatusDemoBookingBinding.avi.smoothToShow();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("callStatusService");
-        filter.addAction("receiveNotification");
-        getActivity().registerReceiver(br, filter);
+        new SharedPrefUtils(getActivity()).saveData(Constants.LEFT_HOME,false);
 
         return layoutStatusDemoBookingBinding.getRoot();
 
@@ -80,6 +78,17 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
             else
                 callMeetingApi(Constants.MEETING_PLACE_TYPE_ID);
         }
+        layoutStatusDemoBookingBinding.cancel.setOnClickListener(view1 -> {
+            Utils.cancelJob(getActivity());
+            try{
+                getActivity().unregisterReceiver(br);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            getActivity().startActivity(new Intent(getActivity(),HomeActivity.class));
+            getActivity().finishAffinity();
+        });
     }
 
     @Override
@@ -100,7 +109,6 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
                 {
 
                     Utils.cancelJob(getActivity());
-
                     ((HomeActivity) getActivity()).setBehavior(true);
                     ((HomeActivity) getActivity()).showFragment(new BookingConfirmedFragment());
                     try{
@@ -110,9 +118,40 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
                         e.printStackTrace();
                     }
                 }
+                else if(currentStatuSModel.getBookingStatus().equalsIgnoreCase("Not Accepted") && !((HomeActivity)getActivity()).specialistId.equalsIgnoreCase("0")){
+                    Utils.cancelJob(getActivity());
+                    layoutStatusDemoBookingBinding.continueOtherSpecialists.setVisibility(View.VISIBLE);
+                    layoutStatusDemoBookingBinding.avi.setVisibility(View.GONE);
+                    layoutStatusDemoBookingBinding.continueOtherSpecialists.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((HomeActivity)getActivity()).specialistId="0";
+                            layoutStatusDemoBookingBinding.continueOtherSpecialists.setVisibility(View.GONE);
+                            layoutStatusDemoBookingBinding.avi.setVisibility(View.VISIBLE);
+                            if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
+                                callBookingApi(Constants.BOOKING_PLACE_TYPE_ID);
+                            else
+                                callMeetingApi(Constants.MEETING_PLACE_TYPE_ID);
+
+                        }
+                    });
+
+
+                }
                 else if(currentStatuSModel.getBookingStatus().equalsIgnoreCase("Not Accepted")){
                     Utils.cancelJob(getActivity());
+                    layoutStatusDemoBookingBinding.continueOtherSpecialists.setVisibility(View.VISIBLE);
+                    layoutStatusDemoBookingBinding.cancel.setVisibility(View.GONE);
+                    layoutStatusDemoBookingBinding.continueOtherSpecialists.setText("Back to Home");
                     layoutStatusDemoBookingBinding.avi.setVisibility(View.GONE);
+                    layoutStatusDemoBookingBinding.continueOtherSpecialists.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getActivity().startActivity(new Intent(getActivity(),HomeActivity.class));
+                            getActivity().finishAffinity();
+
+                        }
+                    });
                     try{
                         getActivity().unregisterReceiver(br);
                     }
@@ -144,9 +183,48 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         layoutStatusDemoBookingBinding.setImageUrl(bookingResponseModel.getBookingMessageImage());
         if(bookingResponseModel.getResponseCode().equalsIgnoreCase("200")){
             maxCount = Integer.parseInt(bookingResponseModel.meetingWaitingMsgCount);
+            count=1;
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("callStatusService");
+            filter.addAction("receiveNotification");
+            getActivity().registerReceiver(br, filter);
             Utils.scheduleJob(getActivity(), Integer.parseInt(bookingResponseModel.BookingWaitingTimeInMins),maxCount);
             ((HomeActivity)getActivity()).setBehavior(false);
+            layoutStatusDemoBookingBinding.availableSpecialist.setText(bookingResponseModel.getLocationlist().size()>1?bookingResponseModel.getLocationlist().size()+" Demo Specialists available":bookingResponseModel.getLocationlist().size()+" Demo Specialist available");
             ((HomeActivity) getActivity()).locationUtils.setLocationOnMapForDealer(bookingResponseModel.getLocationlist());
+
+        }
+        else if(bookingResponseModel.getResponseCode().equalsIgnoreCase("201") && !((HomeActivity)getActivity()).specialistId.equalsIgnoreCase("0")){
+            layoutStatusDemoBookingBinding.continueOtherSpecialists.setVisibility(View.VISIBLE);
+            layoutStatusDemoBookingBinding.avi.setVisibility(View.GONE);
+            layoutStatusDemoBookingBinding.continueOtherSpecialists.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((HomeActivity)getActivity()).specialistId="0";
+                    layoutStatusDemoBookingBinding.continueOtherSpecialists.setVisibility(View.GONE);
+                    layoutStatusDemoBookingBinding.avi.setVisibility(View.VISIBLE);
+                    if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
+                        callBookingApi(Constants.BOOKING_PLACE_TYPE_ID);
+                    else
+                        callMeetingApi(Constants.MEETING_PLACE_TYPE_ID);
+
+                }
+            });
+
+        }
+        else if(bookingResponseModel.getResponseCode().equalsIgnoreCase("201") ){
+            layoutStatusDemoBookingBinding.continueOtherSpecialists.setVisibility(View.VISIBLE);
+            layoutStatusDemoBookingBinding.cancel.setVisibility(View.GONE);
+            layoutStatusDemoBookingBinding.continueOtherSpecialists.setText("Back to Home");
+            layoutStatusDemoBookingBinding.avi.setVisibility(View.GONE);
+            layoutStatusDemoBookingBinding.continueOtherSpecialists.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().startActivity(new Intent(getActivity(),HomeActivity.class));
+                    getActivity().finishAffinity();
+
+                }
+            });
 
         }
     }
@@ -163,6 +241,9 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         bookingRequestModel.setMeetDate(Constants.DATE);
         bookingRequestModel.setMeetBookingType(Constants.MEETING_TYPE_ID);
         bookingRequestModel.setMeetTypeID(meet_type_id);
+        bookingRequestModel.setUserAddress(Constants.DEMOADDRESS);
+        bookingRequestModel.setAddressType(Constants.DEMOLOCATIONTYPE);
+        if(Constants.VIRTUAL_MEET_TYPE!=null)
         bookingRequestModel.setMeetCallType(Constants.VIRTUAL_MEET_TYPE);
         if(((HomeActivity)getActivity()).getLocation()!=null) {
             bookingRequestModel.setLatitude(String.valueOf(((HomeActivity)getActivity()).getLocation().getLatitude()));
@@ -175,6 +256,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
 
         }
         bookingRequestModel.setCarID(Constants.CARID);
+        bookingRequestModel.setSpecialistID(((HomeActivity)getActivity()).specialistId);
         Call objectCall = RestClient.getApiService().meetingBooking(bookingRequestModel);
         RestClient.makeApiRequest(getActivity(), objectCall, this, 1, true);
 
@@ -190,6 +272,9 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         bookingRequestModel.setDemoTypeID(menuID);
         bookingRequestModel.setDemoBookingType(Constants.BOOKING_TYPE_ID);
         bookingRequestModel.setCarID(Constants.CARID);
+        bookingRequestModel.setUserAddress(Constants.DEMOADDRESS);
+        bookingRequestModel.setAddressType(Constants.DEMOLOCATIONTYPE);
+        bookingRequestModel.setSpecialistID(((HomeActivity)getActivity()).specialistId);
         if(((HomeActivity)getActivity()).getLocation()!=null) {
             bookingRequestModel.setLatitude(String.valueOf(((HomeActivity)getActivity()).getLocation().getLatitude()));
             bookingRequestModel.setLongitude(String.valueOf(((HomeActivity)getActivity()).getLocation().getLongitude()));
@@ -210,6 +295,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            PrintLog.v("onReceive");
             if(intent.getAction().equalsIgnoreCase("receiveNotification")){
                 Utils.cancelJob(getActivity());
 

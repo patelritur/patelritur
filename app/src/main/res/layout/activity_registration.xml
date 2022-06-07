@@ -33,7 +33,7 @@
 
                <androidx.appcompat.widget.AppCompatEditText
                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
-                   android:inputType="textFilter"
+                   android:inputType="textFilter|textCapSentences"
                    android:id="@+id/edittext_fname"
                    android:imeOptions="actionNext"
                    style="@style/register_input"
@@ -50,7 +50,7 @@
 
                <androidx.appcompat.widget.AppCompatEditText
                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
-                   android:inputType="textFilter"
+                   android:inputType="textFilter|textCapSentences"
                    android:backgroundTint="@color/color_3d3d3d"
 
                    android:id="@+id/edittext_lname"
@@ -134,6 +134,8 @@
                    android:text="@string/i_agree_to_the_tnc"/>
 
                <androidx.appcompat.widget.AppCompatTextView
+                   android:onClick="@{handlers::onClicktnc}"
+
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    style="@style/registration_condition"

@@ -23,14 +23,26 @@ import com.demo.databinding.ItemVirtualmeetBinding;
 import com.demo.databinding.LayoutDemoPlaceBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.booking.ScheduleBookingFragment;
+import com.demo.home.booking.ScheduleLaterFragment;
 import com.demo.home.model.MenuResponse;
 import com.demo.home.model.viewmodel.VirtualMeetingPlaceViewModel;
 import com.demo.utils.Constants;
+import com.demo.utils.Utils;
 import com.demo.utils.comectChat.utils.CallUtils;
 
 public class VirtualMeetFragment extends Fragment {
 
+    private  boolean preBook;
     private LayoutDemoPlaceBinding layoutDemoPlaceBinding;
+    private String bookDate;
+
+    public VirtualMeetFragment(String bookDate) {
+        this.bookDate = bookDate;
+        if (bookDate!=null && Utils.DateAfter(bookDate)) {
+            preBook = true;
+        }
+
+    }
 
     @Nullable
     @Override
@@ -64,9 +76,11 @@ public class VirtualMeetFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-
                     Constants.VIRTUAL_MEET_TYPE=item.getDemomenu().get(finalI).getMenuName().split(" ")[0];
+                    if(!preBook)
                     ((HomeActivity)getActivity()).showScheduleFragment(new ScheduleBookingFragment());
+                    else
+                        ((HomeActivity)getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
                 }
             });
             layoutDemoPlaceBinding.llPlacetype.addView(itemDemoPlaceBinding.getRoot());

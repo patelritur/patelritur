@@ -123,7 +123,7 @@ public class DemoTripsListAdapter extends RecyclerView.Adapter<DemoTripsListAdap
             @Override
             public void onClick(View v) {
                 if(dataModel.getDemoStatus().contains("Upcoming")){
-                    if(dataModel.getDemoType().equalsIgnoreCase("Meeting")){
+                    if(dataModel.getDemoType().equalsIgnoreCase("Meeting") || dataModel.getDemoType().equalsIgnoreCase("Virtual Meet")){
                         Constants.BOOK_TYPE = "Meeting";
                         Constants.MEETING_ID = dataModel.getDemoID();
                     }

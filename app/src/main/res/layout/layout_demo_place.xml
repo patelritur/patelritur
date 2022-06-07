@@ -12,7 +12,6 @@
         app:behavior_hideable="false"
         android:orientation="vertical"
         android:layout_margin="@dimen/margin_20"
-        android:background="@drawable/behavior_rounded_corner"
         >
 
         <View
@@ -41,7 +40,7 @@
                 android:letterSpacing="0.01"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:text="@string/where_do_yo_want_the_demo"/>
+                />
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

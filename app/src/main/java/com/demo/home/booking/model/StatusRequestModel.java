@@ -8,6 +8,16 @@ public class StatusRequestModel {
     public String UserID;
     public String BookingID;
 
+    public String getSpeed() {
+        return CarSpeed;
+    }
+
+    public void setSpeed(String speed) {
+        CarSpeed = speed;
+    }
+
+    public String CarSpeed="40";
+
     public String getMeetingID() {
         return MeetingID;
     }

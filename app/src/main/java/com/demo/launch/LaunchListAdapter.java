@@ -2,12 +2,12 @@ package com.demo.launch;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,16 +15,18 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.demo.R;
 import com.demo.carDetails.ScreenSlidePageFragment;
+import com.demo.carDetails.ScreenSlidePageVideoFragment;
 import com.demo.carDetails.ScreenSlidePagerAdapter;
-import com.demo.carDetails.model.CarDetailResponse;
 import com.demo.databinding.ItemLaunchBinding;
-import com.demo.utils.PrintLog;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.demo.home.HomeActivity;
 import com.demo.launch.model.LaunchResponseModel;
+import com.demo.utils.Constants;
+import com.demo.utils.Utils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class LaunchListAdapter extends RecyclerView.Adapter<LaunchListAdapter.ViewHolder> {
 
@@ -75,26 +77,56 @@ public class LaunchListAdapter extends RecyclerView.Adapter<LaunchListAdapter.Vi
         holder.bind(dataModel);
 
         setUpViewPager(dataModel,holder);
-        if(parentPosition==0){
-            holder.itemRowBinding.bookDemo.setText("Prebook Demo");
+
+        if (Utils.DateAfter(dataModel.preBookingStartDate)) {
+            holder.itemRowBinding.bookDemo.setText("Prebook A Demo");
+            holder.itemRowBinding.bookMeeting.setText("Prebook A Meeting");
         }
-        else
-            holder.itemRowBinding.bookDemo.setText("BOOK A DEMO");
+        else {
+            holder.itemRowBinding.bookDemo.setText("Book A Demo");
+            holder.itemRowBinding.bookMeeting.setText("Book A Meeting");
+        }
+
+        holder.itemRowBinding.bookMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    Constants.BOOK_TYPE="Meeting";
+                    startBooking(dataModel);
+
+                }
+
+            }
+        });
 
         holder.itemRowBinding.bookDemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                {
+                    Constants.BOOK_TYPE="Demo";
+                    startBooking(dataModel);
+
+                }
 
             }
         });
 
     }
+
+    private void startBooking(LaunchResponseModel.Latestlaunchlist dataModel) {
+        Constants.CARID = dataModel.carID;
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.putExtra("comeFrom", "launch");
+        intent.putExtra("bookdate", parseDateToddMMyyyy(dataModel.preBookingStartDate));
+        context.startActivity(intent);
+    }
+
     private void setUpViewPager(LaunchResponseModel.Latestlaunchlist carDetailResponse, ViewHolder holder) {
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(fragmentManager);
         screenSlidePagerAdapter.count =carDetailResponse.getBannerlist().size();
         screenSlidePagerAdapter.setBannerlist(carDetailResponse);
         holder.itemRowBinding.pager.setAdapter(screenSlidePagerAdapter);
-        holder.itemRowBinding.pager.setOffscreenPageLimit(carDetailResponse.getBannerlist().size());
+        holder.itemRowBinding.pager.setOffscreenPageLimit(1);
         holder.itemRowBinding.intoTabLayout.setupWithViewPager(holder.itemRowBinding.pager);
         holder.itemRowBinding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -104,7 +136,7 @@ public class LaunchListAdapter extends RecyclerView.Adapter<LaunchListAdapter.Vi
 
             @Override
             public void onPageSelected(int position) {
-                ((ScreenSlidePageFragment) screenSlidePagerAdapter.getFragment(position)).updateView(carDetailResponse.getBannerlist().get(position).getBannerType());
+                ((ScreenSlidePageVideoFragment) screenSlidePagerAdapter.getFragment()).updateView(carDetailResponse.getBannerlist().get(position).getBanner(),carDetailResponse.getBannerlist().get(position).getBannerType());
             }
 
             @Override
@@ -115,6 +147,24 @@ public class LaunchListAdapter extends RecyclerView.Adapter<LaunchListAdapter.Vi
 
     }
 
+
+    public String parseDateToddMMyyyy(String time) {
+        String inputPattern = "MM/dd/yyyy hh:mm:ss a";
+        String outputPattern = "dd/MM/yyyy hh:mm:ss a";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

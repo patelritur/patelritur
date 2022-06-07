@@ -14,9 +14,11 @@ import androidx.fragment.app.Fragment;
 import com.demo.R;
 import com.demo.databinding.FragmentFeedbackBinding;
 import com.demo.home.HomeActivity;
+import com.demo.home.booking.model.AddToFavouriteModel;
 import com.demo.home.booking.model.ReviewRequestModel;
 import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
+import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
@@ -28,10 +30,11 @@ public class BookingFeedbackFragment extends Fragment implements ApiResponseList
     private BookingFeedbackFragment context;
     private FragmentFeedbackBinding fragmentFeedbackBinding;
     private ReviewRequestModel reviewRequestModel = new ReviewRequestModel();
-    private String specialistName;
+    private String specialistName,specialistId;
 
-    public BookingFeedbackFragment(String specialistName) {
+    public BookingFeedbackFragment(String specialistName, String specialistId) {
        this.specialistName = specialistName;
+       this.specialistId = specialistId;
 
     }
 
@@ -78,6 +81,10 @@ public class BookingFeedbackFragment extends Fragment implements ApiResponseList
         fragmentFeedbackBinding.skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(fragmentFeedbackBinding.favouriteSpecialistcheckbox.isChecked()){
+                    callAddToFavouriteSpecialistApi();
+                }
+                else
                 startHomeActivity();
             }
         });
@@ -92,12 +99,34 @@ public class BookingFeedbackFragment extends Fragment implements ApiResponseList
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         RegistrationResponse registrationResponse = (RegistrationResponse) response;
-        if(registrationResponse.getResponseCode().equalsIgnoreCase("105")){
-            Utils.showToast(getActivity(),registrationResponse.getDescriptions());
+        if(reqCode==1) {
+            if(fragmentFeedbackBinding.favouriteSpecialistcheckbox.isChecked()){
+                callAddToFavouriteSpecialistApi();
+            }
+            else{
+                if (registrationResponse.getResponseCode().equalsIgnoreCase("105")) {
+                    Utils.showToast(getActivity(), registrationResponse.getDescriptions());
+                    startHomeActivity();
+                } else
+                    Utils.showToast(getActivity(), registrationResponse.getDescriptions());
+            }
+
+        }
+        else if(reqCode==2){
+            if (registrationResponse.getResponseCode().equalsIgnoreCase("200")) {
+                Utils.showToast(getActivity(), registrationResponse.getDescriptions());
+            }
             startHomeActivity();
         }
-        else
-            Utils.showToast(getActivity(),registrationResponse.getDescriptions());
+    }
+
+    private void callAddToFavouriteSpecialistApi() {
+        AddToFavouriteModel reviewRequestModel = new AddToFavouriteModel();
+        reviewRequestModel.setUserID(new SharedPrefUtils(getActivity()).getStringData(Constants.USER_ID));
+        reviewRequestModel.setSpecialListID(specialistId);
+        Call objectCall = RestClient.getApiService().addToFavouriteSpecialist(reviewRequestModel);
+        RestClient.makeApiRequest(getActivity(), objectCall, context, 2, true);
+
     }
 
     @Override

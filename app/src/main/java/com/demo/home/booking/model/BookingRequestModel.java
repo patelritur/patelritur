@@ -8,11 +8,41 @@ public class BookingRequestModel {
     public String Latitude;
     public String Longitude;
 
+
+    public String UserAddress;
+
+    public String getUserAddress() {
+        return UserAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        UserAddress = userAddress;
+    }
+
+    public String getAddressType() {
+        return AddressType;
+    }
+
+    public void setAddressType(String addressType) {
+        AddressType = addressType;
+    }
+
+    public String AddressType;
     public String MeetTypeID;
     public String MeetDate;
     public String MeetTime;
     public String MeetBookingType;
-    public String MeetCallType;
+    public String MeetCallType="";
+
+    public String getSpecialistID() {
+        return SpecialistID;
+    }
+
+    public void setSpecialistID(String specialistID) {
+        SpecialistID = specialistID;
+    }
+
+    public String SpecialistID;
 
     public String getMeetTypeID() {
         return MeetTypeID;

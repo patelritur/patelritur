@@ -32,4 +32,9 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="color_33241e61">#33241e61</color>
     <color name="color_241e61">#241e61</color>
+    <color name="simpletooltip_background">@color/color_241e61</color>
+    <color name="simpletooltip_text">@color/white</color>
+    <color name="simpletooltip_arrow">@color/color_241e61</color>
+    <color name="color_474747">#474747</color>
+
 </resources>

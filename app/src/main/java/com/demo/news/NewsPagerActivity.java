@@ -17,7 +17,9 @@ import com.demo.databinding.ActivityNewsPagerBinding;
 import com.demo.faq.model.FAQRequestModel;
 import com.demo.home.HomeActivity;
 import com.demo.home.profile.MyDemoActivity;
+import com.demo.home.profile.MyProfileActivity;
 import com.demo.utils.Constants;
+import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
@@ -83,6 +85,9 @@ public class NewsPagerActivity extends BaseActivity implements ApiResponseListen
             case R.id.tv_logout:
                 performLogout();
                 break;
+            case R.id.see_profile:
+                startActivity(new Intent(this, MyProfileActivity.class));
+                break;
         }
     }
 
@@ -133,4 +138,19 @@ public class NewsPagerActivity extends BaseActivity implements ApiResponseListen
         super.onBackPressed();
         finish();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(homeModel!=null)
+            if(sharedPrefUtils.getStringData(Constants.IMAGE_FILE)!=null && !sharedPrefUtils.getStringData(Constants.IMAGE_FILE).equalsIgnoreCase("IMAGE_FILE")) {
+                PrintLog.v("homemodel mydeo");
+                homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
+                activityNewsBinding.setHomeModel(homeModel);
+                activityNewsBinding.executePendingBindings();
+
+            }
+    }
+
 }

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.demo.carDetails.model.CarDetailResponse;
 import com.demo.launch.model.LaunchResponseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public  class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -14,8 +15,8 @@ public  class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
     public int count;
     private CarDetailResponse carDetailResponse;
     private LaunchResponseModel.Latestlaunchlist bannerlist;
-    private List<CarDetailResponse.colorlist> colorlist;
     private ScreenSlidePageFragment screenSlidePageFragment;
+    private ScreenSlidePageVideoFragment screenSlidePageVideoFragment;
 
 
     public ScreenSlidePagerAdapter(FragmentManager fragmentManager) {
@@ -25,6 +26,10 @@ public  class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
 
 
+    public ScreenSlidePageVideoFragment getFragment(){
+
+        return screenSlidePageVideoFragment;
+    }
     public ScreenSlidePageFragment getFragment(int position){
 
         return screenSlidePageFragment;
@@ -36,15 +41,17 @@ public  class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
             screenSlidePageFragment = ScreenSlidePageFragment.newInstance(carDetailResponse.getCardetail().getCarbanner().get(position));
             return screenSlidePageFragment;
         }
-        else if(colorlist!=null)
-            return  ScreenSlidePageFragment.newInstance(colorlist.get(position).getColorImage());
         else {
             if(bannerlist.getBannerlist().get(position).getBannerType().equalsIgnoreCase("Image"))
-                 screenSlidePageFragment =  ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position).getBanner());
-            else {
-                screenSlidePageFragment=  ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position));
+            {
+                screenSlidePageFragment = ScreenSlidePageFragment.newInstance(bannerlist.getBannerlist().get(position));
+                return screenSlidePageFragment;
             }
-            return screenSlidePageFragment;
+            else{
+                 screenSlidePageVideoFragment = ScreenSlidePageVideoFragment.newInstance(bannerlist.getBannerlist().get(position));
+                return screenSlidePageVideoFragment;
+            }
+
         }
 
     }
@@ -65,7 +72,5 @@ public  class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
-    public void setColorList(List<CarDetailResponse.colorlist> colorlist) {
-        this.colorlist = colorlist;
-    }
+
 }

@@ -69,10 +69,11 @@ public class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<Str
                 LatLng position = new LatLng(lat, lng);
                 if(j==0){    // Get distance from the list
                    String distance = (String)point.get("distance");
+                    map.setText("("+distance+") away");
                     continue;
                 }else if(j==1){ // Get duration from the list
                   String  duration = (String)point.get("duration");
-                  map.setText(duration);
+
                     PrintLog.v("==path"+duration);
                     continue;
                 }

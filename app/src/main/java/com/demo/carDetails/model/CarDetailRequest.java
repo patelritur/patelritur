@@ -13,8 +13,17 @@ public class CarDetailRequest {
     */
 
     public String UserID;
-    public String Latitude;
-    public String Longitude;
+    public String Latitude="0.0";
+    public String Longitude="0.0";
+    public String StateName;
+
+    public String getStateName() {
+        return StateName;
+    }
+
+    public void setStateName(String stateName) {
+        StateName = stateName;
+    }
 
     public String getUserID() {
         return UserID;

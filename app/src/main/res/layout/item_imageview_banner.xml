@@ -10,11 +10,19 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_margin="@dimen/margin_20">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:textColor="@color/color_241e61"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:id="@+id/award_year"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:paddingStart="@dimen/margin_15"
-            android:paddingEnd="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:detailImage="@{imageUrl}"

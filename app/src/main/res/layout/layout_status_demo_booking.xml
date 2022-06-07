@@ -15,6 +15,11 @@
             type="java.lang.String" />
 
     </data>
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <androidx.appcompat.widget.LinearLayoutCompat
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/parent_ll"
@@ -68,15 +73,35 @@
             app:homeOptionsImage="@{imageUrl}"
             android:layout_width="wrap_content"
             android:layout_height="180dp"/>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginBottom="@dimen/margin_20"
+            android:id="@+id/available_specialist"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="normal"
+            android:textColor="#393939"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="3.5sp"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:id="@+id/cancel"
+            android:text="Cancel"
             style="@style/redButton"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_red_deep_rounded_corner"
+            android:text="Continue with other Specialists"
+            android:visibility="gone"
+            android:fontFamily="@font/montserrat_semibold"
+            android:id="@+id/continue_other_specialists"
+            android:padding="@dimen/margin_10"
             android:textColor="@color/color_241e61"/>
         <com.demo.utils.customviews.AVLoadingIndicatorView
             android:id="@+id/avi"
@@ -89,5 +114,6 @@
             />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

@@ -20,6 +20,7 @@ import com.demo.home.booking.BookingFeedbackFragment;
 import com.demo.home.profile.model.DemoTripResponseModel;
 import com.demo.home.profile.model.FavoritespecialistModel;
 import com.demo.utils.Constants;
+import com.demo.utils.PrintLog;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class FavouriteSpecialistsListAdapter extends RecyclerView.Adapter<Favour
     }
 
     public FavouriteSpecialistsListAdapter(Context con,FavouriteSpecialistFragment context, ArrayList<FavoritespecialistModel.Favoritespecialist> carDealerModelsList) {
-       this.con = con;
+        this.con = con;
         this.context = context;
         dataModelList = carDealerModelsList;
     }
@@ -73,6 +74,28 @@ public class FavouriteSpecialistsListAdapter extends RecyclerView.Adapter<Favour
             @Override
             public void onClick(View v) {
                 ((FavouriteSpecialistFragment)context).showFragment(new SpecialistFeedbackFragment(dataModel.getSpecialistName(),dataModel.getSpecialistID()));
+            }
+        });
+        holder.itemRowBinding.takeademo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constants.BOOK_TYPE = "Demo";
+                Intent intent = new Intent(con,HomeActivity.class);
+                intent.putExtra("comeFrom","favourite");
+                intent.putExtra("specialistId",dataModel.getSpecialistID());
+                PrintLog.v("spe ada"+dataModel.getSpecialistID());
+                con.startActivity(intent);
+            }
+        });
+        holder.itemRowBinding.bookameeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constants.BOOK_TYPE = "Meeting";
+                Intent intent = new Intent(con,HomeActivity.class);
+                intent.putExtra("comeFrom","favourite");
+                intent.putExtra("specialistId",dataModel.getSpecialistID());
+                PrintLog.v("spe ada"+dataModel.getSpecialistID());
+                con.startActivity(intent);
             }
         });
         holder.itemRowBinding.contact.setOnClickListener(new View.OnClickListener() {

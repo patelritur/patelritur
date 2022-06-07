@@ -10,93 +10,121 @@
             name="specialistName"
             type="String" />
     </data>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent_ll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <View style="@style/drawer"/>
-    <TextView
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_bold"
-        android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#393939"
-        android:letterSpacing="0.01"
-        android:lineSpacingExtra="3.5sp"
-        android:gravity="center_horizontal"
-        android:text="@string/hope_enjoy_demo"/>
-    <View style="@style/divider"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_bold"
-        android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="#323643"
-        android:gravity="center_horizontal"
-        android:text='@{"Please leave a Rating for "+specialistName}'
-        tools:text="Please leave a Rating for Ajay"/>
-
-    <RatingBar
-        android:theme="@style/RatingBar"
-        android:rating="@={reviewRequest.reviewRating}"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="1"
-        style="@style/Widget.AppCompat.RatingBar"/>
-    <androidx.appcompat.widget.AppCompatEditText
-        android:text="@={reviewRequest.reviewDesc}"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_20"
-        android:paddingBottom="@dimen/margin_40"
-        android:paddingStart="@dimen/margin_10"
-        android:paddingTop="@dimen/margin_10"
-        android:hint="@string/write_incase_any_feedback"
-        android:gravity="start"
-        android:textColor="#818181"
-        android:maxLines="4"
-        android:maxLength="60"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:fontFamily="@font/montserrat_semibold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/small_rounded_corner"/>
-
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:padding="@dimen/margin_10"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent_ll"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/submit"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View style="@style/drawer"/>
+        <TextView
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#393939"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="3.5sp"
+            android:gravity="center_horizontal"
+            android:text="@string/hope_enjoy_demo"/>
+        <View style="@style/divider"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#323643"
+            android:gravity="center_horizontal"
+            android:text='@{"Please leave a Rating for "+specialistName}'
+            tools:text="Please leave a Rating for Ajay"/>
+
+        <RatingBar
+            android:theme="@style/RatingBar"
+            android:rating="@={reviewRequest.reviewRating}"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/redButton"
-            android:layout_marginTop="0dp"
-            android:text="@string/submit"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_marginStart="@dimen/margin_10"
-            android:layout_marginTop="0dp"
-            android:id="@+id/skip"
+            android:numStars="5"
+            android:stepSize="1"
+            style="@style/Widget.AppCompat.RatingBar"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:text="@={reviewRequest.reviewDesc}"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/margin_20"
+            android:paddingBottom="@dimen/margin_40"
+            android:paddingStart="@dimen/margin_10"
+            android:paddingTop="@dimen/margin_10"
+            android:hint="@string/write_incase_any_feedback"
+            android:gravity="start"
+            android:textColor="#818181"
+            android:maxLines="4"
+            android:maxLength="60"
+            tools:text=" behind VTC, Urjanagar 1, Kudasan, Gandhinagar, Gujarat 382421"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/redButton"
-            android:text="@string/skip"/>
+            android:background="@drawable/small_rounded_corner"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:checked="true"
+                android:id="@+id/favourite_specialistcheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ></androidx.appcompat.widget.AppCompatCheckBox>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:textStyle="normal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#3f3f3f"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="3sp"
+                android:gravity="center_horizontal"
+                android:text='@{"Add "+specialistName+" to Favorite"}'
+
+                tools:text="Add Ajay to Favorite"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:padding="@dimen/margin_10"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/submit"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/redButton"
+                android:layout_marginTop="0dp"
+                android:text="@string/submit"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginTop="0dp"
+                android:id="@+id/skip"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/redButton"
+                android:text="@string/skip"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-</androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -18,32 +18,84 @@
 
         <View
             style="@style/drawer"
-           />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
-            android:fontFamily="@font/montserrat_semibold"
-            android:paddingLeft="@dimen/margin_20"
-            android:text="@={homeModel.greetingMessage}"
-            android:textColor="#c0c0c0"
-            style="@android:style/TextAppearance.DeviceDefault.Small"
-            android:layout_marginBottom="5dp"
-            android:textStyle="normal"
-            tools:text="GOOD EVENING" />
-
-        <TextView
+            />
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_regular"
-            android:paddingLeft="@dimen/margin_20"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:text="@{homeModel.fName.concat(@string/space).concat(homeModel.lName)}"
-            android:textColor="#2b2b2b"
-            style="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textStyle="bold"
-            tools:text="JAY ANAND" />
+            android:weightSum="2"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:orientation="vertical">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:paddingLeft="@dimen/margin_20"
+                    android:text="@={homeModel.greetingMessage}"
+                    android:textColor="#c0c0c0"
+                    style="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:layout_marginBottom="5dp"
+                    android:textStyle="normal"
+                    tools:text="GOOD EVENING" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:paddingLeft="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:text="@{homeModel.fName.concat(@string/space).concat(homeModel.lName)}"
+                    android:textColor="#2b2b2b"
+                    style="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textStyle="bold"
+                    tools:text="JAY ANAND" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/weather_ll"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_weather_sun_shape"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textStyle="normal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#333333"
+                    android:text="@{homeModel.temp_c}"
+                    tools:text="14"/>
+                <TextView
+                    android:textAllCaps="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textStyle="normal"
+                    android:textSize="@dimen/textsize_10"
+                    android:textColor="#333333"
+                    android:text="@{homeModel.dayOfWeek}"
+                    tools:text="TUE"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <View
             android:layout_width="match_parent"

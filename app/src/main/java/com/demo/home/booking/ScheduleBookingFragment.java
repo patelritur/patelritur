@@ -67,13 +67,18 @@ public class ScheduleBookingFragment extends Fragment {
                 public void onClick(View v) {
                     Constants.BOOKING_TYPE_ID = item.getLabels().get(finalI1).getLabelName();
                     Constants.MEETING_TYPE_ID = item.getLabels().get(finalI1).getLabelName();
+                    Constants.DEMOADDRESS = "";
+                    Constants.DEMOLOCATIONTYPE = "Home";
                     if(finalI1!=2) {
                         Constants.TIME="";
                         Constants.DATE="";
+
                         ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
                     }
                     else
                     {
+                        Constants.BOOKING_TYPE_ID = "Schedule";
+                        Constants.MEETING_TYPE_ID = "Schedule";
                         ((HomeActivity) getActivity()).showFragment(new ScheduleLaterFragment());
                     }
                 }
@@ -82,7 +87,6 @@ public class ScheduleBookingFragment extends Fragment {
             layoutScheduleBinding.llPlacetype.setOrientation(LinearLayoutCompat.HORIZONTAL);
             layoutScheduleBinding.llPlacetype.addView(itemDemoPlaceBinding.getRoot());
         }
-        PrintLog.v("EEE"+layoutScheduleBinding.getRoot().getMeasuredHeight());
     }
 
     public int getHeight( ) {

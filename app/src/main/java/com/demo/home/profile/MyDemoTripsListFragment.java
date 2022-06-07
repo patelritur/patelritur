@@ -141,6 +141,9 @@ public class MyDemoTripsListFragment extends Fragment implements ApiResponseList
             //{"ResponseCode":"104","Descriptions":"My demo trips not present currently."}
             if(demoTripResponseModel.getResponseCode().equalsIgnoreCase("104")){
                 Utils.showToast(getActivity(),demoTripResponseModel.getDescriptions());
+                fragmentMyDemoTripsBinding.recyclerviewMydemotrips.removeAllViews();
+                fragmentMyDemoTripsBinding.recyclerviewMydemotrips.setAdapter(new DemoTripsListAdapter(getContext(), null,getChildFragmentManager()));
+
                 Intent intent = new Intent("calldemocount");
                 intent.putExtra("count", "0");
                 getActivity().sendBroadcast(intent);

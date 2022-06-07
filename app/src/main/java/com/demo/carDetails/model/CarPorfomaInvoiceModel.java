@@ -2,7 +2,11 @@ package com.demo.carDetails.model;
 
 import androidx.annotation.Keep;
 
+import com.demo.utils.PrintLog;
+import com.demo.utils.Utils;
 import com.google.gson.annotations.SerializedName;
+
+import java.text.DecimalFormat;
 
 @Keep
 public class CarPorfomaInvoiceModel
@@ -42,12 +46,47 @@ public class CarPorfomaInvoiceModel
 
     @Keep
     public class Porfomainvoice{
+        public String getFinalPrice() {
+            String convertedFinalPrice =new DecimalFormat("0.00").format((Float.parseFloat(onRoadPrice))/100000);
+            return convertedFinalPrice; //one hundred and sixty-five
+
+        }
+
+        public void setFinalPrice(String finalPrice) {
+            this.finalPrice = finalPrice;
+        }
+
+        public String finalPrice;
         @SerializedName("CarName")
         public String carName;
         @SerializedName("CarModel")
         public String carModel;
         @SerializedName("Brand")
         public String brand;
+
+        @SerializedName("PriceStateName")
+        public String PriceStateName;
+
+        public String getPriceStateName() {
+            return PriceStateName;
+        }
+
+        public void setPriceStateName(String priceStateName) {
+            PriceStateName = priceStateName;
+        }
+
+        public String getPriceEffectiveDate() {
+           return Utils.DateFormater( PriceEffectiveDate.split(" ")[0]);
+        }
+
+        public void setPriceEffectiveDate(String priceEffectiveDate) {
+            PriceEffectiveDate = priceEffectiveDate;
+        }
+
+        @SerializedName("PriceEffectiveDate")
+        public String PriceEffectiveDate;
+
+
 
         public String getCarName() {
             return carName;
@@ -90,7 +129,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getExShowroomPrice() {
-            return exShowroomPrice;
+            return String.valueOf(Math.round(Float.parseFloat(exShowroomPrice)));
         }
 
         public void setExShowroomPrice(String exShowroomPrice) {
@@ -98,7 +137,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getCashDiscount() {
-            return cashDiscount;
+            return String.valueOf(Math.round(Float.parseFloat(cashDiscount)));
         }
 
         public void setCashDiscount(String cashDiscount) {
@@ -106,7 +145,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getExchangeBonus() {
-            return exchangeBonus;
+            return String.valueOf(Math.round(Float.parseFloat(exchangeBonus)));
         }
 
         public void setExchangeBonus(String exchangeBonus) {
@@ -114,7 +153,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getCorporateGovEmpOffer() {
-            return corporateGovEmpOffer;
+            return String.valueOf(Math.round(Float.parseFloat(corporateGovEmpOffer)));
         }
 
         public void setCorporateGovEmpOffer(String corporateGovEmpOffer) {
@@ -122,7 +161,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getInsurance() {
-            return insurance;
+            return String.valueOf(Math.round(Float.parseFloat(insurance)));
         }
 
         public void setInsurance(String insurance) {
@@ -130,39 +169,33 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getExtendedWarranty() {
-            return extendedWarranty;
+            return String.valueOf(Math.round(Float.parseFloat(extendedWarranty)));
         }
 
         public void setExtendedWarranty(String extendedWarranty) {
             this.extendedWarranty = extendedWarranty;
         }
 
-        public String getrTO() {
-            return rTO;
-        }
 
-        public void setrTO(String rTO) {
-            this.rTO = rTO;
-        }
 
         public String getBasicKit() {
-            return basicKit;
+            return String.valueOf(Math.round(Float.parseFloat(basicKit)));
         }
 
         public void setBasicKit(String basicKit) {
             this.basicKit = basicKit;
         }
 
-        public String getmCDParkingCharges() {
-            return mCDParkingCharges;
+        public String getMcdParkingCharges() {
+            return String.valueOf(Math.round(Float.parseFloat(mcdParkingCharges)));
         }
 
         public void setmCDParkingCharges(String mCDParkingCharges) {
-            this.mCDParkingCharges = mCDParkingCharges;
+            this.mcdParkingCharges = mCDParkingCharges;
         }
 
         public String getFastag() {
-            return fastag;
+            return String.valueOf(Math.round(Float.parseFloat(fastag)));
         }
 
         public void setFastag(String fastag) {
@@ -170,7 +203,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getTotalBenefits() {
-            return totalBenefits;
+            return String.valueOf(Math.round(Float.parseFloat(totalBenefits)));
         }
 
         public void setTotalBenefits(String totalBenefits) {
@@ -178,7 +211,7 @@ public class CarPorfomaInvoiceModel
         }
 
         public String getOnRoadPrice() {
-            return onRoadPrice;
+            return String.format("%.2f", Float.parseFloat(onRoadPrice)).toString();
         }
 
         public void setOnRoadPrice(String onRoadPrice) {
@@ -209,12 +242,23 @@ public class CarPorfomaInvoiceModel
         public String insurance;
         @SerializedName("ExtendedWarranty")
         public String extendedWarranty;
+
+        public String getRto() {
+            return String.valueOf(Math.round(Float.parseFloat(rto)));
+        }
+
+        public void setRto(String rto) {
+            this.rto = rto;
+        }
+
         @SerializedName("RTO")
-        public String rTO;
+        public String rto;
         @SerializedName("BasicKit")
         public String basicKit;
+
+
         @SerializedName("MCDParkingCharges")
-        public String mCDParkingCharges;
+        public String mcdParkingCharges;
         @SerializedName("Fastag")
         public String fastag;
         @SerializedName("TotalBenefits")

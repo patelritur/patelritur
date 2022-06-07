@@ -27,7 +27,8 @@
             android:layout_width="@dimen/margin_60"
             android:layout_height="60dp"
             android:layout_marginEnd="@dimen/margin_10"
-            app:roundHomeOptionsImage="@{homeModel.image}" />
+            android:src="@drawable/profimg"
+            app:roundProfileOptionsImage="@{homeModel.image}" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
@@ -55,8 +56,10 @@
                 tools:text="Jay Anand" />
 
             <TextView
+                android:onClick="@{homeModel::onClick}"
+                android:id="@+id/see_profile"
                 android:layout_width="match_parent"
-                android:layout_height="17dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:fontFamily="@font/montserrat_regular"
                 android:text="@string/see_profile"

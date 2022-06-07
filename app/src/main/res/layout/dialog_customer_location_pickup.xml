@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="#00000000"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_hideable="false"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_margin="@dimen/margin_20"
+            android:background="@drawable/behavior_rounded_corner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="#d8d8d8" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/back_icon"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title_text"
+                    android:text="@string/select_demo_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textColor="#393939"
+                    android:letterSpacing="0.01"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/pick_current_location"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginEnd="@dimen/margin_20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardMaxElevation="@dimen/margin_10"
+                        app:cardCornerRadius="@dimen/margin_10"
+                        app:cardElevation="@dimen/margin_5">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#363636"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:paddingStart="@dimen/margin_20"
+                            android:paddingTop="@dimen/margin_15"
+                            android:paddingBottom="@dimen/margin_15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Current Location Address"
+                           />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/enter_location"
+                        android:layout_marginEnd="@dimen/margin_20"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="@dimen/margin_10"
+                        app:cardElevation="@dimen/margin_5">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#363636"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:paddingStart="@dimen/margin_20"
+                            android:paddingEnd="@dimen/margin_20"
+                            android:paddingTop="@dimen/margin_15"
+                            android:paddingBottom="@dimen/margin_15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Enter Manual Address"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/customer_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_20"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:background="@drawable/border_grey_rounded_corner"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:gravity="start"
+                        android:hint="@string/demo_location"
+                        android:maxLength="200"
+                        android:maxLines="4"
+                        android:paddingStart="@dimen/margin_10"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_40"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#818181"
+                        android:minLines="3"
+                        tools:text=" behind VTC, Urjanagar 1, Kudasan, Gandhinagar, Gujarat 382421" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radiogroup"
+                    style="@style/redButton"
+                    android:text="@string/submit"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

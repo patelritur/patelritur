@@ -84,7 +84,7 @@ public class HorizontalPicker extends LinearLayout implements HorizontalPickerLi
         });
     }
 
-    public void init(int daystoplus) {
+    public void init(int daystoplus,DateTime dateTime) {
         inflate(getContext(), R.layout.horizontal_picker, this);
         rvDays = (HorizontalPickerRecyclerView) findViewById(R.id.rvDays);
         int DEFAULT_DAYS_TO_PLUS = daystoplus;
@@ -111,6 +111,7 @@ public class HorizontalPicker extends LinearLayout implements HorizontalPickerLi
         //mDayOfWeekTextColor = mDayOfWeekTextColor == -1 ? getColor(R.color.color_3d3d3d) : mDayOfWeekTextColor;
         //mUnselectedDayTextColor = mUnselectedDayTextColor == -1 ? getColor(R.color.color_3d3d3d) : mUnselectedDayTextColor;
         rvDays.init(
+                dateTime,
                 getContext(),
                 finalDays,
                 finalOffset,

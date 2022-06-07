@@ -25,14 +25,37 @@ public class CarFilterViewModel extends AndroidViewModel {
     private LiveData<CarFilterResponse> budgetListData;
     private LiveData<CarFilterResponse> segmentListData;
     private LiveData<CarFilterResponse> brandListData;
+    private LiveData<CarFilterResponse> fuelListData;
 
     public CarFilterViewModel(@NonNull Application application) {
         super(application);
         budgetListData =getBudgetList(application);
         segmentListData =getSegmentList(application);
         brandListData =getBrandList(application);
+        fuelListData = getFuelList(application);
 
 
+    }
+
+    private LiveData<CarFilterResponse> getFuelList(Application application) {
+        final MutableLiveData<CarFilterResponse> data = new MutableLiveData<>();
+        Call objectCall = RestClient.getApiService().fuelFilter();
+
+        objectCall.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                PrintLog.v("","=====onApiResponse");
+                data.postValue((CarFilterResponse) response.body());
+                fuelListData = data;
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+
+            }
+        });
+
+        return data;
     }
 
     private LiveData<CarFilterResponse> getBrandList(Application application) {
@@ -100,6 +123,15 @@ public class CarFilterViewModel extends AndroidViewModel {
         }
         return brandListData;
     }
+
+
+    public LiveData<CarFilterResponse> getFuelListData() {
+        if (fuelListData == null) {
+            fuelListData = new MutableLiveData<>();
+        }
+        return fuelListData;
+    }
+
 
     public LiveData<CarFilterResponse> getBudgetList(Context context) {
         final MutableLiveData<CarFilterResponse> data = new MutableLiveData<>();

@@ -1,5 +1,6 @@
 package com.demo.binding;
 
+import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.ImageView;
@@ -12,8 +13,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.demo.R;
+import com.demo.utils.Constants;
 import com.demo.utils.PrintLog;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,7 +36,6 @@ public class BindingAdapter {
 
     @androidx.databinding.BindingAdapter("app:homeOptionsImage")
     public static void loadImage(AppCompatImageView view, String imageUrl) {
-        PrintLog.v("00"+imageUrl);
         Glide.with(view.getContext())
                 .load(imageUrl)
                 .into(view);
@@ -47,16 +49,46 @@ public class BindingAdapter {
     }
 
 
+    @androidx.databinding.BindingAdapter("app:roundProfileOptionsImage")
+    public static void loadProfileRoundedImage(AppCompatImageView view, String imageUrl) {
+        if(imageUrl==null)
+            return;
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.user_default);
+        requestOptions.circleCrop();
+        if(imageUrl.contains("http")){
+            Glide.with(view.getContext())
+                    .load(imageUrl)
+                    .apply(requestOptions)
+                    .into(view);
+        }
+        else{
+            File file = new File(imageUrl);
+            Uri imageUri = Uri.fromFile(file);
+            Glide.with(view.getContext())
+                    .load(imageUri)
+                    .apply(requestOptions)
+                    .into(view);
+        }
+
+
+
+
+    }
+
     @androidx.databinding.BindingAdapter("app:roundHomeOptionsImage")
     public static void loadRoundedImage(AppCompatImageView view, String imageUrl) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.user_default);
         requestOptions.circleCrop();
-
         Glide.with(view.getContext())
                 .load(imageUrl)
                 .apply(requestOptions)
                 .into(view);
+
+
+
+
     }
 
     @androidx.databinding.BindingAdapter("app:carRating")

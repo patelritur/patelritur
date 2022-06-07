@@ -23,39 +23,34 @@
                 layout="@layout/header_layout"
                 bind:homeModel="@{homeModel}" />
 
-            <!--  <RelativeLayout
-                  android:id="@+id/rl_top"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentTop="true"
-                  android:orientation="horizontal"
-                  android:padding="10dp">
-
-                  <androidx.appcompat.widget.AppCompatImageView
-                      android:layout_width="110dp"
-                      android:layout_height="36dp"
-                      android:layout_centerInParent="true"
-                      android:src="@mipmap/demo_logo" />
-
-                  <androidx.appcompat.widget.AppCompatImageView
-                      android:id="@+id/iv_notification"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentEnd="true"
-                      android:layout_centerVertical="true"
-                      android:background="?selectableItemBackgroundBorderless"
-                      android:onClick="@{homeModel::onClick}"
-                      android:padding="@dimen/margin_10"
-                      android:src="@drawable/ic_notifications" />
-              </RelativeLayout>-->
 
             <fragment
+                android:layout_marginTop="-20dp"
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_below="@+id/rl_top" />
 
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_above="@+id/ll_bottom"
+                    android:id="@+id/booking_ongoing"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:layout_height="wrap_content"
+                    android:text="Booking Is Ongoing >"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_marginEnd="@dimen/margin_20"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/green_600"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_bold"
+                    />
             <include
                 android:id="@+id/ll_bottom"
                 layout="@layout/bottom_menu"
@@ -78,7 +73,7 @@
                 layout="@layout/layout_demo_options"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/ll_bottom"
+                android:layout_above="@id/booking_ongoing"
                 android:layout_below="@id/ll_name"
                 android:background="@color/black"
                 bind:homeModel="@{homeModel}" />

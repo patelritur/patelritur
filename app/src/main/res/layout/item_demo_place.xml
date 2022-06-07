@@ -35,10 +35,11 @@
                 android:layout_width="@dimen/margin_25"
                 android:layout_gravity="center_vertical"
                 android:layout_height="@dimen/margin_25"
+                android:src="@drawable/ic_download"
                 app:homeOptionsImage="@{menuModel.MenuIcon}"
                 />
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_margin="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -47,10 +48,14 @@
                     android:textColor="#363636"
                     android:fontFamily="@font/montserrat_bold"
                     android:autoSizeTextType="uniform"
-                    android:maxLines="1"
-                    android:autoSizeMinTextSize="10sp"
-                    android:autoSizeStepGranularity="2sp"
+                    android:maxLines="2"
+                    android:minLines="2"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    tools:text="At dealership \n sdsd"
+                    android:autoSizeMinTextSize="16sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_vertical"
                     android:text="@{menuModel.MenuName}"
                     android:layout_height="wrap_content"/>
                 <androidx.appcompat.widget.AppCompatTextView

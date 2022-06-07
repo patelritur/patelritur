@@ -7,6 +7,15 @@ public class CarSearchRequestModel {
     public String UserID = "";
     public String Latitude = "";
     public String Longitude = "";
+    public String SpecialistID="0";
+
+    public String getSpecialistID() {
+        return SpecialistID;
+    }
+
+    public void setSpecialistID(String specialistID) {
+        SpecialistID = specialistID;
+    }
 
     public String getLatitude() {
         return Latitude;

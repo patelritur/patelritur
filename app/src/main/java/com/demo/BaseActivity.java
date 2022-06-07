@@ -3,6 +3,7 @@ package com.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -26,10 +27,12 @@ import com.demo.registrationLogin.LoginActivity;
 import com.demo.utils.ClickHandlers;
 import com.demo.utils.Constants;
 import com.demo.utils.NotificationUtils;
+import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
 
     public SharedPrefUtils sharedPrefUtils;
     public HomeModel homeModel;
-    private List<AppContentModel.Label> label;
 
 
     @Override
@@ -48,6 +50,9 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
         homeModel.setfName(sharedPrefUtils.getStringData(Constants.FNAME));
         homeModel.setlName(sharedPrefUtils.getStringData(Constants.LNAME));
         homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE));
+        if(sharedPrefUtils.getStringData(Constants.IMAGE_FILE)!=null && !sharedPrefUtils.getStringData(Constants.IMAGE_FILE).equalsIgnoreCase("IMAGE_FILE")) {
+            homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
+        }
         homeModel.setGreetingMessage(Utils.getGreetingMessage(this));
     }
 
@@ -57,7 +62,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
         AppContentViewModel appContentViewModel = ViewModelProviders.of(this, factory).get(AppContentViewModel.class);
 
         appContentViewModel.getMenuLiveData().observe(this, item -> {
-            this.label = item.getLabels();
             menuRecyclerview.setAdapter(new HomeMenuAdapter(this, (ArrayList<AppContentModel.Label>) item.getLabels()));
 
 
@@ -117,4 +121,14 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(homeModel!=null)
+        if(sharedPrefUtils.getStringData(Constants.IMAGE_FILE)!=null && !sharedPrefUtils.getStringData(Constants.IMAGE_FILE).equalsIgnoreCase("IMAGE_FILE")) {
+            PrintLog.v("homemodel");
+            homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
+        }
+    }
 }

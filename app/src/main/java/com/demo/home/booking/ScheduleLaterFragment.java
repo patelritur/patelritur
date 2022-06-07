@@ -26,6 +26,8 @@ import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,7 +39,18 @@ import java.util.Date;
 import retrofit2.Call;
 
 public class ScheduleLaterFragment extends Fragment implements ApiResponseListener {
-    FragmentScheduleDateBinding fragmentScheduleDateBinding;
+    private FragmentScheduleDateBinding fragmentScheduleDateBinding;
+    private String bookDate;
+
+
+    public ScheduleLaterFragment(String bookDate) {
+        this.bookDate = bookDate;
+
+    }
+
+    public ScheduleLaterFragment() {
+
+    }
 
     @Nullable
     @Override
@@ -52,6 +65,7 @@ public class ScheduleLaterFragment extends Fragment implements ApiResponseListen
                 try {
                     Date date =  simpleDateFormat.parse(Constants.DATE+" "+Constants.TIME);
                     if(date.compareTo( Calendar.getInstance().getTime())>0){
+
                         ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
                     }
                     else
@@ -93,16 +107,40 @@ public class ScheduleLaterFragment extends Fragment implements ApiResponseListen
 
     }
 
+    private void getDate(String bookDate) {
+        DateFormat dateFormat = new SimpleDateFormat("dd MMM");
+        DateFormat dateFormat1 = new SimpleDateFormat("YYYY");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String text = "<font color=#393939>Prebooking, </font>";
+        String text1 = null;
+        try {
+            text1 = "<font color=#cc0029>"+dateFormat.format(simpleDateFormat.parse(bookDate))+"</font>";
+            String text2 = "<font color=#393939>"+" "+dateFormat1.format(simpleDateFormat.parse(bookDate))+"</font>";
+            fragmentScheduleDateBinding.todayDate.setText(Html.fromHtml(text+text1+text2));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         LaterOptionModel laterOptionModel = (LaterOptionModel)response;
-        getDate();
-        fragmentScheduleDateBinding.horizontalDatepicker.init(Integer.parseInt(laterOptionModel.getLaterbookingoption().getNoDaysForBooking()));
-        fragmentScheduleDateBinding.horizontalDatepicker.setDate(new DateTime());
+
+
+       if(bookDate!=null) {
+           getDate(bookDate);
+           fragmentScheduleDateBinding.horizontalDatepicker.init(Integer.parseInt(laterOptionModel.getLaterbookingoption().getNoDaysForBooking()),new DateTime().parse(bookDate,DateTimeFormat.forPattern("dd/MM/yyyy hh:mm:ss a")));
+           fragmentScheduleDateBinding.horizontalDatepicker.setDate(new DateTime().parse(bookDate, DateTimeFormat.forPattern("dd/MM/yyyy hh:mm:ss a")));
+       } else {
+           getDate();
+           fragmentScheduleDateBinding.horizontalDatepicker.init(Integer.parseInt(laterOptionModel.getLaterbookingoption().getNoDaysForBooking()),new DateTime());
+           fragmentScheduleDateBinding.horizontalDatepicker.setDate(new DateTime());
+       }
         setTimeSlot(laterOptionModel);
     }
+
 
     private void setTimeSlot(LaterOptionModel laterOptionModel) {
         ArrayList<String> timeSlotList = new Time().getNextTime(laterOptionModel.getLaterbookingoption().getBookingStartTime(),laterOptionModel.getLaterbookingoption().getBookingEndTime());

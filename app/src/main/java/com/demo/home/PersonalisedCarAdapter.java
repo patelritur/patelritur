@@ -51,12 +51,17 @@ public class PersonalisedCarAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ItemPersonalisedCarOptionsBinding itemPersonalisedCarOptionsBinding = DataBindingUtil.inflate(inflater,R.layout.item_personalised_car_options,viewGroup,false);
         itemPersonalisedCarOptionsBinding.getRoot().setLayoutParams(new GridView.LayoutParams(size, ViewGroup.LayoutParams.WRAP_CONTENT));
-        if(this.position==0)
+        if(this.position==0 || this.position==3)
             itemPersonalisedCarOptionsBinding.imageviewFilterIcon.setVisibility(View.GONE);
         if(carFilterResponse.getPricefilter()!=null) {
             itemPersonalisedCarOptionsBinding.name.setText(carFilterResponse.getPricefilter().get(position).FilterName);
             itemPersonalisedCarOptionsBinding.getRoot().setTag(carFilterResponse.getPricefilter().get(position).FilterValue);
-        } else{
+        }else if(this.position==3){
+            itemPersonalisedCarOptionsBinding.name.setText(carFilterResponse.getFilter().get(position).FilterName);
+            itemPersonalisedCarOptionsBinding.getRoot().setTag(carFilterResponse.getFilter().get(position).FilterName);
+
+        }
+        else{
             itemPersonalisedCarOptionsBinding.name.setText(carFilterResponse.getFilter().get(position).FilterName);
             itemPersonalisedCarOptionsBinding.getRoot().setTag(carFilterResponse.getFilter().get(position).FilterID);
             Glide.with(context)
@@ -67,18 +72,24 @@ public class PersonalisedCarAdapter extends BaseAdapter
         switch (this.position)
         {
             case 0:
-                if(((HomeActivity)context).BudgetSelectedId.contains(  carFilterResponse.getPricefilter().get(position).FilterValue)){
+                if(((HomeActivity)context).budgetSelectedId.contains(  carFilterResponse.getPricefilter().get(position).FilterValue)){
                     updateView(itemPersonalisedCarOptionsBinding);
                 }
                 break;
             case 1:
-                if(((HomeActivity)context).SegmentSelectedId.contains( carFilterResponse.getFilter().get(position).FilterID)){
+                if(((HomeActivity)context).segmentSelectedId.contains( carFilterResponse.getFilter().get(position).FilterID)){
                     updateView((ItemPersonalisedCarOptionsBinding) itemPersonalisedCarOptionsBinding);
 
                 }
                 break;
             case 2:
-                if(((HomeActivity)context).BrandSelectedId.contains( carFilterResponse.getFilter().get(position).FilterID)){
+                if(((HomeActivity)context).brandSelectedId.contains( carFilterResponse.getFilter().get(position).FilterID)){
+                    updateView((ItemPersonalisedCarOptionsBinding) itemPersonalisedCarOptionsBinding);
+
+                }
+                break;
+            case 3:
+                if(((HomeActivity)context).fuelSelectedId.contains( carFilterResponse.getFilter().get(position).FilterName)){
                     updateView((ItemPersonalisedCarOptionsBinding) itemPersonalisedCarOptionsBinding);
 
                 }

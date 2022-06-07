@@ -15,6 +15,7 @@ import com.demo.databinding.ActivityRewardsBinding;
 import com.demo.faq.model.FAQRequestModel;
 import com.demo.rewards.s.model.RewardsResponseModel;
 import com.demo.utils.Constants;
+import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;

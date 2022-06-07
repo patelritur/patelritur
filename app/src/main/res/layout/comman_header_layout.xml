@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-<data>
-    <import type="android.view.View"/>
-    <variable
-        name="headermodel"
-        type="com.demo.registrationLogin.model.HeaderModel" />
-</data>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="headermodel"
+            type="com.demo.registrationLogin.model.HeaderModel" />
+    </data>
     <androidx.appcompat.widget.LinearLayoutCompat
 
         android:layout_width="match_parent"
@@ -23,20 +23,31 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:src="@{headermodel.secondImage}"
-            tools:src="@mipmap/enter_verification_code"
             android:layout_width="209dp"
             android:layout_height="151dp"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:text="@{headermodel.title}"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_30"
-            android:visibility="@{headermodel.title!=null? View.VISIBLE : View.GONE}"
-            android:layout_marginBottom="@dimen/margin_10"
-            tools:text="@string/confirm_password"
+            android:layout_marginBottom="@dimen/margin_10">
 
-            style="@style/page_header"
-            />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="@{headermodel.title}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{headermodel.title!=null? View.VISIBLE : View.GONE}"
+                tools:text="@string/enter_pin"
+                style="@style/page_header"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+              android:visibility="gone"
+                android:id="@+id/tootlip_imageview"
+                android:src="@drawable/ic_baseline_info_24"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

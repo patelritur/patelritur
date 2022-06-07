@@ -45,7 +45,7 @@
 
 
             <com.demo.utils.customviews.AdjustingViewPager
-                android:id="@+id/intro_pager"
+                android:id="@+id/filter_pager"
                 android:nestedScrollingEnabled="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

@@ -18,15 +18,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 
 import com.cometchat.pro.helpers.Logger;
 import com.demo.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,6 +40,12 @@ public class Utils {
      * @param view    the view
      * @param context the context
      */
+    static final String[] tensNames = { "", " ten", " twenty", " thirty", " forty",
+            " fifty", " sixty", " seventy", " eighty", " ninety" };
+
+    static final String[] numNames = { "", " one", " two", " three", " four", " five",
+            " six", " seven", " eight", " nine", " ten", " eleven", " twelve", " thirteen",
+            " fourteen", " fifteen", " sixteen", " seventeen", " eighteen", " nineteen" };
     public static void setFocusedPinBg(EditText view, Context context) {
         ColorStateList colorStateList = ColorStateList.valueOf(context.getColor(R.color.color_241e61));
         ViewCompat.setBackgroundTintList(view, colorStateList);
@@ -98,9 +106,6 @@ public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-    }
-    public static void showToastComingSoon(Context context) {
-        Toast.makeText(context,"Coming Soon",Toast.LENGTH_LONG).show();
     }
 
     public static boolean isValidEmail(String email) {
@@ -204,4 +209,110 @@ public class Utils {
         }
         return true;
     }
+
+    public static String getDayOfWeek() {
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+// 3 letter name form of the day
+        return (new SimpleDateFormat("EE", Locale.ENGLISH).format(date.getTime()));
+    }
+
+    public static long getNextTime(int format) {
+        Calendar date = Calendar.getInstance();
+        System.out.println("Current Date and TIme : " + date.getTime());
+        long timeInSecs = date.getTimeInMillis();
+        Date afterAdding10Mins = new Date(timeInSecs + (format * 1000));
+
+        return afterAdding10Mins.getTime();
+
+    }
+    public static String DateFormater (String date)
+    {
+        SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat("dd/MM/yyyy");  //format of the date which you send as parameter(if the date is like 08-Aug-2016 then use dd-MMM-yyyy)
+        String s = "";
+        try {
+            Date dt = sdf.parse(date);
+            sdf = new SimpleDateFormat("dd-MMM-YY");
+            s = sdf.format(dt);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public static boolean DateAfter(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date strDate = null;
+        try {
+            strDate = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return strDate.after(new Date());
+    }
+
+    public static String EnglishNumberToWords (String number){
+
+        {
+            String twodigitword="";
+            String word="";
+            String[] HTLC = {"", "Hundred", "Thousand", "Lakh", "Crore"}; //H-hundread , T-Thousand, ..
+            int split[]={0,2, 3, 5, 7,9};
+            String[] temp=new String[split.length];
+            boolean addzero=true;
+            int len1=number.length();
+            if (len1>split[split.length-1]) { System.out.println("Error. Maximum Allowed digits "+ split[split.length-1]);
+                System.exit(0);
+            }
+            for (int l=1 ; l<split.length; l++ )
+                if (number.length()==split[l] ) addzero=false;
+            if (addzero==true) number="0"+number;
+            int len=number.length();
+            int j=0;
+            //spliting & putting numbers in temp array.
+            while (split[j]<len)
+            {
+                int beg=len-split[j+1];
+                int end=beg+split[j+1]-split[j];
+                temp[j]=number.substring(beg , end);
+                j=j+1;
+            }
+
+            for (int k=0;k<j;k++)
+            {
+                twodigitword=ConvertOnesTwos(temp[k]);
+                if (k>=1){
+                    if (twodigitword.trim().length()!=0) word=twodigitword+" " +HTLC[k] +" "+word;
+                }
+                else word=twodigitword ;
+            }
+            return (word);
+        }
+
+
+    }
+
+
+
+    private static String ConvertOnesTwos(String t)
+    {
+        final String[] ones ={"", "One", "Two", "Three", "Four", "Five","Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve","Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        final String[] tens = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty","Ninety"};
+
+        String word="";
+        int num=Integer.parseInt(t);
+        if (num%10==0) word=tens[num/10]+" "+word ;
+        else if (num<20) word=ones[num]+" "+word ;
+        else
+        {
+            word=tens[(num-(num%10))/10]+word ;
+            word=word+" "+ones[num%10] ;
+        }
+        return word;
+    }
+
+
 }

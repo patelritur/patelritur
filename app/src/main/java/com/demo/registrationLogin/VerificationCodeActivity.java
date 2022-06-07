@@ -6,11 +6,13 @@ import static com.demo.utils.Constants.USER_TYPE;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -37,8 +39,8 @@ import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 import retrofit2.Call;
 
 public class VerificationCodeActivity extends BaseActivity implements ApiResponseListener {
@@ -121,6 +123,22 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         enterVerificationCodeBinding.enterPassword.setVisibility(View.VISIBLE);
         HeaderModel headerModel = new HeaderModel();
         headerModel.setSecondImage(R.drawable.ic_verification);
+        Drawable img = getResources().getDrawable(R.drawable.ic_baseline_info_24);
+        img.setBounds(0, 0, 60, 60);
+        enterVerificationCodeBinding.commanHeaderLayout.tootlipImageview.setVisibility(View.VISIBLE);
+        enterVerificationCodeBinding.commanHeaderLayout.tootlipImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SimpleTooltip.Builder(VerificationCodeActivity.this)
+                        .anchorView(enterVerificationCodeBinding.commanHeaderLayout.tootlipImageview)
+                        .text("Password")
+                        .gravity(Gravity.BOTTOM)
+                        .animated(false)
+                        .transparentOverlay(true)
+                        .build()
+                        .show();
+            }
+        });
         headerModel.setTitle(getString(R.string.enter_pin));
         headerModel.setButtonText(getString(R.string.proceed));
         headerModel.setBottomText(getString(R.string.forgot_pin));
@@ -311,6 +329,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                 sharedPrefUtils.saveData(Constants.EMAIL,pinResponseModel.getUsersInfo().getEmail());
                 sharedPrefUtils.saveData(Constants.IMAGE,pinResponseModel.getUsersInfo().getUserProfileImagel());
                 sharedPrefUtils.saveData(Constants.ISVACCINATED,pinResponseModel.getUsersInfo().getIsVaccinated());
+                sharedPrefUtils.saveData(Constants.ADDRESS,pinResponseModel.getUsersInfo().getAddress());
                 NotificationUtils.setUpFCMNotifiction(this,pinResponseModel.getUsersInfo().getUserID()+"","Add");
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

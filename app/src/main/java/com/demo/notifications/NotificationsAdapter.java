@@ -63,11 +63,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.itemRowBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dataModel.getNotification().equalsIgnoreCase("AcceptMeetRequest") || dataModel.getNotification().equalsIgnoreCase("ChangeMeetingStatus")){
+                if(dataModel.getNotification().equalsIgnoreCase("AcceptMeetRequest") || dataModel.getNotification().equalsIgnoreCase("ChangeMeetingStatus")
+                || dataModel.getNotification().equalsIgnoreCase("SpecialistMeetVoiceRecording") ){
                     Constants.BOOK_TYPE = "Meeting";
                     Constants.MEETING_ID = dataModel.getNotificationUrlID();
                 }
-                else if(dataModel.getNotification().equalsIgnoreCase("AcceptDemoRequest") || dataModel.getNotification().equalsIgnoreCase("ChangeDemoStatus")){
+                else if(dataModel.getNotification().equalsIgnoreCase("AcceptDemoRequest")
+                        || dataModel.getNotification().equalsIgnoreCase("SpecialistDemoVoiceRecording") || dataModel.getNotification().equalsIgnoreCase("ChangeDemoStatus")){
                     Constants.BOOK_TYPE = "Demo";
                     Constants.BOOKING_ID = dataModel.getNotificationUrlID();
                 }

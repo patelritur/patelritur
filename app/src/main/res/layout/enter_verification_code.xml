@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:id="@+id/parent_ll"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
         <FrameLayout
@@ -23,6 +24,7 @@
             android:visibility="gone">
         </FrameLayout>
         <include layout="@layout/comman_header_layout"
+            android:id="@+id/comman_header_layout"
             bind:headermodel="@{headermodel}" >
         </include>
         <androidx.appcompat.widget.AppCompatEditText

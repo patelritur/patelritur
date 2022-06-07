@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false"/>
@@ -91,6 +93,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".utils.comectChat.call_manager.CometChatStartCallActivity" />
+        <activity android:name=".home.profile.MyProfileActivity" />
+        <activity android:name=".registrationLogin.TncWebiewActivity"
+            android:noHistory="true"/>
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA7Q-gn8GliPXURZP95eS-ggR3FhvvC6o8" />
@@ -114,6 +119,15 @@
         <service android:name=".utils.statusJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <receiver android:name=".utils.CallNotificationAction" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
     </application>
 </manifest>

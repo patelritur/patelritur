@@ -10,167 +10,177 @@
             name="isregister"
             type="java.lang.Boolean" />
     </data>
-    <androidx.appcompat.widget.LinearLayoutCompat
-
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!-- <androidx.fragment.app.FragmentContainerView
-             android:id="@+id/fragment_container_view"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:visibility="gone"
-             />-->
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="@color/white"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:src="@drawable/ic_registration"
-                android:layout_width="match_parent"
-                android:layout_height="223dp"/>
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_marginTop="@dimen/margin_40"
-                android:layout_width="110dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="@dimen/margin_30"
-                android:src="@mipmap/demo_logo"/>
-
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_title"
-                android:text="@{isregister ? @string/new_user : @string/already_a_user}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                tools:text="Login"
-                style="@style/page_header"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edittext_mobile"
-            android:layout_margin="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/mobile_number"
-            android:fontFamily="@font/montserrat_regular"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:backgroundTint="@color/color_66030303"
-            android:inputType="number"
-            android:maxLength="10"
-            android:textStyle="normal"
-            android:letterSpacing="-0.02"
-            android:textColor="@color/color_030303"
-            android:text="@={loginrequestmodel.mobile}"
-            android:textColorHint="@color/color_66030303"/>
-
-        <TextView
-            android:onClick="@{handlers::onClickSignup}"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_height="wrap_content"
-            style="@style/redButton"
-            android:letterSpacing="-0.02"
-            android:layout_gravity="center_horizontal"
-            android:text="@{isregister ? @string/sign_up : @string/sign_in}"
-            />
-
-        <TextView
-            android:onClick="@{handlers::onClickSignInSignUp}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_241e61"
-            android:layout_marginTop="@dimen/margin_20"
-            android:textAllCaps="true"
-            android:textSize="@dimen/textsize_18"
-            android:letterSpacing="-0.02"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/margin_25"
-            android:text="@{isregister ? @string/already_a_user_signin : @string/new_user_sign_up}"/>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/ll_social"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/or_connect_with"
-                android:layout_marginBottom="@dimen/margin_20"
-                android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/color_030303"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-
-                android:layout_gravity="center_horizontal"
-                />
+            <!-- <androidx.fragment.app.FragmentContainerView
+                 android:id="@+id/fragment_container_view"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:visibility="gone"
+                 />-->
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:padding="@dimen/margin_10"
-                android:layout_marginStart="@dimen/margin_30"
-                android:layout_marginEnd="@dimen/margin_30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#0175FF"
-                android:layout_gravity="center_vertical"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_marginStart="@dimen/margin_20"
+                    android:src="@drawable/ic_registration"
+                    android:layout_width="match_parent"
+                    android:layout_height="223dp"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_marginTop="@dimen/margin_40"
+                    android:layout_width="110dp"
+                    android:layout_height="36dp"
+                    android:layout_marginBottom="@dimen/margin_30"
+                    android:src="@mipmap/demo_logo"/>
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_title"
+                    android:text="@{isregister ? @string/new_user : @string/already_a_user}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_g"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:onClick="@{handlers::onGoogleSignIn}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:paddingTop="@dimen/margin_10"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/white"
-                    android:text="Conitnue with Google"
+                    android:layout_marginTop="@dimen/margin_10"
+                    tools:text="Login"
+                    style="@style/page_header"
                     />
             </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edittext_mobile"
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/mobile_number"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:backgroundTint="@color/color_66030303"
+                android:inputType="number"
+                android:maxLength="10"
+                android:textStyle="normal"
+                android:letterSpacing="-0.02"
+                android:textColor="@color/color_030303"
+                android:text="@={loginrequestmodel.mobile}"
+                android:textColorHint="@color/color_66030303"/>
+
+            <TextView
+                android:onClick="@{handlers::onClickSignup}"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="wrap_content"
+                style="@style/redButton"
+                android:letterSpacing="-0.02"
+                android:layout_gravity="center_horizontal"
+                android:text="@{isregister ? @string/sign_up : @string/sign_in}"
+                />
+
+            <TextView
+                android:onClick="@{handlers::onClickSignInSignUp}"
+                android:layout_width="wrap_content"
+                android:id="@+id/underline_text"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_241e61"
+                android:layout_marginTop="@dimen/margin_20"
+                android:textAllCaps="true"
+                android:textSize="@dimen/textsize_18"
+                android:letterSpacing="-0.02"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_25"
+                android:text="@{isregister ? @string/already_a_user_signin : @string/new_user_sign_up}"
+                />
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_social"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/margin_10"
-                android:layout_gravity="center_horizontal">
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/or_connect_with"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textColor="@color/color_030303"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+
+                    android:layout_gravity="center_horizontal"
+                    />
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:padding="@dimen/margin_10"
                     android:layout_marginStart="@dimen/margin_30"
                     android:layout_marginEnd="@dimen/margin_30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#3B5898"
+                    android:background="#0175FF"
                     android:layout_gravity="center_vertical"
                     >
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
                         android:layout_marginStart="@dimen/margin_20"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_f"/>
+                        android:src="@drawable/ic_g"/>
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:onClick="@{handlers::onFacebookClick}"
+                        android:onClick="@{handlers::onGoogleSignIn}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/margin_10"
                         android:paddingBottom="@dimen/margin_10"
-                        android:layout_gravity="center"
+                        android:paddingTop="@dimen/margin_10"
                         android:gravity="center"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="Conitnue with Facebook"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
+                        android:text="@string/continue_with_google"
                         />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_gravity="center_horizontal">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:padding="@dimen/margin_10"
+                        android:layout_marginStart="@dimen/margin_30"
+                        android:layout_marginEnd="@dimen/margin_30"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#3B5898"
+                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_gravity="center_vertical"
+                        >
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_f"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:onClick="@{handlers::onFacebookClick}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/margin_10"
+                            android:paddingBottom="@dimen/margin_10"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="@string/continue_with_facebook"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/white"
+                            />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
+                </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
 </layout>

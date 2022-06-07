@@ -45,17 +45,21 @@ public class MyDemoActivity extends BaseActivity {
         fragmentProfileBinding.name.setText(sharedPrefUtils.getStringData(Constants.FNAME)+" "+sharedPrefUtils.getStringData(Constants.LNAME));
         fragmentProfileBinding.email.setText(sharedPrefUtils.getStringData(Constants.EMAIL));
         fragmentProfileBinding.vaccinated.setText(sharedPrefUtils.getStringData(Constants.ISVACCINATED).equalsIgnoreCase("Y") ?"Vaccinated" : "Not Vaccinated");
+        setProfileImage();
+        setBottomMenuLabels(fragmentProfileBinding.llBottom);
+        setMenuLabels(fragmentProfileBinding.leftMenu.menuRecyclerview);
+        fragmentProfileBinding.setHomeModel(homeModel);
+        fragmentProfileBinding.executePendingBindings();
+        callMyDemoOptionsApi();
+
+    }
+
+    private void setProfileImage() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.user_default);
         requestOptions.circleCrop();
         PrintLog.v(sharedPrefUtils.getStringData(Constants.IMAGE));
         Glide.with(this).load(sharedPrefUtils.getStringData(Constants.IMAGE)).apply(requestOptions).into(fragmentProfileBinding.profileImage);
-        fragmentProfileBinding.setHomeModel(homeModel);
-        setBottomMenuLabels(fragmentProfileBinding.llBottom);
-        setMenuLabels(fragmentProfileBinding.leftMenu.menuRecyclerview);
-
-
-        callMyDemoOptionsApi();
 
     }
 
@@ -148,16 +152,30 @@ public class MyDemoActivity extends BaseActivity {
             case R.id.tv_logout:
                 performLogout();
                 break;
+            case R.id.see_profile:
+                startActivity(new Intent(this, MyProfileActivity.class));
+                break;
 
         }
     }
 
     public void updateVisibleDot() {
-        PrintLog.v("visible");
         dotImageview.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if(homeModel!=null)
+            if(sharedPrefUtils.getStringData(Constants.IMAGE_FILE)!=null && !sharedPrefUtils.getStringData(Constants.IMAGE_FILE).equalsIgnoreCase("IMAGE_FILE")) {
+                homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
+                setProfileImage();
+                fragmentProfileBinding.setHomeModel(homeModel);
+                fragmentProfileBinding.executePendingBindings();
+
+            }
+    }
 
     @Override
     public void onBackPressed() {

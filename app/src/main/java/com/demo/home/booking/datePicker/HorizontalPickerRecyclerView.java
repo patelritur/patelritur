@@ -21,6 +21,7 @@ public class HorizontalPickerRecyclerView extends RecyclerView implements OnItem
     private HorizontalPickerListener listener;
     private int offset;
     private int itemWidth;
+    private DateTime dateTime;
 
     public HorizontalPickerRecyclerView(Context context) {
         super(context);
@@ -34,17 +35,20 @@ public class HorizontalPickerRecyclerView extends RecyclerView implements OnItem
         super(context, attrs, defStyle);
     }
 
-    public void init(Context context, final int daysToPlus, final int initialOffset, final int mBackgroundColor/*, final int mDateSelectedColor, final int mDateSelectedTextColor, final int mTodayDateTextColor, final int mTodayDateBackgroundColor, final int mDayOfWeekTextColor, final int mUnselectedDayTextColor*/) {
+    public void init(DateTime dateTime,Context context, final int daysToPlus, final int initialOffset, final int mBackgroundColor/*, final int mDateSelectedColor, final int mDateSelectedTextColor, final int mTodayDateTextColor, final int mTodayDateBackgroundColor, final int mDayOfWeekTextColor, final int mUnselectedDayTextColor*/) {
         this.offset=initialOffset;
+        this.dateTime = dateTime;
         layoutManager=new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         setLayoutManager(layoutManager);
         post(new Runnable() {
             @Override
             public void run() {
                 itemWidth=getMeasuredWidth()/7;
-                adapter=new HorizontalPickerAdapter((int) itemWidth,HorizontalPickerRecyclerView.this, getContext(),daysToPlus,initialOffset,mBackgroundColor);
+                adapter=new HorizontalPickerAdapter(dateTime,(int) itemWidth,HorizontalPickerRecyclerView.this, getContext(),daysToPlus,initialOffset,mBackgroundColor);
                 setAdapter(adapter);
+                adapter.notifyDataSetChanged();
                 selectItem(true,0);
+
                 LinearSnapHelper snapHelper=new LinearSnapHelper();
                 snapHelper.attachToRecyclerView(HorizontalPickerRecyclerView.this);
                 removeOnScrollListener(onScrollListener);
@@ -123,7 +127,7 @@ public class HorizontalPickerRecyclerView extends RecyclerView implements OnItem
     public void setDate(DateTime date) {
         DateTime today = new DateTime().withTime(0,0,0,0);
         int difference = Days.daysBetween(date,today).getDays() * (date.getYear() < today.getMillis() ? -1 : 1);
-        smoothScrollToPosition(offset+difference);
+        smoothScrollToPosition(0);
     }
 
     private static class CenterSmoothScroller extends LinearSmoothScroller {

@@ -25,16 +25,15 @@ public class HorizontalPickerAdapter extends RecyclerView.Adapter<HorizontalPick
 
     private static final long DAY_MILLIS = AlarmManager.INTERVAL_DAY;
     private final int mBackgroundColor;
-
     private int itemWidth;
     private final OnItemClickedListener listener;
     private ArrayList<Day> items;
 
-    public HorizontalPickerAdapter(int itemWidth, OnItemClickedListener listener, Context context, int daysToCreate, int offset, int mBackgroundColor) {
+    public HorizontalPickerAdapter(DateTime dateTime,int itemWidth, OnItemClickedListener listener, Context context, int daysToCreate, int offset, int mBackgroundColor) {
         items=new ArrayList<>();
         this.itemWidth=itemWidth;
         this.listener=listener;
-        generateDays(daysToCreate,new DateTime().minusDays(offset).getMillis(),false);
+        generateDays(daysToCreate,dateTime.minusDays(offset).getMillis(),false);
         this.mBackgroundColor=mBackgroundColor;
     }
 

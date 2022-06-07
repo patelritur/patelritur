@@ -17,112 +17,158 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/margin_20"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                app:roundHomeOptionsImage="@{favouriteSpecialists.specialistImage}"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginStart="@dimen/margin_20"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:text="@{favouriteSpecialists.specialistName}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:textStyle="normal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#333333"
-                    android:letterSpacing="0.01"
-                    tools:text="Remesh kumar"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:text="@{favouriteSpecialists.companyName}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:textStyle="normal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#333333"
-                    android:letterSpacing="0.01"
-                    tools:text="DD Motors, Mayapuri, New Delhi"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:roundHomeOptionsImage="@{favouriteSpecialists.specialistImage}"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"/>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginStart="@dimen/margin_20"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
                     <TextView
+                        android:text="@{favouriteSpecialists.specialistName}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textStyle="normal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#333333"
+                        android:letterSpacing="0.01"
+                        tools:text="Remesh kumar"/>
 
-                        android:text='@{favouriteSpecialists.specialistTotalDemo+" Demos"}'
+                    <TextView
+                        android:text="@{favouriteSpecialists.companyName}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textStyle="normal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#333333"
+                        android:letterSpacing="0.01"
+                        tools:text="DD Motors, Mayapuri, New Delhi"/>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+
+                            android:text='@{favouriteSpecialists.specialistTotalDemo+" Demos"}'
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textStyle="normal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#aaaaaa"
+                            tools:text="2K Demos  "/>
+                        <RatingBar
+                            app:carRating="@{favouriteSpecialists.specialistRating}"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:numStars="5"
+                            android:stepSize="0.5"
+                            android:rating="2.5"
+                            android:theme="@style/RatingBar"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        >
+                        <TextView
+                            android:id="@+id/leave_feedback"
+                            android:layout_weight="0.5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:textStyle="normal"
+                            android:singleLine="true"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/color_241e61"
+                            android:text="@string/leave_feedback"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:textStyle="normal"
+                            android:textColor="@color/color_241e61"
+                            android:textSize="@dimen/margin_20"
+                            android:text="|" />
+                        <TextView
+                            android:id="@+id/contact"
+                            android:gravity="center_horizontal"
+                            android:layout_weight="0.5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:textStyle="normal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/color_241e61"
+                            android:text="@string/contact"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/margin_15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_semibold"
                         android:textStyle="normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#aaaaaa"
-                        tools:text="2K Demos  "/>
-                    <RatingBar
-                        app:carRating="@{favouriteSpecialists.specialistRating}"
-                        android:layout_marginStart="@dimen/margin_20"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.AppCompat.RatingBar.Small"
-                        android:numStars="5"
-                        android:stepSize="0.5"
-                        android:rating="2.5"
-                        android:theme="@style/RatingBar"/>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    >
-                    <TextView
-                        android:id="@+id/leave_feedback"
-                        android:gravity="center_horizontal"
-                        android:layout_weight="0.5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:padding="@dimen/margin_10"
-                        android:background="@drawable/border_red_deep_rounded_corner"
-                        android:textStyle="normal"
-                        android:singleLine="true"
+                        android:textColor="#333333"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/color_241e61"
-                        android:text="@string/leave_feedback"/>
-                    <TextView
-                        android:id="@+id/contact"
-                        android:gravity="center_horizontal"
-                        android:layout_weight="0.5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:textStyle="normal"
-                        android:padding="@dimen/margin_10"
-                        android:layout_marginStart="@dimen/margin_10"
-                        android:background="@drawable/border_red_deep_rounded_corner"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/color_241e61"
-                        android:text="@string/contact"/>
+                        android:text="@{favouriteSpecialists.specialistDemoMsg}"
+                        android:letterSpacing="0.01"
+                        tools:text="Demo for Maruti Ciaz on Jan 21, 2021"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/margin_30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/takeademo"
+                    android:background="@drawable/border_red_deep_rounded_corner"
+                    android:padding="@dimen/margin_10"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_semibold"
                     android:textStyle="normal"
-                    android:textColor="#333333"
+                    android:layout_marginEnd="@dimen/margin_10"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:text="@{favouriteSpecialists.specialistDemoMsg}"
-                    android:letterSpacing="0.01"
-                    tools:text="Demo for Maruti Ciaz on Jan 21, 2021"/>
+                    android:textColor="@color/color_241e61"
+                    android:text="Book A Demo"/>
+                <TextView
+                    android:id="@+id/bookameeting"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:background="@drawable/border_red_deep_rounded_corner"
+                    android:padding="@dimen/margin_10"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textStyle="normal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/color_241e61"
+                    android:text="@string/book_a_meeting"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
 </layout>

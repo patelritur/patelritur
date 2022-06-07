@@ -23,8 +23,10 @@ import com.demo.registrationLogin.model.HeaderModel;
 import com.demo.registrationLogin.model.RegistrationRequestModel;
 import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
+import com.demo.utils.DialogUtils;
 import com.demo.utils.NotificationUtils;
 import com.demo.utils.Permissionsutils;
+import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.UriUtils;
 import com.demo.utils.Utils;
@@ -85,6 +87,10 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
         }
 
     }
+    public void  onClicktnc(View view){
+        PrintLog.v("tt--=="+sharedPrefUtils.getStringData(Constants.TNC));
+        startActivity(new Intent(this,TncWebiewActivity.class));
+    }
 
     private boolean allFieldValidated() {
         if(registrationRequestModel.getFirstName()==null || registrationRequestModel.getFirstName().trim().length()==0)
@@ -129,7 +135,7 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
 
         else if(!registrationRequestModel.isTnCAccepted())
         {
-            Utils.showToast(context,"Please accept tnc");
+            DialogUtils.showAlertInfo(context,"Please accept DDEMO Terms & Conditions to continue using the app");
             return false;
         }
         return true;
@@ -203,11 +209,13 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
                 sharedPrefUtils.saveData( Constants.USER_ID, registrationResponse.getUserID());
                 sharedPrefUtils.saveData( Constants.FNAME, registrationRequestModel.getFirstName());
                 sharedPrefUtils.saveData( Constants.LNAME, registrationRequestModel.getLastName());
+
+                sharedPrefUtils.saveData( Constants.EMAIL, registrationRequestModel.getEmail());
                 sharedPrefUtils.saveData(Constants.ISVACCINATED,"N");
 
                 if(registrationRequestModel.isVaccinated()) {
 
-                    if (!Permissionsutils.CheckForStoragePermission(context)) {
+                    if (!Permissionsutils.checkForStoragePermission(context)) {
                         Permissionsutils.askForStoragePermission(context);
                     } else {
                         showDialog();
@@ -258,12 +266,12 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
         else
         {
             startHomeActivity();
-           // DialogUtils.showAlertInfo(context, "Please accept storage permission to upload vaccine certificate.");
+            // DialogUtils.showAlertInfo(context, "Please accept storage permission to upload vaccine certificate.");
         }
     }
 
     private void showDialog() {
-         uploadDocDialog = new UploadDocDialog(this);
+        uploadDocDialog = new UploadDocDialog(this);
         uploadDocDialog.show();
     }
 

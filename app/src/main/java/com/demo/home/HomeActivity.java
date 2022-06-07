@@ -21,14 +21,17 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.demo.BaseActivity;
+import com.demo.DemoApp;
 import com.demo.R;
 import com.demo.carDetails.model.CarDetailRequest;
 import com.demo.databinding.ActivityHomeBinding;
 import com.demo.databinding.DialogHomeKnowMoreBinding;
 import com.demo.home.booking.BookingConfirmedFragment;
+import com.demo.home.booking.CancelDemoFragment;
 import com.demo.home.booking.DemoPlaceBookingFragment;
 import com.demo.home.booking.ScheduleBookingFragment;
 import com.demo.home.booking.model.MapLocationResponseModel;
@@ -38,7 +41,10 @@ import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
 import com.demo.home.model.viewmodel.SearchResultViewModel;
 import com.demo.home.model.viewmodel.SearchResultViewModelFactory;
+import com.demo.home.model.viewmodel.WeatherViewModel;
+import com.demo.home.model.viewmodel.WeatherViewModelFactory;
 import com.demo.home.profile.MyDemoActivity;
+import com.demo.home.profile.MyProfileActivity;
 import com.demo.utils.Constants;
 import com.demo.utils.LocationUtils;
 import com.demo.utils.PrintLog;
@@ -56,15 +62,17 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     private ActivityHomeBinding activityHomeBinding;
     private BottomSheetBehavior<View> behavior,behavior1;
     public LocationUtils locationUtils;
-    protected ArrayList<String> BudgetSelectedId = new ArrayList<>();
-    protected ArrayList<String> BrandSelectedId = new ArrayList<>();
-    protected ArrayList<String> SegmentSelectedId = new ArrayList<>();
+    protected ArrayList<String> budgetSelectedId = new ArrayList<>();
+    protected ArrayList<String> brandSelectedId = new ArrayList<>();
+    protected ArrayList<String> segmentSelectedId = new ArrayList<>();
+    protected ArrayList<String> fuelSelectedId = new ArrayList<>();
     public CarSearchRequestModel carSearchRequestModel = new CarSearchRequestModel();
     private TakeADemoFragment takeAdemoFragment;
     public String userId;
     private Fragment fragment;
     private int height;
     private ViewTreeObserver.OnGlobalLayoutListener globalListener = null;
+    public String specialistId="0";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +81,25 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
         userId = sharedPrefUtils.getStringData(Constants.USER_ID);
 
+        if(sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
+            activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
+        }
+            activityHomeBinding.bookingOngoing.setOnClickListener(view -> {
+                Constants.BOOK_TYPE = sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S);
+                if (sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S).equalsIgnoreCase("Demo"))
+                    Constants.BOOKING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
+                else
+                    Constants.MEETING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
+
+                showFragment(new BookingConfirmedFragment());
+            });
+
+
+
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        locationUtils = new LocationUtils(this,mapFragment);
         setBottomMenuLabels(activityHomeBinding.llBottom);
         setMenuLabels(activityHomeBinding.leftMenu.menuRecyclerview);
         setHomeMenuLabels();
@@ -81,10 +108,19 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         activityHomeBinding.layoutOptionsDemo.setHomeModel(homeModel);
         activityHomeBinding.executePendingBindings();
         setBottomSheetBehaviour();
+//        getWeatherData();
+        locationUtils.getMutableLoc().observe(this,new Observer<Location>() {
+            @Override
+            public void onChanged(Location changedValue) {
+                //Do something with the changed value
+                if(changedValue==null)
+                    return;
+                Constants.LATITUDE = changedValue.getLatitude()+"";
+                Constants.LONGITUDE = changedValue.getLongitude()+"";
+                getWeatherData();
+            }
+        });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        locationUtils = new LocationUtils(this,mapFragment);
         if(getIntent().getExtras()!=null)
         {
             Utils.cancelJob(this);
@@ -96,6 +132,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                     Constants.MEETING_ID = getIntent().getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Meeting";
                 }
+                if(sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null"))
                 showFragment(new BookingConfirmedFragment());
             }
             else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("notifications")){
@@ -105,12 +142,44 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("takeAdemo")){
                 activityHomeBinding.layoutOptionsDemo.llDrivemydemo.performClick();
             }
+            else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("launch")){
+                if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
+                    showFragment(new DemoPlaceBookingFragment(getIntent().getExtras().getString("bookdate")));
+                else
+                    showFragment(new MeetingPlaceFragment(getIntent().getExtras().getString("bookdate")));
+            }
+            else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("favourite")){
 
+                specialistId =getIntent().getExtras().getString("specialistId");
+                PrintLog.v("spe"+specialistId);
+                setEmptyValues();
+                activityHomeBinding.layoutOptionsDemo.llMeetspecialists.setBackgroundResource(R.drawable.border_red_rounded_corner);
+                activityHomeBinding.layoutOptionsDemo.llDrivemydemo.setBackgroundResource(R.drawable.white_border);
+                //    showFragment(new MeetingPlaceFragment());
+                takeAdemoFragment = new TakeADemoFragment();
+                showFragment(takeAdemoFragment);
 
+            }
 
         }
+
     }
 
+    private void getWeatherData() {
+
+
+        WeatherViewModelFactory factory = new WeatherViewModelFactory(this.getApplication(), Constants.LATITUDE+","+Constants.LONGITUDE);
+
+        WeatherViewModel appContentViewModel = ViewModelProviders.of(this,factory).get(WeatherViewModel.class);
+
+        appContentViewModel.getWeatherResposneodelLiveData().observe(this, item -> {
+            sharedPrefUtils.saveData(Constants.STATENAME,item.location.region);
+            homeModel.setTemp_c(item.current.temp_c+"°");
+            homeModel.setDayOfWeek(Utils.getDayOfWeek());
+            activityHomeBinding.setHomeModel(homeModel);
+
+        });
+    }
 
 
     public void setHomeMenuLabels() {
@@ -148,6 +217,11 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if(newState==STATE_HIDDEN){
+                    if(sharedPrefUtils!=null && sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
+                        activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        activityHomeBinding.bookingOngoing.setVisibility(View.GONE);
                     if(locationUtils!=null)
                         locationUtils.clearmap();
                     if(fragment.toString().contains("ScheduleBookingFragment")){
@@ -182,14 +256,31 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if(newState==STATE_HIDDEN){
-
+                    if(sharedPrefUtils!=null && sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
+                        activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        activityHomeBinding.bookingOngoing.setVisibility(View.GONE);
                     /*if(fragment.toString().contains("ScheduleBookingFragment")){
                         showFragment(new DemoPlaceBookingFragment());
                     }
-                    else */if(fragment.toString().contains("ScheduleLaterFragment")){
-                        showScheduleFragment(new ScheduleBookingFragment());
+                    else */
+
+                    if(fragment.toString().contains("ScheduleLaterFragment")){
+                        if(!getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("launch"))
+                            showScheduleFragment(new ScheduleBookingFragment());
+                        else {
+                            PrintLog.v("hide===");
+                            activityHomeBinding.coordinatorSchedule.setBackgroundColor(Color.TRANSPARENT);
+                            activityHomeBinding.coordinator11.setBackgroundColor(Color.TRANSPARENT);
+                            activityHomeBinding.coordinatorSchedule.setVisibility(View.GONE);
+                            activityHomeBinding.scheduleFragmentContainerView.setVisibility(View.GONE);
+                            activityHomeBinding.coordinator11.setVisibility(View.GONE);
+
+                        }
                     }
                 }
+
 
             }
 
@@ -212,8 +303,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     public void onClick(View view) {
         switch (view.getId())
         {
+            case R.id.see_profile:
+                startActivity(new Intent(this, MyProfileActivity.class));
+                break;
             case R.id.ll_home:
-
                 break;
             case R.id.ll_mydemos:
                 startActivity(new Intent(this, MyDemoActivity.class));
@@ -247,10 +340,17 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             case R.id.know_more_specialist:
                 showDialogKnowMore("specialist");
                 break;
-
-
             case R.id.tv_logout:
                 performLogout();
+                break;
+            case R.id.booking_ongoing:
+                Utils.showToast(this,"eefef");
+                if(sharedPrefUtils.getStringData(Constants.BOOK_TYPE).equalsIgnoreCase("Demo"))
+                    Constants.BOOKING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
+                else
+                    Constants.MEETING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
+
+                showFragment(new BookingConfirmedFragment());
                 break;
 
         }
@@ -339,6 +439,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.schedule_fragment_container_view, fragment)
                 .commit();
+
     }
 
 
@@ -482,6 +583,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         carSearchRequestModel.setCarSectionType("0");
         //vehicleType=1 2 wheeler, 2 - four wheeler
         carSearchRequestModel.setVehicleType(vehilceType);
+        carSearchRequestModel.setSpecialistID(specialistId);
         getViewModelStore().clear();
         SearchResultViewModelFactory factory = new SearchResultViewModelFactory(getApplication(), carSearchRequestModel);
         SearchResultViewModel searchResultViewModel = ViewModelProviders.of(this, factory).get(SearchResultViewModel.class);
@@ -531,5 +633,27 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
     public void hideBottomSheet() {
         behavior.setState(STATE_HIDDEN);
+    }
+
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PrintLog.v("onresume");
+
+        if(sharedPrefUtils!=null && sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
+            activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
+        }
+        else
+            activityHomeBinding.bookingOngoing.setVisibility(View.GONE);
+        if(homeModel!=null)
+            if(sharedPrefUtils.getStringData(Constants.IMAGE_FILE)!=null && !sharedPrefUtils.getStringData(Constants.IMAGE_FILE).equalsIgnoreCase("IMAGE_FILE")) {
+                homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
+                activityHomeBinding.setHomeModel(homeModel);
+                activityHomeBinding.executePendingBindings();
+
+            }
     }
 }

@@ -74,6 +74,29 @@
             style="?android:attr/ratingBarStyleSmall"
             android:theme="@style/RatingBar"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:fontFamily="@font/montserrat_regular"
+            tools:text="2.5"
+            android:text='@{"("+carSearchResult.carRateing+")"}'
+
+            />
+
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:singleLine="true"
+            android:text="@string/demos_taken"/>
         <TextView
             android:gravity="center_horizontal"
             android:id="@+id/textview_count_demo"
@@ -86,21 +109,10 @@
             android:layout_marginRight="@dimen/margin_10"
             android:layout_marginLeft="@dimen/margin_10"
             android:textColor="#333333"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
             android:text="@{carSearchResult.DemoCount}"
             tools:text="1312"/>
-        <TextView
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_regular"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:layout_marginRight="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:singleLine="true"
-            android:text="@string/demos_taken"/>
         <TextView
             android:visibility='@{carSearchResult.newLaunch.equalsIgnoreCase("y") ? View.VISIBLE : View.INVISIBLE}'
             android:layout_width="match_parent"

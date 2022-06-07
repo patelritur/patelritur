@@ -17,11 +17,10 @@ public class SharedPrefUtils {
     /**
      * Gets boolean data.
      *
-     * @param context the context
      * @param key     the key
      * @return the boolean data
      */
-     public boolean getBooleanData(Context context, String key) {
+     public boolean getBooleanData( String key) {
 
         return mSettings.getBoolean(key, false);
     }
@@ -66,6 +65,10 @@ public class SharedPrefUtils {
     // Save Data
     public void saveData( String key, String val) {
         mEditor.putString(key, val).apply();
+    }
+
+    public void saveData( String key, boolean val) {
+        mEditor.putBoolean(key, val).apply();
     }
     /**
      * Save data.

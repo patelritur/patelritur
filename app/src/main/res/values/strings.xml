@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Demo</string>
+    <string name="app_name">DDEMO</string>
 
     <string name="facebook_app_id">416049966550914</string>
     <string name="fb_login_protocol_scheme">fb416049966550914</string>
@@ -69,17 +69,16 @@
     <string name="msg_connection_timeout">Could not connect to server, Please try after sometime</string>
     <string name="home">Home</string>
     <string name="mydemos">My Demos</string>
-    <string name="takedemos">Take a  Demo</string>
-    <string name="drive_my_demo">Drive my Demo</string>
+    <string name="takedemos">Take A  Demo</string>
+    <string name="drive_my_demo">Drive My Demo</string>
     <string name="i_would_like_to">I would like to:</string>
-    <string name="meet_a_specialist">Meet a Specialist</string>
+    <string name="meet_a_specialist">Meet A Specialist</string>
 
     <integer name="pin_length">4</integer>
 
     <string name="space">\u0020</string>
     <string name="personalize_your_car_to_take_a_demo">PERSONALIZE YOUR CAR TO TAKE A DEMO</string>
     <string name="search_for_product_or_brand">Search for a Product or Brand</string>
-    <string name="book_a_demo">Take A Demo</string>
     <string name="yay_we_have_suggestions">CUSTOMERS ARE EXCITED FOR THESE DEMO CARS</string>
     <string name="top_dealers_for_demo">TOP DEALERS FOR DEMO</string>
     <string name="schedule">Schedule</string>
@@ -95,7 +94,7 @@
     <string name="total_benefits">Total Benefits</string>
     <string name="on_road_price">On Road Price</string>
     <string name="porfoma_invoice">Porfoma Invoice</string>
-    <string name="you_will_get_the_best_demo_variants_available_with_our_demo_partners">You will get the best Demo variants available with our Demo Partners</string>
+    <string name="you_will_get_the_best_demo_variants_available_with_our_demo_partners">You will get the Top or Best Demo variants available with our Demo Partners</string>
     <string name="demos_completed">Demos Completed</string>
     <string name="virtual_meet">Virtual Meet</string>
     <string name="schedue">Schedule</string>
@@ -130,7 +129,7 @@
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="or">or</string>
     <string name="demos_taken">Demos taken</string>
-    <string name="profoma_invoice">Profoma Invoice</string>
+    <string name="profoma_invoice"><u>Profoma Invoice</u></string>
     <string name="next">NEXT</string>
     <string name="previous">PREVIOUS</string>
     <string name="let_s_start">Let\'s Start</string>
@@ -139,7 +138,29 @@
     <string name="join_call">Join Call</string>
     <string name="book_a_meeting">Book A Meeting</string>
     <string name="performa_invoice">Performa Invoice</string>
+    <string name="play_Recording">Play Voice Recording</string>
     <string name="arrived">Arrived</string>
     <string name="rejected">Rejected</string>
+    <string name="where_do_you_want_meeting">Where do you want the Meeting?</string>
+    <string name="ex_showroom">Ex-showroom:</string>
+    <string name="validation_enter_address">Please enter Address</string>
+    <string name="left_home_meeting">Left Home For Meeting</string>
+    <string name="left_home_demo">Left Home For Demo</string>
+    <string name="delayed">Delayed</string>
+    <string name="final_price">Final Price</string>
+    <string name="change_address"><u>Change address</u></string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="demo_location">Demo Location:</string>
+    <string name="your_house">Confirm/Edit</string>
+    <string name="select_demo_loc">Select Demo Location</string>
+    <string name="corporate_govt_emp_offer">Corp./Govt.Emp Offer</string>
+    <string name="extended_warranty">Extended Warranty</string>
+    <string name="rto">RTO</string>
+    <string name="insurance">Insurance</string>
+    <string name="exchange_bonus">Exchange Bonus</string>
+    <string name="cash_discount">Cash Discount</string>
+    <string name="already_user_pin_msg">you are already registered user. please proceed with PIN</string>
+
 
 </resources>

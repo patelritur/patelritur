@@ -96,7 +96,7 @@ public class CarSectionFragment extends Fragment {
         }
         carSearchRequestModel.setCarSectionType(carSectionId);
         carSearchRequestModel.setUserID(((HomeActivity)getActivity()).userId);
-
+        carSearchRequestModel.setSpecialistID(((HomeActivity)getActivity()).specialistId);
         return carSearchRequestModel;
 
     }

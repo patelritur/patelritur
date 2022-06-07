@@ -6,8 +6,12 @@ import androidx.annotation.Keep;
 
 import com.demo.carDetails.CarDetailsActivity;
 import com.demo.utils.ClickHandlers;
+import com.demo.utils.Utils;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Keep
@@ -121,6 +125,8 @@ public class CarDetailResponse {
         }
     }
 
+
+
     @Keep
     public class Carofferbanner{
         public String BannerImage;
@@ -148,6 +154,27 @@ public class CarDetailResponse {
         public String BannerImage;
         public String BannerUrl;
 
+        public String getBannerType() {
+            return BannerType;
+        }
+
+        public void setBannerType(String bannerType) {
+            BannerType = bannerType;
+        }
+
+        public String BannerType;
+
+
+        public String getBannerYear() {
+            return BannerYear;
+        }
+
+        public void setBannerYear(String bannerYear) {
+            BannerYear = bannerYear;
+        }
+
+        public String BannerYear;
+
         public String getBannerImage() {
             return BannerImage;
         }
@@ -166,9 +193,62 @@ public class CarDetailResponse {
     }
 
     @Keep
+    public class Featurelist{
+        @SerializedName("FeatureText")
+        public String featureText;
+        @SerializedName("FeatureIcon")
+        public String featureIcon;
+
+        public String getFeatureText() {
+            return featureText;
+        }
+
+        public void setFeatureText(String featureText) {
+            this.featureText = featureText;
+        }
+
+        public String getFeatureIcon() {
+            return featureIcon;
+        }
+
+        public void setFeatureIcon(String featureIcon) {
+            this.featureIcon = featureIcon;
+        }
+    }
+    @Keep
     public class Cardetail{
         public String CarID;
         public String CarName;
+
+        public String PriceStateName;
+        public String PriceEffectiveDate;
+        public String CarFeatureTitle;
+        public String getPriceStateName() {
+            return PriceStateName;
+        }
+
+        public void setPriceStateName(String priceStateName) {
+            PriceStateName = priceStateName;
+        }
+
+        public String getPriceEffectiveDate() {
+            return Utils.DateFormater( PriceEffectiveDate.split(" ")[0]);
+
+        }
+
+        public void setPriceEffectiveDate(String priceEffectiveDate) {
+            PriceEffectiveDate = priceEffectiveDate;
+        }
+
+        public String getStateName() {
+            return StateName;
+        }
+
+        public void setStateName(String stateName) {
+            StateName = stateName;
+        }
+
+        public String StateName;
 
         public String getCarDescription() {
             return CarDescription;
@@ -237,7 +317,9 @@ public class CarDetailResponse {
         }
 
         public String getCarPrice() {
-            return CarPrice;
+            String convertedFinalPrice =new DecimalFormat("0.00").format((Float.parseFloat(CarPrice))/100000);
+            return convertedFinalPrice; //one hundred and sixty-five
+
         }
 
         public void setCarPrice(String carPrice) {
@@ -295,8 +377,8 @@ public class CarDetailResponse {
         public String DemoCount;
         public List<Carbanner> carbanner;
         public List<Carofferbanner> carofferbanner;
-       public String CarOfferBannerTitle;
-       public String CarAwardBannerTitle;
+        public String CarOfferBannerTitle;
+        public String CarAwardBannerTitle;
 
         public String getCarOfferBannerTitle() {
             return CarOfferBannerTitle;
@@ -323,7 +405,27 @@ public class CarDetailResponse {
         }
 
         public List<colorlist> colorlist;
+
+
         public List<Carawardbanner> carawardbanner;
+
+        public String getCarFeatureTitle() {
+            return CarFeatureTitle;
+        }
+
+        public void setCarFeatureTitle(String carFeatureTitle) {
+            CarFeatureTitle = carFeatureTitle;
+        }
+
+        public ArrayList<Featurelist> getFeaturelist() {
+            return featurelist;
+        }
+
+        public void setFeaturelist(ArrayList<Featurelist> featurelist) {
+            this.featurelist = featurelist;
+        }
+
+        public ArrayList<Featurelist> featurelist;
     }
 
 }

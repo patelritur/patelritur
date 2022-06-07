@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:gravity="end"
+        android:background="#00000000"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:src="@drawable/close_white"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/google_rounded_corner"
+        >
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
+        android:text="Record Voice Message"
+        android:fontFamily="@font/montserrat_bold"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/color_241e61"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_marginBottom="@dimen/margin_20"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/record_iv"
+        android:src="@drawable/ic_record"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="54dp"
+        android:layout_height="54dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_3e3e3e"
+        android:text="Record"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/status_record"
+        />
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/send_specialist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/redButton"
+        android:text="Send To Specialist"
+        android:layout_gravity="center_horizontal"
+        />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/remove"
+        android:layout_alignStart="@+id/send_specialist"
+        android:layout_alignEnd="@+id/send_specialist"
+        android:layout_below="@id/send_specialist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/redButton"
+        android:text="Remove"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:layout_gravity="center_horizontal"
+        />
+    </RelativeLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

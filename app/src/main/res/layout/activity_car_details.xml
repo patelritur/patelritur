@@ -16,7 +16,8 @@
             layout="@layout/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            />
 
         <androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -136,22 +137,38 @@
                     android:layout_marginTop="@dimen/margin_5"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_20"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="Ex-showroom:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="#323643"
-                        android:textStyle="normal" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="@string/ex_showroom"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="#323643"
+                            android:textStyle="normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text='@{carDetailModel.cardetail.priceStateName+" ("+carDetailModel.cardetail.priceEffectiveDate+")"}'
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#323643"
+                            android:textStyle="normal" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_20"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text='@{"₹" + carDetailModel.cardetail.carPrice}'
+                        android:text='@{"₹"+carDetailModel.cardetail.carPrice+" Lakh"}'
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="#323643"
                         android:textStyle="normal"
@@ -184,6 +201,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:orientation="vertical">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textColor="#323643"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:layout_marginStart="@dimen/margin_20"
+                            android:text="Ratings"/>
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
@@ -267,7 +292,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_20"
                     android:layout_marginBottom="@dimen/margin_10"
+                    android:fontFamily="@font/montserrat_bold"
                     android:text="@{carDetailModel.cardetail.carOfferBannerTitle}"
+                    android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#323643" />
 
@@ -288,12 +315,13 @@
                 <View style="@style/divider" />
 
 
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_bold"
                     android:text="@{carDetailModel.cardetail.carAwardBannerTitle}"
+                    android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/color_241e61" />
 
@@ -301,6 +329,7 @@
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_10"
                     android:orientation="horizontal"
                     android:scrollbars="none">
 
@@ -309,6 +338,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_20"
                         android:gravity="center"
                         android:orientation="horizontal"
 
@@ -373,7 +403,7 @@
                         android:layout_marginTop="@dimen/margin_10"
                         android:fontFamily="@font/montserrat_regular"
                         android:onClick="@{carDetailModel::onClick}"
-                        android:text="Features"
+                        android:text="High 5's"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/color_241e61"
                         android:textStyle="normal" />
@@ -381,16 +411,6 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <View style="@style/divider" />
-
-                <WebView
-                    android:id="@+id/feature_colors"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:layout_marginRight="@dimen/margin_10"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:onClick="@{carDetailModel::onClick}" />
 
 
                 <TextView
@@ -422,7 +442,7 @@
             android:paddingTop="@dimen/margin_15"
             android:paddingEnd="@dimen/margin_50"
             android:paddingBottom="@dimen/margin_15"
-            android:text="@string/book_a_demo" />
+            android:text="@string/takedemos" />
 
     </RelativeLayout>
 </layout>

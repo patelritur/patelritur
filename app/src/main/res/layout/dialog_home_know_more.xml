@@ -52,6 +52,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_margin="@dimen/margin_20"
                 android:text="@{homeModel.descriptions}"
+                android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/color_222831"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"

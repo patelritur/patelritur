@@ -20,6 +20,19 @@ public class HomeModel  {
     public String fName,lName;;
     public String image;
     public String descriptions;
+    private String dayOfWeek;
+
+    public String getTemp_c() {
+        return temp_c;
+    }
+
+
+
+    public void setTemp_c(String temp_c) {
+        this.temp_c = temp_c;
+    }
+
+    public String temp_c;
 
     public String getDescriptions() {
         return descriptions;
@@ -138,7 +151,8 @@ public class HomeModel  {
     }
 
     public String getfName() {
-        return fName;
+       return fName.substring(0, 1).toUpperCase() + fName.substring(1).toLowerCase();
+
     }
 
     public void setfName(String fName) {
@@ -146,7 +160,8 @@ public class HomeModel  {
     }
 
     public String getlName() {
-        return lName;
+        return lName.substring(0, 1).toUpperCase() + lName.substring(1).toLowerCase();
+
     }
 
     public void setlName(String lName) {
@@ -177,5 +192,14 @@ public class HomeModel  {
 
     public String getBottomMenuFirstName() {
         return bottomMenuFirstName;
+    }
+
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
     }
 }

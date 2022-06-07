@@ -9,17 +9,17 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.R;
-import com.demo.carDetails.model.CarDetailReviewModel;
 import com.demo.carDetails.model.CarDetailsSpecificationModel;
-import com.demo.databinding.ItemCarReviewsBinding;
 import com.demo.databinding.ItemCarSpecificationsBinding;
 
 import java.util.ArrayList;
 
 public class CarDetailsSpecificationsAdapter extends RecyclerView.Adapter<CarDetailsSpecificationsAdapter.ViewHolder> {
 
-    private final Context context;
+    private  Context context;
     private ArrayList<CarDetailsSpecificationModel.Carspecification> dataModelList = new ArrayList<>();
+
+
 
     /**
      * Provide a reference to the type of views that you are using
@@ -37,6 +37,8 @@ public class CarDetailsSpecificationsAdapter extends RecyclerView.Adapter<CarDet
             itemRowBinding.setCarDetailSpecification(obj);
             itemRowBinding.executePendingBindings();
         }
+
+
     }
 
     public CarDetailsSpecificationsAdapter(Context context, ArrayList<CarDetailsSpecificationModel.Carspecification> carDealerModelsList) {
@@ -56,8 +58,11 @@ public class CarDetailsSpecificationsAdapter extends RecyclerView.Adapter<CarDet
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CarDetailsSpecificationModel.Carspecification dataModel = dataModelList.get(position);
-        holder.bind(dataModel);
+        if(dataModelList!=null) {
+            CarDetailsSpecificationModel.Carspecification dataModel = dataModelList.get(position);
+            holder.bind(dataModel);
+        }
+
     }
 
 

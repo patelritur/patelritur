@@ -2,6 +2,7 @@ package com.demo.carDetails;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,6 +49,7 @@ import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -81,6 +85,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         carDetailRequest.setLatitude(String.valueOf(Constants.LATITUDE));
         carDetailRequest.setLongitude(String.valueOf(Constants.LONGITUDE));
         carDetailRequest.setCarID(carId);
+        carDetailRequest.setStateName(new SharedPrefUtils(this).getStringData(Constants.STATENAME));
         Call objectCall = RestClient.getApiService().getCarDetail(carDetailRequest);
         RestClient.makeApiRequest(this, objectCall, this, DETAIL_REQCODE, true);
 
@@ -154,7 +159,8 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
             ItemImageviewBannerBinding itemSuggestionCarsBinding = DataBindingUtil.inflate(inflater,R.layout.item_imageview_banner,null,false);
             itemSuggestionCarsBinding.setImageUrl(carDetailResponse.getCardetail().getCarawardbanner().get(i).getBannerImage());
-
+            itemSuggestionCarsBinding.awardYear.setVisibility(View.VISIBLE);
+            itemSuggestionCarsBinding.awardYear.setText("Award Year: "+carDetailResponse.getCardetail().getCarawardbanner().get(i).getBannerYear());
             activityCarDetailsBinding.horizontalScrollviewAward.addView(itemSuggestionCarsBinding.getRoot());
 
         }
@@ -183,15 +189,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     }
 
-    @JavascriptInterface
-    public void resize(final float height) {
-        CarDetailsActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activityCarDetailsBinding.featureColors.setLayoutParams(new LinearLayoutCompat.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int) (height * getResources().getDisplayMetrics().density)));
-            }
-        });
-    }
+
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         if(reqCode==DETAIL_REQCODE) {
@@ -199,10 +197,10 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
             carDetailResponse.setClickHandlers(this);
             activityCarDetailsBinding.setCarDetailModel(carDetailResponse);
             setUpViewPager(carDetailResponse);
-           setWebview();
-             activityCarDetailsBinding.ratingbar.setRating(Float.parseFloat(carDetailResponse.getCardetail().getCarRateing()));
+            activityCarDetailsBinding.ratingbar.setRating(Float.parseFloat(carDetailResponse.getCardetail().getCarRateing()));
             setUpBannerView(carDetailResponse);
             setUpAwardsView(carDetailResponse);
+//            setUpFeaturesView(carDetailResponse);
         }
         else if(reqCode==REVIEWS)
         {
@@ -222,29 +220,22 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
 
     }
 
-    private void setWebview() {
-       /* activityCarDetailsBinding.featureColors.getSettings().setJavaScriptEnabled(true);
-        activityCarDetailsBinding.featureColors.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                activityCarDetailsBinding.featureColors.loadUrl("javascript:MyApp.resize(document.body.getBoundingClientRect().height)");
-                super.onPageFinished(view, url);
-            }
-        });
-        activityCarDetailsBinding.featureColors.addJavascriptInterface(CarDetailsActivity.this, "MyApp");
-*/
-        activityCarDetailsBinding.featureColors.setWebChromeClient(new WebChromeClient());
-
-        activityCarDetailsBinding.featureColors.loadDataWithBaseURL(null,carDetailResponse.getCardetail().getCarFeatures(), "text/html", "utf-8",null);
-
+    private void showFeaturesDialog() {
+        Dialog dialog = getDialog();
+        binding.textviewTitle.setText(carDetailResponse.getCardetail().getCarFeatureTitle());
+        binding.layoutInvoice.getRoot().setVisibility(View.GONE);
+        binding.recyclerviewReview.setLayoutManager(new GridLayoutManager(this,2));
+        binding.recyclerviewReview.setAdapter(new CarDetailsFeaturesAdapter(CarDetailsActivity.this, (ArrayList<CarDetailResponse.Featurelist>) carDetailResponse.getCardetail().getFeaturelist()));
+        dialog.show();
     }
+
+
 
     private void showPorfomaInvoiceDialog(CarPorfomaInvoiceModel carPorfomaInvoiceModel)
     {
         Dialog dialog = getDialog();
         binding.textviewTitle.setText(getString(R.string.porfoma_invoice));
         binding.setCarInvoice(carPorfomaInvoiceModel.getPorfomainvoice());
-        binding.disclaimerText.setVisibility(View.VISIBLE);
         this.carPorfomaInvoiceModel = carPorfomaInvoiceModel;
         binding.layoutInvoice.getRoot().setVisibility(View.VISIBLE);
         binding.recyclerviewReview.setVisibility(View.GONE);
@@ -252,7 +243,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         binding.imageviewDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Permissionsutils.CheckForStoragePermission(CarDetailsActivity.this)) {
+                if (!Permissionsutils.checkForStoragePermission(CarDetailsActivity.this)) {
                     Permissionsutils.askForStoragePermission(CarDetailsActivity.this);
                 } else {
                     DownloadFileFromURL();
@@ -266,12 +257,27 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
     }
 
     private void DownloadFileFromURL() {
-        new DownloadFileFromURL(carPorfomaInvoiceModel.getPorfomainvoice().downloadInvoiceURL, carPorfomaInvoiceModel.getPorfomainvoice().getCarName(), new FileDownloadReady() {
+        File file=new File(Environment.getExternalStorageDirectory()+"/DEMO/" + carPorfomaInvoiceModel.getPorfomainvoice().getCarName()+".pdf");
+        Log.d("Environment", "Environment extraData=" + file.getPath());
+
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse(carPorfomaInvoiceModel.getPorfomainvoice().downloadInvoiceURL))
+                .setTitle(carPorfomaInvoiceModel.getPorfomainvoice().getCarName())
+                .setDescription("Downloading")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationUri(Uri.fromFile(file))
+                .setAllowedOverMetered(true)
+                .setAllowedOverRoaming(true);
+       DownloadManager downloadManager= (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+      long  referenceID = downloadManager.enqueue(request);
+        Utils.showToast(CarDetailsActivity.this,"Performa invoice is downloaded successfullly");
+
+       /* new DownloadFileFromURL(carPorfomaInvoiceModel.getPorfomainvoice().downloadInvoiceURL, carPorfomaInvoiceModel.getPorfomainvoice().getCarName(), new FileDownloadReady() {
             @Override
             public void onFileDownloaded(String fileId) {
                 Utils.showToast(CarDetailsActivity.this,"Performa invoice is downloaded successfullly");
             }
-        }).execute();
+        }).execute();*/
     }
 
 
@@ -442,6 +448,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
                 callPorfomaInvoiceApi();
                 break;
             case R.id.features:
+                showFeaturesDialog();
                 break;
             case R.id.colors:
                 showColorDialog();

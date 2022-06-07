@@ -26,14 +26,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/color_241e61"
+                android:background="@drawable/ic_mask"
                 >
 
 
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:text="@{bookingDetail.bookingMessage}"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:textStyle="bold"
@@ -47,6 +55,14 @@
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginTop="@dimen/margin_10"
                     tools:text="Your Demo is booked!"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/call"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_call"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/submessage"
                     android:layout_width="wrap_content"
@@ -58,14 +74,6 @@
                     android:layout_marginBottom="@dimen/margin_5"
                     android:fontFamily="@font/montserrat_regular"/>
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/call"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="-40dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_call"/>
                 <View
                     android:layout_marginTop="@dimen/margin_10"
                     android:layout_height="3dp"
@@ -76,6 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
                     android:orientation="horizontal">
                     <FrameLayout
                         android:layout_width="33dp"
@@ -100,8 +109,14 @@
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_weight="0.5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
@@ -109,6 +124,14 @@
                         android:text='@{bookingDetail.bookingSubMessage.trim().length()>0 ? bookingDetail.bookingSubMessage : bookingDetail.bookingdetails.specialistName}'
                         android:fontFamily="@font/montserrat_regular"
                         />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:id="@+id/distance_text"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/status"
                         android:layout_marginStart="@dimen/margin_20"
@@ -119,6 +142,7 @@
                         android:layout_gravity="end"
                         android:gravity="end"
                         android:textColor="@color/white"
+                        android:text="Booked"
                         android:background="@drawable/background_status_booking"
                         />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -150,10 +174,12 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="12sp"
+                        tools:text="erere"
                         android:fontFamily="@font/montserrat_regular"
                         android:text='@{"Booking Time: " +bookingDetail.bookingTime}'
                         />
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:text="edee"
                         android:id="@+id/arriving_timestamp"
                         android:layout_width="0dp"
                         android:gravity="center"
@@ -173,87 +199,42 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <View style="@style/divider"/>
-                <com.google.android.flexbox.FlexboxLayout
-                    android:layout_marginStart="@dimen/margin_5"
-                    android:layout_marginEnd="@dimen/margin_5"
-                    android:id="@+id/flow_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:flexWrap="wrap"
-                    app:justifyContent="space_around"
-                    >
 
-                </com.google.android.flexbox.FlexboxLayout>
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
-                    android:padding="@dimen/margin_10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:layout_marginBottom="@dimen/margin_5"
                     android:orientation="horizontal">
+
+                    <HorizontalScrollView
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal"
+                        android:scrollbarSize="1dp"
+
+                        >
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/flow_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal"/>
+                    </HorizontalScrollView>
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_marginStart="@dimen/margin_10"
-                        android:layout_marginEnd="@dimen/margin_10"
-                        android:layout_width="20dp"
-                        android:layout_height="40dp"
-                        android:tint="@color/color_241e61"
-                        android:src="@mipmap/image_temp"/>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/next_arrow"
+                        android:visibility="gone"
+                        android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:src="@drawable/ic_baseline_keyboard_arrow_right_24">
 
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:textStyle="normal"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                            android:textColor="#393939"
-                            android:letterSpacing="0.01"
-                            android:lineSpacingExtra="7.5sp"
-                            android:text='@{bookingDetail.bookingdetails.specialistFirstName+" temperature"}'/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:textStyle="bold"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                            android:textColor="#393939"
-                            android:letterSpacing="0.01"
-                            android:lineSpacingExtra="6.5sp"
-                            android:text="@{bookingDetail.bookingdetails.specialistTemperature}"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:visibility='@{bookingDetail.bookingdetails.carSanitisedStatus.equalsIgnoreCase("Y") ? View.VISIBLE :View.GONE}'
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_marginStart="@dimen/margin_30"
-                            android:layout_marginEnd="@dimen/margin_10"
-                            android:layout_width="20dp"
-                            android:layout_height="40dp"
-                            android:tint="@color/color_241e61"
-                            android:src="@mipmap/image_sanitize"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:textStyle="normal"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                            android:textColor="#393939"
-                            android:letterSpacing="0.01"
-                            android:lineSpacingExtra="1sp"
-                            android:text="Car has been \n sanitised"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
+                    </androidx.appcompat.widget.AppCompatImageView>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <View style="@style/divider"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.cardview.widget.CardView
@@ -324,6 +305,56 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/margin_5"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:padding="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_10"
+                >
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <TextView
+                        android:padding="@dimen/margin_20"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textStyle="normal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="#474747"
+                        android:text="@string/play_Recording"/>
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/play_voice_message"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        android:src="@drawable/ic_play"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/new_voice_message"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:text="New Voice message"/>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/recording_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -331,6 +362,7 @@
                 android:layout_marginEnd="@dimen/margin_20"
                 android:layout_marginBottom="@dimen/margin_20"
                 android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_10"
                 android:padding="@dimen/margin_20"
                 android:visibility='@{bookingDetail.bookingdetails.voiceMessageStatus.equalsIgnoreCase("Y") ? View.VISIBLE : View.GONE }'
 
@@ -340,43 +372,26 @@
                     android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/margin_20"
                         android:textColor="#393939"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:text="@string/leave_a_voice_message"
                         />
-                    <RelativeLayout
-                        android:layout_marginStart="@dimen/margin_10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        >
+
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/record_audio"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginTop="@dimen/margin_5"
-                            android:layout_marginEnd="@dimen/margin_20"
+                            android:layout_marginEnd="@dimen/margin_10"
                             android:src="@drawable/ic_record" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_timer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/record_audio"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:gravity="center_horizontal"
-                            android:text="Record"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-                    </RelativeLayout>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.cardview.widget.CardView>
@@ -401,7 +416,6 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             app:roundHomeOptionsImage="@{bookingDetail.bookingdetails.specialistImage}"
                             android:layout_marginStart="@dimen/margin_20"
-                            android:layout_marginTop="@dimen/margin_20"
                             android:layout_width="@dimen/margin_40"
                             android:layout_marginEnd="@dimen/margin_15"
                             android:layout_height="@dimen/margin_40"/>
@@ -511,6 +525,75 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/margin_5"
+                android:layout_margin="@dimen/margin_20"
+                android:padding="@dimen/margin_20"
+                android:id="@+id/caradress_ll"
+                android:visibility='@{bookingDetail.bookingdetails.demoType.equalsIgnoreCase("At Home")? View.VISIBLE : View.GONE}'
+
+                >
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_20"
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/destination"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Destination:"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="#474747" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_toEndOf="@+id/destination"
+                            android:id="@+id/house"
+                            android:layout_width="wrap_content"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="#474747"
+                            android:text=" Your House"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/destination"
+                            android:layout_alignEnd="@+id/house"
+                            android:background="@null"
+                            android:enabled="false"
+                            android:imeOptions="actionDone"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#474747" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/change_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/change_address"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:textColor="#474747"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+
+                            />
+                    </RelativeLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.cardview.widget.CardView>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_marginTop="@dimen/margin_20"
                 android:visibility="gone"
@@ -528,7 +611,7 @@
                 android:id="@+id/book_demo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/book_a_demo"
+                android:text="@string/takedemos"
                 android:layout_gravity="center_horizontal"
                 style="@style/redButton"/>
             <View
@@ -545,6 +628,22 @@
                 android:lineSpacingExtra="3sp"
                 android:text="@string/tip_click_here_to_see_how_to_get_the_most_out_of_your_demo_experience"/>
             <View style="@style/divider"/>
+
+            <TextView
+                style="@style/redButton"
+                android:id="@+id/tv_left_home"
+                android:visibility='@{bookingDetail.bookingdetails.demoType.equalsIgnoreCase("At Dealership")? View.VISIBLE : View.GONE}'
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="5sp"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:gravity="center_horizontal"
+                android:text="@{bookingDetail.bookingdetails.meetingType!=null ? @string/left_home_meeting :  @string/left_home_demo }"
+
+                />
 
             <TextView
                 android:id="@+id/tv_cancel"

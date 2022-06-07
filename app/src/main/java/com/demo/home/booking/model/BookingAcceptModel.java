@@ -113,6 +113,15 @@ public class BookingAcceptModel {
 
         public String CarID;
 
+        public String getVoiceRecordingAudio() {
+            return VoiceRecordingAudio;
+        }
+
+        public void setVoiceRecordingAudio(String voiceRecordingAudio) {
+            VoiceRecordingAudio = voiceRecordingAudio;
+        }
+
+        public String VoiceRecordingAudio;
 
         public ArrayList<CarCheckList> getCarchecklist() {
             return carchecklist;
@@ -129,18 +138,8 @@ public class BookingAcceptModel {
         }
 
         public boolean isShowTemp(){
-            ArrayList<String> statusIdList = new ArrayList<>();
-            statusIdList.add("2");
-            statusIdList.add("3");
-            statusIdList.add("4");
-            statusIdList.add("5");
-            statusIdList.add("9");
-            statusIdList.add("10");
 
-            if(statusIdList.contains(demoStatusId))
-                return true;
-
-            return false;
+            return carchecklist.size()>0;
         }
         @SerializedName("UserID")
         public String userID;
@@ -210,7 +209,7 @@ public class BookingAcceptModel {
 
         public String getSpecialistName() {
             StringBuilder sb = new StringBuilder(specialistName);
-            if(specialistName!=null) {
+            if(specialistName!=null && specialistName.trim().length()>0) {
                 sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
                 return sb.toString();
             }
@@ -350,6 +349,19 @@ public class BookingAcceptModel {
         public String specialistImage;
         @SerializedName("SpecialistRating")
         public String specialistRating;
+
+        public String getDemoType() {
+            return DemoType;
+        }
+
+        public void setDemoType(String demoType) {
+            DemoType = demoType;
+        }
+
+        @SerializedName("DemoType")
+        public String DemoType;
+
+
         @SerializedName(value = "SpecialistTotalBooking",alternate = "SpecialistTotalMeeting")
         public String specialistTotalBooking;
 

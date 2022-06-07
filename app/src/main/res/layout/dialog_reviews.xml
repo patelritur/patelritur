@@ -44,39 +44,32 @@
                 >
 
                 <TextView
+
                     android:id="@+id/textview_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_40"
                     android:fontFamily="@font/montserrat_semibold"
                     android:gravity="center_horizontal"
                     android:text="@string/reviews"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/color_241e61"
                     android:textStyle="normal" />
-                <TextView
-                    android:id="@+id/disclaimer_text"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{"Disclaimer: "+carInvoice.disclaimer}'
-                    tools:text="fdsfdsfdf"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:layout_below="@id/textview_title"/>
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:visibility="gone"
                     android:id="@+id/imageview_download"
-                    android:layout_marginEnd="@dimen/margin_10"
+                    android:layout_marginEnd="@dimen/margin_30"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
                     android:tint="@color/color_241e61"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/download"/>
+                    android:src="@drawable/ic_download"/>
             </RelativeLayout>
             <View
+                android:layout_marginTop="@dimen/margin_5"
                 style="@style/divider"
                 />
 
@@ -85,12 +78,13 @@
                 android:layout_margin="@dimen/margin_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:listitem="@layout/item_car_reviews"
                 />
             <include
                 android:id="@+id/layout_invoice"
                 layout="@layout/dialog_invoice"
-                android:visibility="gone"
                 app:carInvoice ="@{carInvoice}"
+                android:visibility="gone"
 
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>

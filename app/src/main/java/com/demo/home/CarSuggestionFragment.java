@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -33,7 +34,8 @@ import java.util.ArrayList;
 
 public class CarSuggestionFragment extends Fragment implements SearchResultInterface {
     private FragmentCarSuggestionBinding fragmentCarSuggestionBinding;
-   private ViewGroup viewGroup;
+    private ViewGroup viewGroup;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSuggestionsForCarView();
-        setFuelTypeLayout();
+       // setFuelTypeLayout();
 
     }
     private void setSuggestionsForCarView() {
@@ -65,10 +67,9 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
 
     public void updateCarList(CarSearchResultModel item) {
         fragmentCarSuggestionBinding.textviewTitle.setText(item.getCarListTitle());
-
         fragmentCarSuggestionBinding.horizontalScrollview.removeAllViews();
         if(!item.getResponseCode().equalsIgnoreCase("200")) {
-            Utils.showToast(getActivity(), item.getDescriptions());
+            fragmentCarSuggestionBinding.textviewTitle.setText(item.getDescriptions());
             return;
         }
 
@@ -104,7 +105,7 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
 
         }
         carSearchRequestModel.setUserID(((HomeActivity)getActivity()).userId);
-
+        carSearchRequestModel.setSpecialistID(((HomeActivity)getActivity()).specialistId);
         return carSearchRequestModel;
 
     }
