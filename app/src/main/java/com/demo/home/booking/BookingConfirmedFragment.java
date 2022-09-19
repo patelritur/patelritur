@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,7 @@ import com.demo.databinding.FragmentBookingBookedBinding;
 import com.demo.databinding.ItemCarFacilitiesBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.TakeADemoFragment;
+import com.demo.home.booking.datePicker.Time;
 import com.demo.home.booking.model.BookingAcceptModel;
 import com.demo.home.booking.model.LocationResponse;
 import com.demo.home.booking.model.StatusRequestModel;
@@ -83,6 +86,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private static final int UPDATE_STATUS = 6;
     private static final int GET_ROUTE = 7;
     private static final int GET_ONLY_ROUTE = 8;
+    private static final int PLAY_AUDIO = 9;
+
     private SharedPrefUtils sharedPrefUtils;
     private FragmentBookingBookedBinding fragmentBookingBookedBinding;
     private boolean isRecording;
@@ -102,6 +107,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private Long duration;
     private Long distance;
     private DirectionResults.Location startLocation,endLocation;
+    private CountUpTimer countuptimer;
 
     public BookingConfirmedFragment(boolean fromNotification) {
         this.fromNotification = fromNotification;
@@ -140,12 +146,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
 
         if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
-            callBookingDetailApi();
+            callBookingDetailApi(BOOKING_DETAILS);
         else
-            callMeetingDetailApi();
+            callMeetingDetailApi(BOOKING_DETAILS);
     }
 
-    private void callMeetingDetailApi() {
+    private void callMeetingDetailApi(int reqCode) {
         StatusRequestModel statusRequestModel = new StatusRequestModel();
         statusRequestModel.setMeetingID(Constants.MEETING_ID);
         if (((HomeActivity) getActivity()).getLocation() != null) {
@@ -157,12 +163,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         }
         statusRequestModel.setUserID(userId);
         Call objectCall = RestClient.getApiService().getMeetingDetails(statusRequestModel);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, BOOKING_DETAILS, true);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, reqCode, true);
 
     }
 
 
-    private void callBookingDetailApi() {
+    private void callBookingDetailApi(int reqCode) {
         StatusRequestModel statusRequestModel = new StatusRequestModel();
         statusRequestModel.setBookingID(Constants.BOOKING_ID);
         if (((HomeActivity) getActivity()).getLocation() != null) {
@@ -174,7 +180,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         }
         statusRequestModel.setUserID(userId);
         Call objectCall = RestClient.getApiService().getBookingDetails(statusRequestModel);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, BOOKING_DETAILS, true);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, reqCode, true);
 
     }
 
@@ -343,6 +349,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             public void onCompletion(MediaPlayer mediaPlayer) {
                 fragmentBookingBookedBinding.playVoiceMessage.setImageResource(R.drawable.ic_play);
                 fragmentBookingBookedBinding.newVoiceMessage.setVisibility(View.GONE);
+                fragmentBookingBookedBinding.newVoiceMessage.clearAnimation();
             }
         });
         Toast.makeText(getActivity(), "Audio started playing..", Toast.LENGTH_SHORT).show();
@@ -363,14 +370,19 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         dialogRecordBinding.sendSpecialist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(recorderUtils!=null) {
-                    dialogRecordBinding.statusRecord.setText("Done");
-                    recorderUtils.stopRecording();
-                    isRecording = false;
-                    String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-                    mFileName += "/AudioRecording.mp3";
+                try {
+                    if (recorderUtils != null) {
+                        dialogRecordBinding.statusRecord.setText("Done");
+                        recorderUtils.stopRecording();
+                        isRecording = false;
+                        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+                        mFileName += "/AudioRecording.mp3";
 
-                    uploadFileToServer(new File(mFileName));
+                        uploadFileToServer(new File(mFileName));
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
@@ -379,6 +391,14 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             public void onClick(View v) {
                 dialogRecordBinding.recordIv.setImageResource(R.drawable.ic_record);
                 dialogRecordBinding.statusRecord.setText("Record");
+                dialogRecordBinding.sendSpecialist.setVisibility(View.INVISIBLE);
+                dialogRecordBinding.remove.setVisibility(View.INVISIBLE);
+                dialogRecordBinding.timeRecord.setText("00:00");
+                recorderUtils.stopRecording();
+                isRecording=false;
+                if(countuptimer!=null)
+                    countuptimer.cancel();
+                countuptimer= null;
             }
         });
         dialogRecordBinding.recordIv.setOnClickListener(new View.OnClickListener() {
@@ -391,12 +411,32 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                         recorderUtils = new RecorderUtils();
                         isRecording = true;
                         recorderUtils.startRecording();
-//                        startTimer();
+                        if(countuptimer!=null)
+                        {
+                            countuptimer.cancel();
+                            countuptimer= null;
+                        }
+                        countuptimer = new CountUpTimer(30000) {
+                            public void onTick(int second) {
+                                if(second<10)
+                                    dialogRecordBinding.timeRecord.setText("00:0"+String.valueOf(second));
+                                else
+                                    dialogRecordBinding.timeRecord.setText("00:"+String.valueOf(second));
+                            }
+                        };
+
+                        countuptimer.start();
+
                     } else
                         Permissionsutils.askForRecordPermission(getActivity());
 
                 } else {
                     dialogRecordBinding.recordIv.setImageResource(R.mipmap.record_stop);
+                    dialogRecordBinding.sendSpecialist.setVisibility(View.VISIBLE);
+                    dialogRecordBinding.remove.setVisibility(View.VISIBLE);
+                    if(countuptimer!=null)
+                        countuptimer.cancel();
+                    countuptimer= null;
 //                    countDownTimer.cancel();
 //                    fragmentBookingBookedBinding.recordAudio.setClickable(true);
 //                    fragmentBookingBookedBinding.recordAudio.setImageDrawable(getContext().getDrawable(R.drawable.ic_record));
@@ -472,9 +512,9 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     playAudio();
                 else
                 if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
-                    callBookingDetailApi();
+                    callBookingDetailApi(PLAY_AUDIO);
                 else
-                    callMeetingDetailApi();
+                    callMeetingDetailApi(PLAY_AUDIO);
                 break;
             case R.id.tv_left_home:
                 if (hourlyTask == null && timer!=null && !bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home")) {
@@ -537,6 +577,11 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 fragmentBookingBookedBinding.submessage.setText(bookingAcceptModel.getBookingSubMessage());
                 specialistId = bookingAcceptModel.getBookingdetails().getSpecialistID();
                 updateCarCheckList();
+                if (bookingAcceptModel.getBookingdetails()!=null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
+                    fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.VISIBLE);
+                else
+                    fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.GONE);
+
                 fragmentBookingBookedBinding.executePendingBindings();
                 if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME))
                     fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
@@ -622,7 +667,13 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 ((HomeActivity) getActivity()).setPeekheight(fragmentBookingBookedBinding.parentLl.getMeasuredHeight());
 
             }
-        } else if (reqCode == RECORD_AUDIO) {
+        }
+        else if(reqCode==PLAY_AUDIO){
+            bookingAcceptModel = (BookingAcceptModel) response;
+            if (bookingAcceptModel.getBookingdetails()!=null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
+                playAudio();
+        }
+        else if (reqCode == RECORD_AUDIO) {
 //            fragmentBookingBookedBinding.recordingCardview.setVisibility(View.GONE);
             RegistrationResponse registrationResponse = (RegistrationResponse) response;
             recordDialog.dismiss();
@@ -771,18 +822,25 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equalsIgnoreCase("receiveNotification")){
                 if (intent.getExtras().getString("notificationtype").equalsIgnoreCase("ChangeDemoStatus")
-                || intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")) {
+                        || intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")) {
                     Constants.BOOKING_ID = intent.getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Demo";
-                    callBookingDetailApi();
+                    callBookingDetailApi(PLAY_AUDIO);
                 } else if(intent.getExtras().getString("notificationtype").equalsIgnoreCase("ChangeMeetingStatus")
-                || intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")) {
+                        || intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")) {
                     Constants.MEETING_ID = intent.getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Meeting";
-                    callMeetingDetailApi();
+                    callMeetingDetailApi(PLAY_AUDIO);
                 }
                 if(intent.getExtras().getString("notificationtype").contains("VoiceRecording")){
                     fragmentBookingBookedBinding.newVoiceMessage.setVisibility(View.VISIBLE);
+                    Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                    anim.setDuration(100); //You can manage the blinking time with this parameter
+                    anim.setStartOffset(20);
+                    anim.setRepeatMode(Animation.REVERSE);
+                    anim.setRepeatCount(Animation.INFINITE);
+                    fragmentBookingBookedBinding.newVoiceMessage.startAnimation(anim);
+                    fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.VISIBLE);
                 }
 
 

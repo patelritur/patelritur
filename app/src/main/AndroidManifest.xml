@@ -43,11 +43,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".tutorial.TutorialActivity" />
         <activity android:name=".registrationLogin.LoginActivity" />
         <activity android:name=".registrationLogin.VerificationCodeActivity" />
-        <activity android:name=".registrationLogin.RegistrationActivity" />
+        <activity android:name=".registrationLogin.RegistrationActivity" >
+
+        </activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 

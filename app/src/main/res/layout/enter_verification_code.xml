@@ -27,6 +27,21 @@
             android:id="@+id/comman_header_layout"
             bind:headermodel="@{headermodel}" >
         </include>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:errorEnabled="true"
+            android:visibility="gone"
+            app:errorTextColor="@color/red"
+            app:boxStrokeErrorColor="@color/red"
+            app:errorTextAppearance="@color/red"
+            app:backgroundTint="@color/color_66030303"
+            android:id="@+id/inputlayout_password"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:fontFamily="@font/montserrat_regular"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            >
         <androidx.appcompat.widget.AppCompatEditText
             android:visibility="gone"
             android:id="@+id/enter_password"
@@ -34,11 +49,13 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:hint="@string/pin"
+            android:layout_marginStart="0dp"
             style="@style/edittext_style"
             app:backgroundTint="@color/color_3e3e3e"
             >
             <requestFocus/>
         </androidx.appcompat.widget.AppCompatEditText>
+        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:id="@+id/root_otp_layout"
             android:layout_width="match_parent"

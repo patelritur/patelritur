@@ -1,10 +1,13 @@
 package com.demo.registrationLogin;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
@@ -68,6 +71,14 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
         HeaderModel headerModel = getHeaderModelforRegistrationActivity();
         activityRegistrationBinding.setHeadermodel(headerModel);
         activityRegistrationBinding.setHandlers(this);
+        activityRegistrationBinding.edittextEmail.addTextChangedListener(new GenericTextWatcher(activityRegistrationBinding.edittextEmail));
+        activityRegistrationBinding.edittextFname.addTextChangedListener(new GenericTextWatcher(activityRegistrationBinding.edittextFname));
+        activityRegistrationBinding.edittextLname.addTextChangedListener(new GenericTextWatcher(activityRegistrationBinding.edittextLname));
+        activityRegistrationBinding.edittextPin.addTextChangedListener(new GenericTextWatcher(activityRegistrationBinding.edittextPin));
+
+
+
+
     }
 
     private HeaderModel getHeaderModelforRegistrationActivity() {
@@ -78,6 +89,11 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
     }
     public void onClickContinue(View view)
     {
+        activityRegistrationBinding.inputlayoutFname.setError(null);
+        activityRegistrationBinding.inputlayoutLname.setError(null);
+        activityRegistrationBinding.inputlayoutPin.setError(null);
+        activityRegistrationBinding.inputlayoutEmail.setError(null);
+
         if(allFieldValidated()) {
             registrationRequestModel.setIsAcceptTNC(registrationRequestModel.getIsAcceptTNC());
             registrationRequestModel.setIsSendOfferEmail(registrationRequestModel.getIsSendOfferEmail());
@@ -95,39 +111,40 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
     private boolean allFieldValidated() {
         if(registrationRequestModel.getFirstName()==null || registrationRequestModel.getFirstName().trim().length()==0)
         {
-            Utils.showToast(context,getString(R.string.validation_enter_fname));
             activityRegistrationBinding.edittextFname.requestFocus();
+            activityRegistrationBinding.inputlayoutFname.setError(getString(R.string.validation_enter_fname));
             return false;
         }
         else if(registrationRequestModel.getLastName()==null || registrationRequestModel.getLastName().trim().length()==0)
         {
-            Utils.showToast(context,getString(R.string.validation_enter_lname));
+            activityRegistrationBinding.inputlayoutLname.setError(getString(R.string.validation_enter_lname));
             activityRegistrationBinding.edittextLname.requestFocus();
             return false;
 
         }
         else if(registrationRequestModel.getEmail()==null || registrationRequestModel.getEmail().trim().length()==0)
         {
-            Utils.showToast(context,getString(R.string.validation_enter_email));
+            activityRegistrationBinding.inputlayoutEmail.setError(getString(R.string.validation_enter_email));
             activityRegistrationBinding.edittextEmail.requestFocus();
             return false;
         }
         else if(!Utils.isValidEmail(registrationRequestModel.getEmail()))
         {
-            Utils.showToast(context,getString(R.string.validation_enter_valid_email));
+            activityRegistrationBinding.inputlayoutEmail.setError(getString(R.string.validation_enter_valid_email));
             activityRegistrationBinding.edittextEmail.requestFocus();
             return false;
         }
         else if(registrationRequestModel.getPin() == null || registrationRequestModel.getPin().trim().length()==0)
         {
-            Utils.showToast(context,getString(R.string.validation_enter_pin));
+            activityRegistrationBinding.inputlayoutPin.setError(getString(R.string.validation_enter_pin));
+
             activityRegistrationBinding.edittextPin.requestFocus();
             return false;
 //            activityRegistrationBinding.textinputLayoutPin.setError(getString(R.string.validation_enter_pin));
         }
         else if(registrationRequestModel.getPin().length()<4 )
         {
-            Utils.showToast(context,getString(R.string.validation_enter_valid_pin));
+            activityRegistrationBinding.inputlayoutPin.setError(getString(R.string.validation_enter_valid_pin));
             activityRegistrationBinding.edittextPin.requestFocus();
             return false;
 //            activityRegistrationBinding.textinputLayoutPin.setError(getString(R.string.validation_enter_pin));
@@ -277,6 +294,50 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
 
     @Override
     public void onClick(View view) {
+
+    }
+
+    class GenericTextWatcher implements TextWatcher {
+
+        private final View view;
+
+        GenericTextWatcher(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.edittext_email:
+
+                    activityRegistrationBinding.inputlayoutEmail.setError(null);
+                    break;
+                case R.id.edittext_fname:
+                    activityRegistrationBinding.inputlayoutFname.setError(null);
+                    break;
+                case R.id.edittext_lname:
+                    activityRegistrationBinding.inputlayoutLname.setError(null);
+                    break;
+                case R.id.edittext_pin:
+                    activityRegistrationBinding.inputlayoutPin.setError(null);
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
 
     }
 }

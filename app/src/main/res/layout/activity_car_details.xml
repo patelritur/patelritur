@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_20"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text='@{"₹"+carDetailModel.cardetail.carPrice+" Lakh"}'
+                        android:text='@{"₹"+carDetailModel.cardetail.carPrice+" Lakh"+"\n (Tnc Apply)"}'
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="#323643"
                         android:textStyle="normal"

@@ -37,6 +37,20 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_marginBottom="@dimen/margin_20"
                 android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    app:errorTextColor="@color/red"
+                    app:boxStrokeErrorColor="@color/red"
+                    app:errorTextAppearance="@color/red"
+                    app:backgroundTint="@color/color_66030303"
+                    android:id="@+id/inputlayout_pwd"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    >
+
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/new_password"
                     android:layout_width="match_parent"
@@ -49,7 +63,19 @@
                     >
                     <requestFocus/>
                 </androidx.appcompat.widget.AppCompatEditText>
-
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    app:errorTextColor="@color/red"
+                    app:boxStrokeErrorColor="@color/red"
+                    app:errorTextAppearance="@color/red"
+                    app:backgroundTint="@color/color_66030303"
+                    android:id="@+id/inputlayout_confirmpwd"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    >
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/confirm_password"
                     android:layout_width="match_parent"
@@ -60,6 +86,7 @@
                     android:imeOptions="actionDone"
                     app:backgroundTint="@color/color_3e3e3e"
                     />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <TextView
                 android:onClick="@{handlers::onClickContinue}"

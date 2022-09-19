@@ -55,22 +55,35 @@
                     style="@style/page_header"
                     />
             </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edittext_mobile"
-                android:layout_margin="20dp"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/mobile_number"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/red"
+                app:boxStrokeErrorColor="@color/red"
+                app:errorTextAppearance="@color/red"
+                app:backgroundTint="@color/color_66030303"
+                android:id="@+id/mobile_textinputlayout"
+                android:layout_margin="20dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:backgroundTint="@color/color_66030303"
-                android:inputType="number"
-                android:maxLength="10"
-                android:textStyle="normal"
-                android:letterSpacing="-0.02"
-                android:textColor="@color/color_030303"
-                android:text="@={loginrequestmodel.mobile}"
-                android:textColorHint="@color/color_66030303"/>
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/mobile_number"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:textStyle="normal"
+                    android:letterSpacing="-0.02"
+                    android:textColor="@color/color_030303"
+                    android:text="@={loginrequestmodel.mobile}"
+                    android:textColorHint="@color/color_66030303"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:onClick="@{handlers::onClickSignup}"

@@ -15,7 +15,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             >
 
@@ -70,7 +70,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_5"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="Ex-Showroom Price"
+                    android:text="@string/ex_showroom_price"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white"
                     android:textStyle="normal" />
@@ -88,23 +88,34 @@
                     android:textStyle="normal" />
 
                 <TextView
+                    android:id="@+id/showroomprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/city"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/margin_10"
                     android:fontFamily="@font/montserrat_bold"
                     android:text='@{"₹"+carInvoice.exShowroomPrice}'
                     android:textAppearance="@style/TextAppearance.AppCompat.Menu"
                     android:textColor="#ffffff"
                     android:textStyle="bold"
                     tools:text="₹4.79" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/showroomprice"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/tnc_apply"
+                    android:textSize="12sp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
             <androidx.cardview.widget.CardView
                 android:layout_marginStart="@dimen/margin_20"
                 android:layout_marginEnd="@dimen/margin_20"
-                android:layout_marginTop="-15dp"
+                android:layout_marginTop="-10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardMaxElevation="@dimen/margin_10"
@@ -345,7 +356,7 @@
                     android:layout_below="@+id/onroad_price"
                     android:layout_alignEnd="@+id/onroad_price"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text='@{carInvoice.finalPrice+" Lakh"}'
+                    android:text='@{carInvoice.finalPrice+" Lakh"+"\n (TnC apply)"}'
                     android:textColor="@color/color_241e61"
                     android:textSize="10sp"
                     android:textStyle="bold"

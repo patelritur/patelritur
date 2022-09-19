@@ -336,26 +336,36 @@
 
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/record_audio"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        android:visibility='@{bookingDetail.bookingdetails.voiceMessageStatus.equalsIgnoreCase("Y") ? View.VISIBLE : View.GONE }'
+                        android:src="@drawable/ic_record"/>
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/play_voice_message"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/margin_10"
                         android:src="@drawable/ic_play"/>
-
                 </androidx.appcompat.widget.LinearLayoutCompat>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/new_voice_message"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/margin_20"
-                    android:text="New Voice message"/>
+                    android:text="1 New Recording"/>
             </androidx.cardview.widget.CardView>
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/recording_cardview"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="@dimen/margin_5"
@@ -364,7 +374,7 @@
                 android:layout_marginStart="@dimen/margin_20"
                 android:layout_marginTop="@dimen/margin_10"
                 android:padding="@dimen/margin_20"
-                android:visibility='@{bookingDetail.bookingdetails.voiceMessageStatus.equalsIgnoreCase("Y") ? View.VISIBLE : View.GONE }'
+
 
                 >
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -384,7 +394,6 @@
 
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/record_audio"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_centerHorizontal="true"
@@ -461,13 +470,15 @@
                                     android:textColor="#474747"
                                     tools:text="30"/>
                                 <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserrat_semibold"
                                     android:textStyle="normal"
                                     android:layout_gravity="center_vertical|end"
-                                    android:singleLine="true"
                                     android:autoSizeTextType="uniform"
+                                    android:maxLines="1"
+                                    android:autoSizeMinTextSize="10sp"
+                                    android:autoSizeStepGranularity="2sp"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="#474747"
                                     android:text=" Demos completed"/>

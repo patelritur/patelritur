@@ -85,7 +85,7 @@ public class BookingFeedbackFragment extends Fragment implements ApiResponseList
                     callAddToFavouriteSpecialistApi();
                 }
                 else
-                startHomeActivity();
+                    startHomeActivity();
             }
         });
 

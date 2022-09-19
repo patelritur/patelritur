@@ -138,7 +138,7 @@
     <string name="join_call">Join Call</string>
     <string name="book_a_meeting">Book A Meeting</string>
     <string name="performa_invoice">Performa Invoice</string>
-    <string name="play_Recording">Play Voice Recording</string>
+    <string name="play_Recording">Voice Message</string>
     <string name="arrived">Arrived</string>
     <string name="rejected">Rejected</string>
     <string name="where_do_you_want_meeting">Where do you want the Meeting?</string>
@@ -161,6 +161,8 @@
     <string name="exchange_bonus">Exchange Bonus</string>
     <string name="cash_discount">Cash Discount</string>
     <string name="already_user_pin_msg">you are already registered user. please proceed with PIN</string>
+    <string name="ex_showroom_price">Ex-Showroom Price</string>
+    <string name="tnc_apply">(TnC apply)</string>
 
 
 </resources>

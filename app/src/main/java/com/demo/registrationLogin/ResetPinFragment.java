@@ -58,6 +58,8 @@ public class ResetPinFragment extends Fragment implements ApiResponseListener {
     public void onClickContinue(View view)
     {
         if(!isPinRest) {
+            fragmentResetPinBinding.inputlayoutPwd.setError(null);
+            fragmentResetPinBinding.inputlayoutConfirmpwd.setError(null);
             if (bothFieldValidated()) {
                 CommanRequestModel commanRequestModel = new CommanRequestModel();
                 commanRequestModel.setMobile(new SharedPrefUtils(getActivity()).getStringData(getActivity(), Constants.MOBILE_NO));
@@ -80,22 +82,29 @@ public class ResetPinFragment extends Fragment implements ApiResponseListener {
     private boolean bothFieldValidated() {
         if(fragmentResetPinBinding.newPassword.getText().toString()==null )
         {
-            Utils.showToast(getActivity(),getString(R.string.validation_new_password));
+            fragmentResetPinBinding.inputlayoutPwd.setError(getString(R.string.validation_new_password));
             return false;
         }
         else if( fragmentResetPinBinding.confirmPassword.getText()==null)
         {
-            Utils.showToast(getActivity(),getString(R.string.validation_confirm_password));
+            fragmentResetPinBinding.confirmPassword.setError(getString(R.string.validation_confirm_password));
             return false;
         }
-        else if( fragmentResetPinBinding.confirmPassword.getText().toString().trim().length()<4 ||  fragmentResetPinBinding.newPassword.getText().toString().trim().length()<4)
+        else if( fragmentResetPinBinding.confirmPassword.getText().toString().trim().length()<4 )
         {
-            Utils.showToast(getActivity(),getString(R.string.validation_password_length));
+            fragmentResetPinBinding.confirmPassword.setError(getString(R.string.validation_password_length));
+
+            return false;
+        }
+        else if( fragmentResetPinBinding.newPassword.getText().toString().trim().length()<4){
+            fragmentResetPinBinding.newPassword.setError(getString(R.string.validation_password_length));
             return false;
         }
         else if(! fragmentResetPinBinding.confirmPassword.getText().toString().equalsIgnoreCase(fragmentResetPinBinding.newPassword.getText().toString()))
         {
             Utils.showToast(getActivity(),getString(R.string.validation_same_password));
+            fragmentResetPinBinding.confirmPassword.setError(getString(R.string.validation_same_password));
+
             return false;
         }
         return true;

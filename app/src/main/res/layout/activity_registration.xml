@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
 
    <data>
       <variable name="handlers" type="com.demo.registrationLogin.RegistrationActivity"/>
@@ -29,9 +29,20 @@
              android:orientation="vertical"
              android:layout_margin="@dimen/margin_20">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/red"
+                app:boxStrokeErrorColor="@color/red"
+                app:errorTextAppearance="@color/red"
+                app:backgroundTint="@color/color_66030303"
+                android:id="@+id/inputlayout_fname"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                >
 
-
-               <androidx.appcompat.widget.AppCompatEditText
+               <com.google.android.material.textfield.TextInputEditText
                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
                    android:inputType="textFilter|textCapSentences"
                    android:id="@+id/edittext_fname"
@@ -44,50 +55,86 @@
                    android:maxLength="20"
                    android:backgroundTint="@color/color_3d3d3d"
                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/red"
+                app:boxStrokeErrorColor="@color/red"
+                app:errorTextAppearance="@color/red"
+                app:backgroundTint="@color/color_66030303"
+                android:id="@+id/inputlayout_lname"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                >
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+                android:inputType="textFilter|textCapSentences"
+                android:backgroundTint="@color/color_3d3d3d"
+                android:id="@+id/edittext_lname"
+                android:imeOptions="actionNext"
+                android:text="@={registrationmodel.lastName}"
+                style="@style/register_input"
+                android:maxLength="20"
+                android:hint="@string/last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/red"
+                app:boxStrokeErrorColor="@color/red"
+                app:errorTextAppearance="@color/red"
+                app:backgroundTint="@color/color_66030303"
+                android:id="@+id/inputlayout_email"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                >
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edittext_email"
+                android:imeOptions="actionNext"
+                android:text="@={registrationmodel.email}"
+                style="@style/register_input"
+                android:hint="@string/email"
+                android:maxLength="200"
+                android:backgroundTint="@color/color_3d3d3d"
+                android:layout_width="match_parent"
+                android:inputType="textEmailAddress"
+                android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-               <androidx.appcompat.widget.AppCompatEditText
-                   android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
-                   android:inputType="textFilter|textCapSentences"
-                   android:backgroundTint="@color/color_3d3d3d"
-
-                   android:id="@+id/edittext_lname"
-                   android:imeOptions="actionNext"
-                   android:text="@={registrationmodel.lastName}"
-                   style="@style/register_input"
-                   android:maxLength="20"
-                   android:hint="@string/last_name"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"/>
-
-
-
-               <androidx.appcompat.widget.AppCompatEditText
-                   android:id="@+id/edittext_email"
-                   android:imeOptions="actionNext"
-                   android:text="@={registrationmodel.email}"
-                   style="@style/register_input"
-                   android:hint="@string/email"
-                   android:backgroundTint="@color/color_3d3d3d"
-                   android:layout_width="match_parent"
-                   android:inputType="textEmailAddress"
-                   android:layout_height="wrap_content"/>
-
-
-
-               <androidx.appcompat.widget.AppCompatEditText
-                   android:id="@+id/edittext_pin"
-                   android:imeOptions="actionDone"
-                   android:inputType="number"
-                   android:hint="@string/pin"
-                   android:backgroundTint="@color/color_3d3d3d"
-                   style="@style/register_input"
-                   android:text="@={registrationmodel.pin}"
-                   android:maxLength="@integer/pin_length"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/red"
+                app:boxStrokeErrorColor="@color/red"
+                app:errorTextAppearance="@color/red"
+                app:backgroundTint="@color/color_66030303"
+                android:id="@+id/inputlayout_pin"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                >
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edittext_pin"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:hint="@string/pin"
+                android:backgroundTint="@color/color_3d3d3d"
+                style="@style/register_input"
+                android:text="@={registrationmodel.pin}"
+                android:maxLength="@integer/pin_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
          </androidx.appcompat.widget.LinearLayoutCompat>
          <androidx.appcompat.widget.LinearLayoutCompat

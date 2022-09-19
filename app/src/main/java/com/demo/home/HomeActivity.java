@@ -160,6 +160,17 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 showFragment(takeAdemoFragment);
 
             }
+            else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("Details")){
+                   callAllMapLocationApi();
+            if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
+                showFragment(new DemoPlaceBookingFragment());
+            }
+
+            else
+            {
+                showFragment(new MeetingPlaceFragment());
+            }
+            }
 
         }
 
@@ -278,6 +289,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                             activityHomeBinding.coordinator11.setVisibility(View.GONE);
 
                         }
+                    }
+                    else if(fragment.toString().contains("DemoPlaceBookingFragment") ||fragment.toString().contains("MeetingPlaceFragment")  ){
+                        HomeActivity.super.onBackPressed();
+
                     }
                 }
 
@@ -507,18 +522,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         {
             locationUtils.onActivityResult(requestCode,resultCode,data);
         }
-        if(resultCode==100)
-        {
-            callAllMapLocationApi();
-            if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
-                showFragment(new DemoPlaceBookingFragment());
-            }
 
-            else
-            {
-                showFragment(new MeetingPlaceFragment());
-            }
-        }
     }
 
     private void callAllMapLocationApi() {

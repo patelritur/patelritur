@@ -3,9 +3,12 @@ package com.demo.registrationLogin;
 import static com.demo.utils.Constants.MODULE_TYPE_LOGIN;
 import static com.demo.utils.Constants.MODULE_TYPE_REGISTER;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
@@ -18,6 +21,7 @@ import com.demo.databinding.ActivityLoginBinding;
 import com.demo.registrationLogin.model.CommanRequestModel;
 import com.demo.registrationLogin.model.LoginResponseModel;
 import com.demo.utils.Constants;
+import com.demo.utils.DialogUtils;
 import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
@@ -40,6 +44,7 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import retrofit2.Call;
 
@@ -68,6 +73,22 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
         activityLoginBinding.setIsregister(true);
         activityLoginBinding.underlineText.setPaintFlags(activityLoginBinding.underlineText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         callbackManager = CallbackManager.Factory.create();
+        activityLoginBinding.edittextMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                activityLoginBinding.mobileTextinputlayout.setError(null);
+            }
+        });
 
     }
 
@@ -80,17 +101,16 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
     }
     public void onClickSignup(View view)
     {
+        activityLoginBinding.mobileTextinputlayout.setError(null);
         if(allFieldValidated())
-        {
             callLoginApi(MOBILE_REQ_CODE);
-        }
 
     }
 
     private boolean allFieldValidated() {
-        if(activityLoginBinding.edittextMobile.getText().toString()== null || activityLoginBinding.edittextMobile.getText().toString().trim().length()==0 ||activityLoginBinding.edittextMobile.getText().toString().trim().length()<10 )
+        if(Objects.requireNonNull(activityLoginBinding.edittextMobile.getText()).toString().trim().length() == 0 || activityLoginBinding.edittextMobile.getText().toString().trim().length() < 10)
         {
-            Utils.showToast(LoginActivity.this,getString(R.string.validation_enter_mobile_number));
+            activityLoginBinding.mobileTextinputlayout.setError(getString(R.string.validation_enter_mobile_number));
             return false;
 
         }
@@ -144,8 +164,6 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
                 .requestEmail()
                 .build();
        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -196,22 +214,30 @@ public class LoginActivity extends BaseActivity implements ApiResponseListener {
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         //{"ResponseCode":"103","Descriptions":"OTP has successfully sent.","SessionID":"141","Mobile":"1111111112"} for success response with user exists
         LoginResponseModel loginResponseModel = (LoginResponseModel) response;
-
+        sharedPrefUtils.saveData(Constants.TNC,loginResponseModel.getTNCLink());
         if(reqCode==MOBILE_REQ_CODE) {
-            sharedPrefUtils.saveData(Constants.TNC,loginResponseModel.getTNCLink());
+
             PrintLog.v("",""+loginResponseModel.toString());
             if (loginResponseModel.getResponseCode().equalsIgnoreCase("102")) {
                 Utils.showToast(this,loginResponseModel.getDescriptions());
                 navigateToVerificationCodeActivity(MODULE_TYPE_REGISTER, commanRequestModel.getMobile());
             } else {
                 if(activityLoginBinding.getIsregister())
-                 Utils.showToast(this,getString(R.string.already_user_pin_msg));
-                navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,commanRequestModel.getMobile());
+                 DialogUtils.showAlertDialog(this, "", getString(R.string.already_user_pin_msg), new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialogInterface, int i) {
+                         navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,commanRequestModel.getMobile());
+
+                     }
+                 });
+                else
+                    navigateToVerificationCodeActivity(MODULE_TYPE_LOGIN,commanRequestModel.getMobile());
+
+
             }
         }
         else if(reqCode==SOCIAL_REQ_CODE)
         {
-            sharedPrefUtils.saveData(Constants.TNC,loginResponseModel.getTNCLink());
             if (loginResponseModel.getResponseCode().equalsIgnoreCase("102")) {
                 Utils.showToast(this,loginResponseModel.getDescriptions());
                 onClickSignup(null);

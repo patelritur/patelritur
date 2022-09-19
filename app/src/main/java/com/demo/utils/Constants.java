@@ -31,9 +31,9 @@ public class Constants {
     public static final String ISVACCINATED= "ISVACCINATED";
 
     public static final long  WAIT_MINUTE=120000L;
-    public static final String  appID = "210099fe10538d51"; // Replace with your App ID
+    public static final String  appID = "21953650e4eaed92"; // Replace with your App ID
     public static final String region = "us"; // Replace with your App Region ("eu" or "us")
-    public static final String AUTH_KEY = "96f6c79e994781d5aaa0741178f6584f8af13ca4";
+    public static final String AUTH_KEY = "adb6edb242c38eab6fb0b1b5086354257eba716c";
     public static final String  APP_START = "AppStartInfo";
     public static final String BANNER = "ProductListBanner";
     public static final String MAIN_MENU = "MainMenu";

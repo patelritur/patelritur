@@ -109,6 +109,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         enterVerificationCodeBinding.rootOtpLayout.setVisibility(View.VISIBLE);
         enterVerificationCodeBinding.timerOtp.setVisibility(View.VISIBLE);
         enterVerificationCodeBinding.enterPassword.setVisibility(View.GONE);
+        enterVerificationCodeBinding.inputlayoutPassword.setVisibility(View.GONE);
         enterVerificationCodeBinding.didntReceiveOtp.setVisibility(View.VISIBLE);
         headerModel.setTitle(getString(R.string.enter_verification_code));
         headerModel.setButtonText(getString(R.string.verify_proceed));
@@ -121,6 +122,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         enterVerificationCodeBinding.rootOtpLayout.setVisibility(View.GONE);
         enterVerificationCodeBinding.timerOtp.setVisibility(View.GONE);
         enterVerificationCodeBinding.enterPassword.setVisibility(View.VISIBLE);
+        enterVerificationCodeBinding.inputlayoutPassword.setVisibility(View.VISIBLE);
         HeaderModel headerModel = new HeaderModel();
         headerModel.setSecondImage(R.drawable.ic_verification);
         Drawable img = getResources().getDrawable(R.drawable.ic_baseline_info_24);
@@ -143,6 +145,23 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         headerModel.setButtonText(getString(R.string.proceed));
         headerModel.setBottomText(getString(R.string.forgot_pin));
         enterVerificationCodeBinding.didntReceiveOtp.setVisibility(View.INVISIBLE);
+
+        enterVerificationCodeBinding.enterPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                enterVerificationCodeBinding.inputlayoutPassword.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         return headerModel;
     }
 
@@ -166,7 +185,9 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
     }
     public void onClickVerify(View view)
     {
-        {
+
+            enterVerificationCodeBinding.inputlayoutPassword.setError(null);
+
             if (!isShowEnterPIN) {
                 if (isOTPEntered()) {
                     if(countDownTimer!=null)
@@ -185,7 +206,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                     RestClient.makeApiRequest(this, objectCall, this, OTP_VALIDATION, true);
                 }
             } else {
-                if(enterVerificationCodeBinding.enterPassword.getText()!=null) {
+                if(enterVerificationCodeBinding.enterPassword.getText().toString().trim().length()>0) {
                     commanRequestModel.setMobile(mobileNumber);
                     commanRequestModel.setUserType(Constants.USER_TYPE);
                     commanRequestModel.setPin(enterVerificationCodeBinding.enterPassword.getText().toString());
@@ -194,8 +215,11 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                     Call objectCall = RestClient.getApiService().userloginbypin(commanRequestModel);
                     RestClient.makeApiRequest(this, objectCall, this, PIN_VALIDATION, true);
                 }
+                else{
+                    enterVerificationCodeBinding.inputlayoutPassword.setError(getString(R.string.validation_enter_pin));
+                }
             }
-        }
+
 
     }
 

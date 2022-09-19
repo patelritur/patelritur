@@ -39,6 +39,7 @@ import com.demo.databinding.DialogColorBinding;
 import com.demo.databinding.DialogReviewsBinding;
 import com.demo.databinding.ItemColorBinding;
 import com.demo.databinding.ItemImageviewBannerBinding;
+import com.demo.home.HomeActivity;
 import com.demo.utils.Constants;
 import com.demo.utils.DialogUtils;
 import com.demo.utils.DownloadFileFromURL;
@@ -434,8 +435,8 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
                 break;
             case R.id.takeademo:
                 Constants.CARID = carId;
-                setResult(100);
-                finish();
+                startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","Details"));
+
                 break;
 
             case R.id.reviews:

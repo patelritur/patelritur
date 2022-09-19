@@ -73,7 +73,9 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getViewModelStore().clear();
+        callGeoCodeApi();
         new ViewModelProvider(requireActivity()).get(MeetingPlaceViewModel.class).getBookingType().observe(getViewLifecycleOwner(), this::updateUIForPlace);
+
     }
 
     private void updateUIForPlace(MenuResponse item) {
@@ -101,6 +103,7 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
                     showLocationPickerDialog(false);
                     //  showLocationDialog();
                 } else {
+                    if(currentLocation==null)
                     callGeoCodeApi();
                 }
                 Constants.BOOKING_TYPE_ID = "Now";
@@ -121,6 +124,7 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
                     //  showLocationDialog();
                 } else {
                     isSchedule=true;
+                    if(currentLocation==null)
                     callGeoCodeApi();
                 }
             });
@@ -134,6 +138,7 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
         BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
          binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout. dialog_customer_location_pickup, null, false);
         dialog.setContentView(binding.getRoot());
+        if(currentLocation==null)
         callGeoCodeApi();
         isCurrentLocation=true;
         binding.pickCurrentLocation.setBackgroundResource(R.drawable.border_red_rounded_corner);
