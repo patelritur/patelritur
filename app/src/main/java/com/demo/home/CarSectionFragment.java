@@ -26,7 +26,7 @@ import com.demo.utils.Utils;
 public class CarSectionFragment extends Fragment {
     private FragmentCarSuggestionBinding fragmentCarSuggestionBinding;
     private ViewGroup viewGroup;
-   private String carSectionId,carSectionTitle;
+   private String carSectionId,carSectionTitle,specialistId;
 
     @Nullable
     @Override
@@ -36,6 +36,7 @@ public class CarSectionFragment extends Fragment {
         fragmentCarSuggestionBinding.flowlayoutFueltype.setVisibility(View.GONE);
         carSectionId=getArguments().getString("carSectionId");
         carSectionTitle = getArguments().getString("carSectionTitle");
+        specialistId = getArguments().getString("specialistId");
         fragmentCarSuggestionBinding.textviewTitle.setText(carSectionTitle);
         getCarListApi();
         return fragmentCarSuggestionBinding.getRoot();
@@ -74,6 +75,7 @@ public class CarSectionFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), CarDetailsActivity.class);
                     intent.putExtra("carId",item.getCarlist().get(finalI).getCarID());
+                    intent.putExtra("specialistId",specialistId);
                     getActivity().startActivityForResult(intent,100);
                 }
             });

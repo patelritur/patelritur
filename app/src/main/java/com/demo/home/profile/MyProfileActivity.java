@@ -2,6 +2,8 @@ package com.demo.home.profile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -23,8 +26,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.demo.BaseActivity;
 import com.demo.R;
+import com.demo.databinding.DialogUploadDlBinding;
 import com.demo.databinding.FragmentCustomerProfileBinding;
 import com.demo.home.HomeActivity;
+import com.demo.home.model.DrivingLicenseDataResponse;
 import com.demo.home.model.ProfileModel;
 import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
@@ -49,10 +54,16 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     private static final int PICK_IMAGE_CAMERA = 1;
     private static final int PICK_IMAGE_GALLERY = 2;
     private static final int UPLOAD_DOC = 2;
+    private static final int UPLOAD_DRIVING_LICENSE = 3;
+    private static final int UPDATE_DATA = 1;
+    private static final int DRIVING_LICENSE_DATA = 4;
     private FragmentCustomerProfileBinding fragmentCustomerProfileBinding;
     private SharedPrefUtils sharedPrefUtils;
     private ProfileModel profileModel;
     private String fullFilePath;
+    private DialogUploadDlBinding dialogUploadDlBinding;
+    private Dialog uploadDlDialog;
+    private String dlDocument;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +88,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             showImage(imageUri);
         }
         fragmentCustomerProfileBinding.setProfile(profileModel);
+        if(sharedPrefUtils.getStringData(Constants.IsDLUploadStatus)!=null && sharedPrefUtils.getStringData(Constants.IsDLUploadStatus).equalsIgnoreCase("Y"))
+            fragmentCustomerProfileBinding.downloadDl.setVisibility(View.VISIBLE);
         fragmentCustomerProfileBinding.editProfilename.setOnClickListener(this);
         fragmentCustomerProfileBinding.editProfilepicture.setOnClickListener(this);
         fragmentCustomerProfileBinding.editAddress.setOnClickListener(this);
@@ -84,6 +97,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         fragmentCustomerProfileBinding.editMobile.setOnClickListener(this);
         fragmentCustomerProfileBinding.saveContinue.setOnClickListener(this);
         fragmentCustomerProfileBinding.backIcon.setOnClickListener(this);
+        fragmentCustomerProfileBinding.downloadDl.setOnClickListener(this);
+        fragmentCustomerProfileBinding.upload.setOnClickListener(this);
 
     }
 
@@ -158,12 +173,57 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
 
                 break;
+            case R.id.upload:
+                showUploadDlDialog();
+                break;
+            case R.id.download_dl:
+                showDownloadDLDialog();
+                break;
             case R.id.save_continue:
                 callSaveContinueApi();
                 break;
 
         }
 
+    }
+
+    private void showDownloadDLDialog() {
+
+        Call objectCall = RestClient.getApiService().getDrivingLicenseData(profileModel.userID);
+        RestClient.makeApiRequest(this,objectCall,this, DRIVING_LICENSE_DATA,true);
+
+
+    }
+
+    private void showUploadDlDialog() {
+
+        uploadDlDialog = new Dialog(this);
+        dialogUploadDlBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_upload_dl, null, false);
+        uploadDlDialog.setContentView(dialogUploadDlBinding.getRoot());
+        dialogUploadDlBinding.close.setOnClickListener(view -> {
+            uploadDlDialog.dismiss();
+
+
+        });
+        dialogUploadDlBinding.uplaodDl.setOnClickListener(view -> {
+
+            if (!Permissionsutils.checkForStoragePermission(MyProfileActivity.this)) {
+                Permissionsutils.askForStoragePermission(MyProfileActivity.this,Constants.DL);
+            } else {
+                pickDL();
+            }
+
+
+        });
+        Utils.showDilaog(uploadDlDialog);
+
+    }
+
+    private void pickDL() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, Constants.DL);
     }
 
     private void changeBackgroundTint(AppCompatEditText edittextAddress) {
@@ -222,9 +282,17 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     private void callSaveContinueApi() {
         if(allFieldsEntered()){
             Call objectCall = RestClient.getApiService().updateProfile(profileModel);
-            RestClient.makeApiRequest(this,objectCall,this,1,true);
+            RestClient.makeApiRequest(this,objectCall,this, UPDATE_DATA,true);
         }
 
+    }
+
+    private void uploadDrivingLicenseToServer(File destination,String dlNumber) {
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("File", destination.getName(), RequestBody.create(MediaType.parse("image/*"), destination));
+        Call<RegistrationResponse> call;
+        call = RestClient.getApiService().uploadDrivingLicense(filePart, RequestBody.create(MediaType.parse("text/plain"), profileModel.getUserID()), RequestBody.create(MediaType.parse("text/plain"), dlNumber));
+
+        RestClient.makeApiRequest(this, call, this, UPLOAD_DRIVING_LICENSE, true);
     }
 
     private boolean allFieldsEntered() {
@@ -305,6 +373,20 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             }
             //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
+        else  if (requestCode == Constants.DL && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            String fullFilePath = UriUtils.getPathFromUri(this,uri);
+
+            File destination = new File(fullFilePath);
+            if(destination.exists())
+            {
+                if(destination.exists())
+                {
+                    uploadDrivingLicenseToServer(destination,dialogUploadDlBinding.edittextDl.getText().toString());
+
+                }
+            }
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -312,15 +394,34 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             //resume tasks needing this permission
             if(requestCode==PICK_IMAGE_GALLERY)
-            pickImage();
-            else
+                 pickImage();
+            else if(requestCode==PICK_IMAGE_CAMERA)
                 pickCameraImage();
+            else if(requestCode==Constants.DL)
+                pickDL();
+            else if(requestCode==10)
+                downloadDL();
 
         }
-        else
-        {
-            // DialogUtils.showAlertInfo(context, "Please accept storage permission to upload vaccine certificate.");
-        }
+
+    }
+
+    private void downloadDL() {
+        File file = new File(Environment.getExternalStorageDirectory() + "/DEMO/" + dlDocument.substring(dlDocument.lastIndexOf(".")));
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(dlDocument))
+                .setTitle("Driving License")
+                .setDescription("Downloading")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationUri(Uri.fromFile(file))
+                .setAllowedOverMetered(true)
+                .setAllowedOverRoaming(true);
+
+        DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+        long referenceID = downloadManager.enqueue(request);
+        Utils.showToast(MyProfileActivity.this, "Driving License is downloaded successfullly");
+
     }
 
 
@@ -332,7 +433,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
-        if(reqCode==1){
+        if(reqCode== UPDATE_DATA){
             RegistrationResponse registrationResponse = (RegistrationResponse) response;
             if(registrationResponse.getResponseCode().equalsIgnoreCase("200")){
                 sharedPrefUtils.saveData(Constants.ADDRESS,profileModel.address);
@@ -348,13 +449,36 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
             }
         }
-        else  if(reqCode==2){
+        else  if(reqCode==UPLOAD_DOC){
             RegistrationResponse registrationResponse = (RegistrationResponse) response;
             if(registrationResponse.getResponseCode().equalsIgnoreCase("200")){
                 sharedPrefUtils.saveData(Constants.IMAGE_FILE,fullFilePath);
                 sharedPrefUtils.saveData(Constants.IMAGE,fullFilePath);
                 Utils.showToast(this,registrationResponse.getDescriptions());
 
+            }
+        }
+        else  if(reqCode==UPLOAD_DRIVING_LICENSE){
+            RegistrationResponse registrationResponse = (RegistrationResponse) response;
+            Utils.showToast(this,registrationResponse.getDescriptions());
+            uploadDlDialog.dismiss();
+            if(registrationResponse.getResponseCode().equalsIgnoreCase("200")) {
+                sharedPrefUtils.saveData(Constants.IsDLUploadStatus, "Y");
+            }
+        }
+        else if(reqCode==DRIVING_LICENSE_DATA){
+            DrivingLicenseDataResponse drivingLicenseDataResponse = (DrivingLicenseDataResponse) response;
+             dlDocument = drivingLicenseDataResponse.getDLDocument();
+            if(drivingLicenseDataResponse.getDLNumber().trim().length()>0) {
+                fragmentCustomerProfileBinding.dlNumber.setVisibility(View.VISIBLE);
+                fragmentCustomerProfileBinding.dlNumber.setText("Driving License Number: "+drivingLicenseDataResponse.getDLNumber());
+            }
+            if(drivingLicenseDataResponse.getResponseCode().equalsIgnoreCase("200")){
+                if(Permissionsutils.checkForStoragePermission(this)) {
+                   downloadDL();
+                     }
+                else
+                    Permissionsutils.askForStoragePermission(this,10);
             }
         }
 

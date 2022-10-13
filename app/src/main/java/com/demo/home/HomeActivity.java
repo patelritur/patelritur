@@ -36,6 +36,7 @@ import com.demo.home.booking.DemoPlaceBookingFragment;
 import com.demo.home.booking.ScheduleBookingFragment;
 import com.demo.home.booking.model.MapLocationResponseModel;
 import com.demo.home.meeting.MeetingPlaceFragment;
+import com.demo.home.meeting.VirtualMeetFragment;
 import com.demo.home.model.CarSearchRequestModel;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
@@ -84,15 +85,15 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         if(sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
             activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
         }
-            activityHomeBinding.bookingOngoing.setOnClickListener(view -> {
-                Constants.BOOK_TYPE = sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S);
-                if (sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S).equalsIgnoreCase("Demo"))
-                    Constants.BOOKING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
-                else
-                    Constants.MEETING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
+        activityHomeBinding.bookingOngoing.setOnClickListener(view -> {
+            Constants.BOOK_TYPE = sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S);
+            if (sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S).equalsIgnoreCase("Demo"))
+                Constants.BOOKING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
+            else
+                Constants.MEETING_ID = sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING);
 
-                showFragment(new BookingConfirmedFragment());
-            });
+            showFragment(new BookingConfirmedFragment());
+        });
 
 
 
@@ -133,7 +134,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                     Constants.BOOK_TYPE = "Meeting";
                 }
                 if(sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null"))
-                showFragment(new BookingConfirmedFragment());
+                    showFragment(new BookingConfirmedFragment());
             }
             else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("notifications")){
                 showFragment(new BookingConfirmedFragment(true));
@@ -156,20 +157,22 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 activityHomeBinding.layoutOptionsDemo.llMeetspecialists.setBackgroundResource(R.drawable.border_red_rounded_corner);
                 activityHomeBinding.layoutOptionsDemo.llDrivemydemo.setBackgroundResource(R.drawable.white_border);
                 //    showFragment(new MeetingPlaceFragment());
-                takeAdemoFragment = new TakeADemoFragment();
+                takeAdemoFragment = new TakeADemoFragment(specialistId);
                 showFragment(takeAdemoFragment);
 
             }
             else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("Details")){
-                   callAllMapLocationApi();
-            if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
-                showFragment(new DemoPlaceBookingFragment());
-            }
+                callAllMapLocationApi();
 
-            else
-            {
-                showFragment(new MeetingPlaceFragment());
-            }
+                specialistId = getIntent().getExtras().getString("specialistId");
+                if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
+                    showFragment(new DemoPlaceBookingFragment());
+                }
+
+                else
+                {
+                    showFragment(new MeetingPlaceFragment());
+                }
             }
 
         }
@@ -338,7 +341,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 activityHomeBinding.layoutOptionsDemo.llMeetspecialists.setBackgroundResource(R.drawable.border_red_rounded_corner);
                 activityHomeBinding.layoutOptionsDemo.llDrivemydemo.setBackgroundResource(R.drawable.white_border);
                 //    showFragment(new MeetingPlaceFragment());
-                takeAdemoFragment = new TakeADemoFragment();
+                takeAdemoFragment = new TakeADemoFragment(specialistId);
                 showFragment(takeAdemoFragment);
                 break;
             case R.id.ll_drivemydemo:
@@ -346,7 +349,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 setEmptyValues();
                 activityHomeBinding.layoutOptionsDemo.llDrivemydemo.setBackgroundResource(R.drawable.border_red_rounded_corner);
                 activityHomeBinding.layoutOptionsDemo.llMeetspecialists.setBackgroundResource(R.drawable.white_border);
-                takeAdemoFragment = new TakeADemoFragment();
+                takeAdemoFragment = new TakeADemoFragment(specialistId);
                 showFragment(takeAdemoFragment);
                 break;
             case R.id.know_more_demo:
@@ -509,7 +512,16 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        locationUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        //100 for camera
+        if(requestCode==100){
+            ((VirtualMeetFragment)this.fragment).onRequestPermissionsResult(requestCode,permissions,grantResults);
+        }
+        else if (requestCode==Constants.DL){
+            ((BookingConfirmedFragment)fragment).onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+        }
+        else
+            locationUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
 
 
     }
@@ -521,6 +533,9 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         if(requestCode==5)
         {
             locationUtils.onActivityResult(requestCode,resultCode,data);
+        }
+        else if(requestCode==Constants.DL){
+            ((BookingConfirmedFragment)fragment).onActivityResult(requestCode,resultCode,data);
         }
 
     }
@@ -601,7 +616,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     }
 
     public void showSelectFilerCars() {
-        takeAdemoFragment = new TakeADemoFragment();
+        takeAdemoFragment = new TakeADemoFragment(specialistId);
         showFragment(takeAdemoFragment);
         behavior.setState(STATE_EXPANDED);
 

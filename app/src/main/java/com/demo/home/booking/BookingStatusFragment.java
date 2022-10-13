@@ -19,6 +19,7 @@ import com.demo.databinding.LayoutStatusDemoBookingBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.booking.model.BookingRequestModel;
 import com.demo.home.booking.model.BookingResponseModel;
+import com.demo.home.booking.model.CancelBookingModel;
 import com.demo.home.booking.model.CurrentStatuSModel;
 import com.demo.home.booking.model.StatusRequestModel;
 import com.demo.utils.Constants;
@@ -32,6 +33,9 @@ import retrofit2.Call;
 
 public class BookingStatusFragment  extends Fragment implements  ApiResponseListener
 {
+    private static final int CANCEL_BOOKING = 3;
+    private static final int DETAIL_API = 1;
+    private static final int STATUS_API = 2;
     private LayoutStatusDemoBookingBinding layoutStatusDemoBookingBinding;
     private BroadcastReceiver br = new MyReceiver();
     private int count;
@@ -79,25 +83,38 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
                 callMeetingApi(Constants.MEETING_PLACE_TYPE_ID);
         }
         layoutStatusDemoBookingBinding.cancel.setOnClickListener(view1 -> {
-            Utils.cancelJob(getActivity());
-            try{
-                getActivity().unregisterReceiver(br);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-            getActivity().startActivity(new Intent(getActivity(),HomeActivity.class));
-            getActivity().finishAffinity();
+
+            callCancelBookingApi();
+
         });
+    }
+
+    private void callCancelBookingApi() {
+
+        CancelBookingModel cancelBookingModel = new CancelBookingModel();
+        cancelBookingModel.setCancelReason("auto cancel");
+        cancelBookingModel.setBlockDealerStatus("N");
+        Call objectCall;
+        if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
+            cancelBookingModel.bookingID = Constants.BOOKING_ID;
+            objectCall = RestClient.getApiService().cancelBooking(cancelBookingModel);
+        }
+        else {
+            cancelBookingModel.meetingID = Constants.MEETING_ID;
+            objectCall = RestClient.getApiService().cancelMeeting(cancelBookingModel);
+        }
+
+        RestClient.makeApiRequest(getActivity(), objectCall, this, CANCEL_BOOKING, true);
+
     }
 
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
-        if(reqCode==1) {
+        if(reqCode==DETAIL_API) {
             extracted((BookingResponseModel) response);
             ((HomeActivity) getActivity()).setPeekheight(layoutStatusDemoBookingBinding.parentLl.getMeasuredHeight());
         }
-        else
+        else if(reqCode==STATUS_API)
         {
             CurrentStatuSModel currentStatuSModel = (CurrentStatuSModel) response;
             layoutStatusDemoBookingBinding.setHeaderMessage(currentStatuSModel.getBookingMessage());
@@ -162,6 +179,17 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
             }
 
 
+        }
+        else if(reqCode==CANCEL_BOOKING){
+            Utils.cancelJob(getActivity());
+            try{
+                getActivity().unregisterReceiver(br);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            getActivity().startActivity(new Intent(getActivity(),HomeActivity.class));
+            getActivity().finishAffinity();
         }
 
     }
@@ -258,7 +286,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         bookingRequestModel.setCarID(Constants.CARID);
         bookingRequestModel.setSpecialistID(((HomeActivity)getActivity()).specialistId);
         Call objectCall = RestClient.getApiService().meetingBooking(bookingRequestModel);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, 1, true);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, DETAIL_API, true);
 
     }
 
@@ -287,7 +315,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         }
 
         Call objectCall = RestClient.getApiService().carbooking(bookingRequestModel);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, 1, true);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, DETAIL_API, true);
 
     }
 
@@ -296,7 +324,8 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         @Override
         public void onReceive(Context context, Intent intent) {
             PrintLog.v("onReceive");
-            if(intent.getAction().equalsIgnoreCase("receiveNotification")){
+            if(intent.getAction().equalsIgnoreCase("receiveNotification") && intent.getExtras()
+            .getString("notificationtype").contains("Accept")){
                 Utils.cancelJob(getActivity());
 
                 ((HomeActivity) getActivity()).setBehavior(true);
@@ -338,7 +367,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
         else
             objectCall = RestClient.getApiService().getMeetingCurrentStatus(statusRequestModel);
 
-        RestClient.makeApiRequest(getActivity(), objectCall, this, 2, true);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, STATUS_API, true);
 
     }
 

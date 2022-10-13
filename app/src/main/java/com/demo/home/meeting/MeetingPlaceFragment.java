@@ -173,7 +173,6 @@ public class MeetingPlaceFragment extends Fragment implements ApiResponseListene
             if(isCurrentLocation){
                 Constants.DEMOADDRESS = Objects.requireNonNull(binding.customerLocation.getText()).toString();
                 {
-                    Constants.DEMOLOCATIONTYPE = "Home";
                     dialog.dismiss();
                     if(!isSchedule)
                         ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
@@ -185,7 +184,6 @@ public class MeetingPlaceFragment extends Fragment implements ApiResponseListene
             else {
                 if(Objects.requireNonNull(binding.customerLocation.getText()).toString().trim().length()>0) {
                     Constants.DEMOADDRESS = binding.customerLocation.getText().toString();
-                    Constants.DEMOLOCATIONTYPE = "Home";
                     ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
                     dialog.dismiss();
                 }
@@ -230,7 +228,6 @@ public class MeetingPlaceFragment extends Fragment implements ApiResponseListene
             }
             else{
                 Constants.DEMOADDRESS =directionsGeocodeResponse.getResults().get(0).getFormatted_address();
-                Constants.DEMOLOCATIONTYPE ="Home";
                 if(preBook)
                 {
                     Constants.MEETING_TYPE_ID = "Schedule";

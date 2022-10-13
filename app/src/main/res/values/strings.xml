@@ -163,6 +163,18 @@
     <string name="already_user_pin_msg">you are already registered user. please proceed with PIN</string>
     <string name="ex_showroom_price">Ex-Showroom Price</string>
     <string name="tnc_apply">(TnC apply)</string>
+    <string name="upload_dl">Upload Driving License</string>
+    <string name="dl_number">Driving License Number</string>
+    <string name="please_keep_your_driving_license_ready">Please keep your driving license ready with you</string>
+    <string name="save_amp_continue"><![CDATA[SAVE & CONTINUE]]></string>
+    <string name="edit">Edit</string>
+    <string name="address">Address</string>
+    <string name="driving_license">Driving License</string>
+    <string name="upload">Upload</string>
+    <string name="download">Download</string>
+    <string name="select_driving_license">Select Driving License</string>
+    <string name="welcome_messages">You have , %1$s! Minutes to upload Driving license or else booking will be cancelled</string>
+
 
 
 </resources>

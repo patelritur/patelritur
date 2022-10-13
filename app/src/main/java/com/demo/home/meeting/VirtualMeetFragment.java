@@ -1,6 +1,7 @@
 package com.demo.home.meeting;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.demo.home.booking.ScheduleLaterFragment;
 import com.demo.home.model.MenuResponse;
 import com.demo.home.model.viewmodel.VirtualMeetingPlaceViewModel;
 import com.demo.utils.Constants;
+import com.demo.utils.Permissionsutils;
 import com.demo.utils.Utils;
 import com.demo.utils.comectChat.utils.CallUtils;
 
@@ -47,7 +49,7 @@ public class VirtualMeetFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         layoutDemoPlaceBinding = DataBindingUtil.inflate(inflater, R.layout.layout_demo_place,container,false);
+        layoutDemoPlaceBinding = DataBindingUtil.inflate(inflater, R.layout.layout_demo_place,container,false);
 
 
         layoutDemoPlaceBinding.titleText.setText(getString(R.string.virtual_meet));
@@ -77,13 +79,33 @@ public class VirtualMeetFragment extends Fragment {
                 public void onClick(View v) {
 
                     Constants.VIRTUAL_MEET_TYPE=item.getDemomenu().get(finalI).getMenuName().split(" ")[0];
-                    if(!preBook)
-                    ((HomeActivity)getActivity()).showScheduleFragment(new ScheduleBookingFragment());
-                    else
-                        ((HomeActivity)getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
+                    if(!preBook) {
+                        if(Constants.VIRTUAL_MEET_TYPE.equalsIgnoreCase("video")){
+                            if(!Permissionsutils.checkForCameraPermission(getActivity()))
+                                Permissionsutils.askForCameraPermission(getActivity(),100);
+                            else
+                                ((HomeActivity) getActivity()).showFragment(new ScheduleBookingFragment());
+                        }
+                        else
+                            ((HomeActivity) getActivity()).showFragment(new ScheduleBookingFragment());
+
+                    }
+                    else {
+                        ((HomeActivity) getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
+                    }
                 }
             });
             layoutDemoPlaceBinding.llPlacetype.addView(itemDemoPlaceBinding.getRoot());
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            //resume tasks needing this permission
+            ((HomeActivity) getActivity()).showFragment(new ScheduleBookingFragment());
+        }
+
     }
 }

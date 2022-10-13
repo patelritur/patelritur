@@ -435,7 +435,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
                 break;
             case R.id.takeademo:
                 Constants.CARID = carId;
-                startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","Details"));
+                startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","Details").putExtra("specialistId",getIntent().getExtras().getString("specialistId")));
 
                 break;
 

@@ -35,12 +35,14 @@ import java.util.ArrayList;
 public class CarSuggestionFragment extends Fragment implements SearchResultInterface {
     private FragmentCarSuggestionBinding fragmentCarSuggestionBinding;
     private ViewGroup viewGroup;
+    private String specialistId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         fragmentCarSuggestionBinding  = DataBindingUtil.inflate(inflater, R.layout.fragment_car_suggestion,container,false);
         viewGroup = container;
+        specialistId = getArguments().getString("specialistId");
         return fragmentCarSuggestionBinding.getRoot();
 
     }
@@ -84,6 +86,7 @@ public class CarSuggestionFragment extends Fragment implements SearchResultInter
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), CarDetailsActivity.class);
                     intent.putExtra("carId",item.getCarlist().get(finalI).getCarID());
+                    intent.putExtra("specialistId",specialistId);
                     getActivity().startActivityForResult(intent,100);
                 }
             });

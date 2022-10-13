@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     style="@style/redButton"
                     android:text="Remove"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_gravity="center_horizontal"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
@@ -95,7 +95,7 @@
                     android:layout_marginBottom="@dimen/margin_20"
                     android:layout_below="@+id/remove"
                     android:text="Send To Specialist"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_gravity="center_horizontal"
                     />
             </RelativeLayout>

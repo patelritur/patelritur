@@ -14,9 +14,13 @@ import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.gms.common.util.IOUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class UriUtils {
     private static Uri contentUri = null;
@@ -24,6 +28,7 @@ public class UriUtils {
     @SuppressLint("NewApi")
     public static String getPathFromUri(final Context context, final Uri uri) {
         // check here to is it KITKAT or new version
+        PrintLog.v("uri"+uri);
         final boolean isKitKatOrAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         String selection = null;
         String[] selectionArgs = null;
@@ -137,7 +142,9 @@ public class UriUtils {
             if( Build.VERSION.SDK_INT == Build.VERSION_CODES.N)
             {
                 return getMediaFilePathForN(uri, context);
-            }else
+            }
+
+            else
             {
                 return getDataColumn(context, uri, null, null);
             }
@@ -250,7 +257,7 @@ public class UriUtils {
         return file.getPath();
     }
 
-
+//content://com.oneplus.filemanager/storage/emulated/0/DCIM/Camera/IMG_20200724_121515/00000IMG_00000_BURST20200724121515355_COVER.jpg
     private static String getDataColumn(Context context, Uri uri,
                                         String selection, String[] selectionArgs) {
         Cursor cursor = null;
@@ -265,6 +272,8 @@ public class UriUtils {
                 final int index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(index);
             }
+
+
         } catch (Exception e) {
             cursor.close();
         } finally {
@@ -274,6 +283,10 @@ public class UriUtils {
 
         return null;
     }
+
+
+
+
 
     private static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());

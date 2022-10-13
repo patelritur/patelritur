@@ -1,6 +1,9 @@
 package com.demo.registrationLogin.model;
 
 
+import androidx.annotation.Keep;
+
+@Keep
 public class PINResponseModel {
 
         public String ResponseCode;
@@ -41,6 +44,7 @@ public class PINResponseModel {
 
         public UsersInfo UsersInfo;
 
+    @Keep
     public class UsersInfo{
         public long UserID;
         public String Type;
@@ -53,6 +57,16 @@ public class PINResponseModel {
         public String ShowroomID;
         public String EmployeeID;
         public String DOB;
+
+        public String getIsDLUploadStatus() {
+            return IsDLUploadStatus;
+        }
+
+        public void setIsDLUploadStatus(String isDLUploadStatus) {
+            IsDLUploadStatus = isDLUploadStatus;
+        }
+
+        public String IsDLUploadStatus;
 
         public String getIsVaccinated() {
             return IsVaccinated;

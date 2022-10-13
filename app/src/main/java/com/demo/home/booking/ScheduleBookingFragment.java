@@ -68,7 +68,6 @@ public class ScheduleBookingFragment extends Fragment {
                     Constants.BOOKING_TYPE_ID = item.getLabels().get(finalI1).getLabelName();
                     Constants.MEETING_TYPE_ID = item.getLabels().get(finalI1).getLabelName();
                     Constants.DEMOADDRESS = "";
-                    Constants.DEMOLOCATIONTYPE = "Home";
                     if(finalI1!=2) {
                         Constants.TIME="";
                         Constants.DATE="";

@@ -641,6 +641,20 @@
             <View style="@style/divider"/>
 
             <TextView
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#393939"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="3sp"
+                android:id="@+id/dl_ready"
+                android:text="@string/please_keep_your_driving_license_ready"/>
+            <View style="@style/divider"/>
+
+            <TextView
                 style="@style/redButton"
                 android:id="@+id/tv_left_home"
                 android:visibility='@{bookingDetail.bookingdetails.demoType.equalsIgnoreCase("At Dealership")? View.VISIBLE : View.GONE}'

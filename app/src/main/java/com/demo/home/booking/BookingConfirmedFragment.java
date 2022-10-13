@@ -1,6 +1,9 @@
 package com.demo.home.booking;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +13,9 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -28,6 +33,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
 import com.cometchat.pro.constants.CometChatConstants;
@@ -39,16 +45,19 @@ import com.demo.carDetails.model.CarDetailRequest;
 import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.databinding.DialogRecordBinding;
 import com.demo.databinding.DialogReviewsBinding;
+import com.demo.databinding.DialogUploadDlBinding;
 import com.demo.databinding.FragmentBookingBookedBinding;
 import com.demo.databinding.ItemCarFacilitiesBinding;
 import com.demo.home.HomeActivity;
 import com.demo.home.TakeADemoFragment;
-import com.demo.home.booking.datePicker.Time;
 import com.demo.home.booking.model.BookingAcceptModel;
+import com.demo.home.booking.model.BookingResponseModel;
+import com.demo.home.booking.model.CancelBookingModel;
 import com.demo.home.booking.model.LocationResponse;
 import com.demo.home.booking.model.StatusRequestModel;
 import com.demo.home.booking.model.UpdateStatusRequestModel;
 import com.demo.home.model.DirectionResults;
+import com.demo.home.profile.MyProfileActivity;
 import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
 import com.demo.utils.DialogUtils;
@@ -58,6 +67,7 @@ import com.demo.utils.Permissionsutils;
 import com.demo.utils.PrintLog;
 import com.demo.utils.RecorderUtils;
 import com.demo.utils.SharedPrefUtils;
+import com.demo.utils.UriUtils;
 import com.demo.utils.Utils;
 import com.demo.utils.comectChat.utils.CallUtils;
 import com.demo.webservice.ApiResponseListener;
@@ -83,10 +93,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private static final int BOOKING_DETAILS = 1;
     private static final int PERFORMA_INVOICE = 4;
     private static final int RECORD_AUDIO = 2;
+    private static final int UPLOAD_DRIVING_LICENSE = 10;
     private static final int UPDATE_STATUS = 6;
     private static final int GET_ROUTE = 7;
     private static final int GET_ONLY_ROUTE = 8;
     private static final int PLAY_AUDIO = 9;
+    private static final int CANCEL_BOOKING = 11;
 
     private SharedPrefUtils sharedPrefUtils;
     private FragmentBookingBookedBinding fragmentBookingBookedBinding;
@@ -103,11 +115,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private String specialistId;
     private String userId;
     private DialogRecordBinding dialogRecordBinding;
-    private Dialog recordDialog;
+    private Dialog recordDialog,uplodDlDialog;
     private Long duration;
     private Long distance;
-    private DirectionResults.Location startLocation,endLocation;
     private CountUpTimer countuptimer;
+    private DialogUploadDlBinding dialogUploadDlBinding;
+    private CountDownTimer dlUploadcountDownTimer;
 
     public BookingConfirmedFragment(boolean fromNotification) {
         this.fromNotification = fromNotification;
@@ -127,6 +140,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         userId = sharedPrefUtils.getStringData(Constants.USER_ID);
         timer = new Timer();
 
+        if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME) )
+            fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
 
         return fragmentBookingBookedBinding.getRoot();
     }
@@ -144,33 +159,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         fragmentBookingBookedBinding.playVoiceMessage.setOnClickListener(this);
         fragmentBookingBookedBinding.tvLeftHome.setOnClickListener(this);
 
-
-        if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
-            callBookingDetailApi(BOOKING_DETAILS);
-        else
-            callMeetingDetailApi(BOOKING_DETAILS);
+        callBookingDetailApi(BOOKING_DETAILS);
     }
-
-    private void callMeetingDetailApi(int reqCode) {
-        StatusRequestModel statusRequestModel = new StatusRequestModel();
-        statusRequestModel.setMeetingID(Constants.MEETING_ID);
-        if (((HomeActivity) getActivity()).getLocation() != null) {
-            statusRequestModel.setLatitude(String.valueOf(((HomeActivity) getActivity()).getLocation().getLatitude()));
-            statusRequestModel.setLongitude(String.valueOf(((HomeActivity) getActivity()).getLocation().getLongitude()));
-        } else {
-            statusRequestModel.setLatitude(Constants.LATITUDE != null ? Constants.LATITUDE : "0.0");
-            statusRequestModel.setLongitude(Constants.LONGITUDE != null ? Constants.LONGITUDE : "0.0");
-        }
-        statusRequestModel.setUserID(userId);
-        Call objectCall = RestClient.getApiService().getMeetingDetails(statusRequestModel);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, reqCode, true);
-
-    }
-
 
     private void callBookingDetailApi(int reqCode) {
         StatusRequestModel statusRequestModel = new StatusRequestModel();
-        statusRequestModel.setBookingID(Constants.BOOKING_ID);
+
         if (((HomeActivity) getActivity()).getLocation() != null) {
             statusRequestModel.setLatitude(String.valueOf(((HomeActivity) getActivity()).getLocation().getLatitude()));
             statusRequestModel.setLongitude(String.valueOf(((HomeActivity) getActivity()).getLocation().getLongitude()));
@@ -179,10 +173,21 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             statusRequestModel.setLongitude(Constants.LONGITUDE != null ? Constants.LONGITUDE : "0.0");
         }
         statusRequestModel.setUserID(userId);
-        Call objectCall = RestClient.getApiService().getBookingDetails(statusRequestModel);
+        Call objectCall;
+        if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
+            statusRequestModel.setBookingID(Constants.BOOKING_ID);
+            objectCall = RestClient.getApiService().getBookingDetails(statusRequestModel);
+        }
+        else {
+            statusRequestModel.setMeetingID(Constants.MEETING_ID);
+            objectCall = RestClient.getApiService().getMeetingDetails(statusRequestModel);
+        }
+
         RestClient.makeApiRequest(getActivity(), objectCall, this, reqCode, true);
 
     }
+
+
 
 
     private void callPorfomaInvoiceApi() {
@@ -208,6 +213,37 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             objectCall = RestClient.getApiService().updateMeetStatus(updateStatusRequestModel);
         RestClient.makeApiRequest(getActivity(), objectCall, this, UPDATE_STATUS, true);
 
+    }
+
+
+
+    private void calculateDistance(int getOnlyRoute, String specialistLatitude, String specialistLongitude) {
+
+        Call objectCall = RestClient.getApiService().getRoute(((HomeActivity) getActivity()).locationUtils.getLoc().getLatitude() + "," + ((HomeActivity) getActivity()).locationUtils.getLoc().getLongitude(), specialistLatitude + "," + specialistLongitude);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, getOnlyRoute, true);
+
+
+    }
+
+
+    private void uploadDrivingLicenseToServer(File destination,String dlNumber) {
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("File", destination.getName(), RequestBody.create(MediaType.parse("image/*"), destination));
+        Call<RegistrationResponse> call;
+        call = RestClient.getApiService().uploadDrivingLicense(filePart, RequestBody.create(MediaType.parse("text/plain"), userId), RequestBody.create(MediaType.parse("text/plain"), dlNumber));
+
+        RestClient.makeApiRequest(getActivity(), call, this, UPLOAD_DRIVING_LICENSE, true);
+    }
+
+
+    private void uploadFileToServer(File destination) {
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("File", destination.getName(), RequestBody.create(MediaType.parse("image/*"), destination));
+        Call<RegistrationResponse> call;
+        if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
+            call = RestClient.getApiService().uploadVoiceMessage(filePart, RequestBody.create(MediaType.parse("text/plain"), userId), RequestBody.create(MediaType.parse("text/plain"), Constants.BOOKING_ID));
+        else
+            call = RestClient.getApiService().uploadMeetingVoiceMessage(filePart, RequestBody.create(MediaType.parse("text/plain"), userId), RequestBody.create(MediaType.parse("text/plain"), Constants.MEETING_ID));
+
+        RestClient.makeApiRequest(getActivity(), call, this, RECORD_AUDIO, true);
     }
 
 
@@ -260,8 +296,9 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     }
 
 
-    @NonNull
-    private Dialog getDialog() {
+
+
+    private void showPorfomaInvoiceDialog(CarPorfomaInvoiceModel carPorfomaInvoiceModel) {
         Dialog dialog = new Dialog(getActivity());
         binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_reviews, null, false);
         dialog.setContentView(binding.getRoot());
@@ -271,19 +308,6 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 dialog.dismiss();
             }
         });
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        lp.dimAmount = 0.8f;
-        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-        return dialog;
-    }
-
-
-    private void showPorfomaInvoiceDialog(CarPorfomaInvoiceModel carPorfomaInvoiceModel) {
-        Dialog dialog = getDialog();
         binding.textviewTitle.setText(getString(R.string.porfoma_invoice));
         binding.setCarInvoice(carPorfomaInvoiceModel.getPorfomainvoice());
         this.carPorfomaInvoiceModel = carPorfomaInvoiceModel;
@@ -303,7 +327,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             }
         });
         binding.executePendingBindings();
-        dialog.show();
+        Utils.showDilaog(dialog);
     }
 
     private void DownloadFileFromURL() {
@@ -316,46 +340,99 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     }
 
 
-    private void calculateDistance(int getOnlyRoute, String specialistLatitude, String specialistLongitude) {
-
-        Call objectCall = RestClient.getApiService().getRoute(((HomeActivity) getActivity()).locationUtils.getLoc().getLatitude() + "," + ((HomeActivity) getActivity()).locationUtils.getLoc().getLongitude(), specialistLatitude + "," + specialistLongitude);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, getOnlyRoute, true);
 
 
-    }
+    private void showDLUploadDialog() {
 
-    private void playAudio() {
-
-        fragmentBookingBookedBinding.playVoiceMessage.setImageResource(R.mipmap.record_pause);
-        String audioUrl = bookingAcceptModel.bookingdetails.getVoiceRecordingAudio();
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioAttributes(
-                new AudioAttributes
-                        .Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build());
-
-
-        try {
-            mediaPlayer.setDataSource(audioUrl);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        uplodDlDialog = new Dialog(getActivity());
+        dialogUploadDlBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_upload_dl, null, false);
+        uplodDlDialog.setContentView(dialogUploadDlBinding.getRoot());
+        if(dlUploadcountDownTimer!=null)
+        {
+            dlUploadcountDownTimer.cancel();
         }
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                fragmentBookingBookedBinding.playVoiceMessage.setImageResource(R.drawable.ic_play);
-                fragmentBookingBookedBinding.newVoiceMessage.setVisibility(View.GONE);
-                fragmentBookingBookedBinding.newVoiceMessage.clearAnimation();
-            }
+        dlUploadcountDownTimer =  start5minutesTimer(dialogUploadDlBinding.warning);
+        dialogUploadDlBinding.close.setOnClickListener(view -> {
+            uplodDlDialog.dismiss();
+            DialogUtils.showConfirmDialog(getActivity(),"Are you sure?if you close it this booking will be cancelled.",(dialogInterface, i) -> {
+
+                dlUploadcountDownTimer.cancel();
+                dlUploadcountDownTimer.onFinish();
+            },(dialogInterface, i) -> {
+
+                uplodDlDialog.show();
+
+            },"Yes, Cancel it","Upload Driving License");
         });
-        Toast.makeText(getActivity(), "Audio started playing..", Toast.LENGTH_SHORT).show();
+        dialogUploadDlBinding.uplaodDl.setOnClickListener(view -> {
+
+            if (!Permissionsutils.checkForStoragePermission(getActivity())) {
+                Permissionsutils.askForStoragePermission(getActivity(),Constants.DL);
+            } else {
+                pickDL();
+            }
+
+
+
+        });
+
+        Utils.showDilaog(uplodDlDialog);
+        uplodDlDialog.setCancelable(false);
+
+
     }
 
+    private void pickDL() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        ((Activity)getActivity()).startActivityForResult(intent, Constants.DL);
+    }
 
+    private CountDownTimer start5minutesTimer(TextView warning) {
+        return new CountDownTimer(300000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                String time =  String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds);
+
+                warning.setText(String.format(getActivity().getResources().getString(R.string.welcome_messages),time));
+                // logic to set the EditText could go here
+            }
+
+            public void onFinish() {
+                PrintLog.v("finish");
+                warning.setText("Finish!");
+                callcancelBookingApi();
+
+            }
+
+        }.start();
+    }
+
+    private void callcancelBookingApi() {
+
+        CancelBookingModel cancelBookingModel = new CancelBookingModel();
+        cancelBookingModel.setCancelReason("auto cancel");
+        cancelBookingModel.setBlockDealerStatus("N");
+        Call objectCall;
+        if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
+            cancelBookingModel.bookingID = Constants.BOOKING_ID;
+            objectCall = RestClient.getApiService().cancelBooking(cancelBookingModel);
+        }
+        else {
+            cancelBookingModel.meetingID = Constants.MEETING_ID;
+            objectCall = RestClient.getApiService().cancelMeeting(cancelBookingModel);
+        }
+
+        RestClient.makeApiRequest(getActivity(), objectCall, this, CANCEL_BOOKING, true);
+
+
+
+    }
 
     private void showRecordDialog() {
         recordDialog = new Dialog(getActivity());
@@ -446,28 +523,42 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
             }
         });
-        recordDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        WindowManager.LayoutParams lp = recordDialog.getWindow().getAttributes();
-        recordDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        lp.dimAmount = 0.8f;
-        recordDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        recordDialog.show();
+        Utils.showDilaog(recordDialog);
     }
 
 
 
+    private void playAudio() {
 
-    private void uploadFileToServer(File destination) {
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("File", destination.getName(), RequestBody.create(MediaType.parse("image/*"), destination));
-        Call<RegistrationResponse> call;
-        if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
-            call = RestClient.getApiService().uploadVoiceMessage(filePart, RequestBody.create(MediaType.parse("text/plain"), userId), RequestBody.create(MediaType.parse("text/plain"), Constants.BOOKING_ID));
-        else
-            call = RestClient.getApiService().uploadMeetingVoiceMessage(filePart, RequestBody.create(MediaType.parse("text/plain"), userId), RequestBody.create(MediaType.parse("text/plain"), Constants.MEETING_ID));
+        fragmentBookingBookedBinding.playVoiceMessage.setImageResource(R.mipmap.record_pause);
+        String audioUrl = bookingAcceptModel.bookingdetails.getVoiceRecordingAudio();
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioAttributes(
+                new AudioAttributes
+                        .Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build());
 
-        RestClient.makeApiRequest(getActivity(), call, this, RECORD_AUDIO, true);
+
+        try {
+            mediaPlayer.setDataSource(audioUrl);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                fragmentBookingBookedBinding.playVoiceMessage.setImageResource(R.drawable.ic_play);
+                fragmentBookingBookedBinding.newVoiceMessage.setVisibility(View.GONE);
+                fragmentBookingBookedBinding.newVoiceMessage.clearAnimation();
+            }
+        });
+        Toast.makeText(getActivity(), "Audio started playing..", Toast.LENGTH_SHORT).show();
     }
+
 
 
     @Override
@@ -502,7 +593,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 callPorfomaInvoiceApi();
                 break;
             case R.id.book_demo:
-                ((HomeActivity) getActivity()).showFragment(new TakeADemoFragment());
+                ((HomeActivity) getActivity()).showFragment(new TakeADemoFragment("0"));
                 break;
             case R.id.record_audio:
                 showRecordDialog();
@@ -511,18 +602,16 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 if (bookingAcceptModel.getBookingdetails()!=null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
                     playAudio();
                 else
-                if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
                     callBookingDetailApi(PLAY_AUDIO);
-                else
-                    callMeetingDetailApi(PLAY_AUDIO);
                 break;
             case R.id.tv_left_home:
-                if (hourlyTask == null && timer!=null && !bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home")) {
+                if (hourlyTask == null && timer!=null ) {
                     setTask();
                     timer.schedule(hourlyTask, 0l, Constants.WAIT_MINUTE);
-                    sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
-                    fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
+
                 }
+                sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
+                fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
                 break;
         }
 
@@ -583,23 +672,16 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.GONE);
 
                 fragmentBookingBookedBinding.executePendingBindings();
-                if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME))
+                if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME) )
                     fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
-
-
-                if (hourlyTask == null && (!fromNotification && bookingAcceptModel.getBookingdetails().getDemoType()!=null   &&bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home"))) {
-                    setTask();
-                    PrintLog.v("===setteask");
-                    calculateDistance(GET_ONLY_ROUTE,bookingAcceptModel.getBookingdetails().getSpecialistLatitude(), bookingAcceptModel.getBookingdetails().getSpecialistLongitude());
-                    getHomeAddress();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (timer != null)
-                                timer.schedule(hourlyTask, 0, Constants.WAIT_MINUTE);
+                if (!(bookingAcceptModel.getBookingdetails().getVirtualMeetStatus()!=null && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")))
+                    {
+                        if ((sharedPrefUtils.getStringData(Constants.IsDLUploadStatus) != null && sharedPrefUtils.getStringData(Constants.IsDLUploadStatus).equalsIgnoreCase("Y"))) {
+                            startTimerForlocationUpdate();
+                        } else {
+                            showDLUploadDialog();
                         }
-                    }, Constants.WAIT_MINUTE);
-                }
+                    }
                 switch (bookingAcceptModel.getBookingdetails().getDemoStatusId()) {
                     case "5":
                         fragmentBookingBookedBinding.status.setText("Completed");
@@ -654,9 +736,11 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     default:
                         PrintLog.v("default====");
                         if (!fromNotification && bookingAcceptModel.getBookingdetails().getMeetingType() != null && bookingAcceptModel.getBookingdetails().getMeetingType().equalsIgnoreCase("now") && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
-                            if (bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y"))
+                            if (bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
                                 fragmentBookingBookedBinding.joinCall.setVisibility(View.VISIBLE);
-                            PrintLog.v("inner====");
+                                fragmentBookingBookedBinding.dlReady.setVisibility(View.GONE);
+                            }
+
                         }
                         break;
 
@@ -670,6 +754,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         }
         else if(reqCode==PLAY_AUDIO){
             bookingAcceptModel = (BookingAcceptModel) response;
+            if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME))
+                fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
             if (bookingAcceptModel.getBookingdetails()!=null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
                 playAudio();
         }
@@ -691,16 +777,17 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
         } else if (reqCode == GET_ROUTE || reqCode==GET_ONLY_ROUTE) {
             DirectionResults directionResults = (DirectionResults) response;
+            DirectionResults.Location startLocation = null,endLocation=null;
             ArrayList<LatLng> routelist = new ArrayList<LatLng>();
             if (directionResults.getRoutes().size() > 0) {
                 ArrayList<LatLng> decodelist;
                 DirectionResults.Route routeA = directionResults.getRoutes().get(0);
                 if (routeA.getLegs().size() > 0) {
                     List<DirectionResults.Steps> steps = routeA.getLegs().get(0).getSteps();
-                    fragmentBookingBookedBinding.distanceText.setText("("+routeA.getLegs().get(0).getDistance().getText()+" away, "+routeA.getLegs().get(0).getDuration().getText()+")");
+                    fragmentBookingBookedBinding.distanceText.setText("(" + routeA.getLegs().get(0).getDistance().getText() + " away, " + routeA.getLegs().get(0).getDuration().getText() + ")");
                     duration = routeA.getLegs().get(0).getDuration().getValue();//seconds
                     distance = routeA.getLegs().get(0).getDistance().getValue();//meters
-                    if(fragmentBookingBookedBinding.address.getText().toString().trim().length()==0)
+                    if (fragmentBookingBookedBinding.address.getText().toString().trim().length() == 0)
                         fragmentBookingBookedBinding.address.setText(routeA.getLegs().get(0).getStart_address());
                     startLocation = routeA.getLegs().get(0).getStartLocation();
                     endLocation = routeA.getLegs().get(0).getEndLocation();
@@ -718,16 +805,17 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                         routelist.add(new LatLng(location.getLat(), location.getLng()));
                     }
                 }
-            }
-            if (routelist.size() > 0) {
-                PolylineOptions rectLine = new PolylineOptions().width(10).color(
-                        R.color.color_241e61);
 
-                for (int i = 0; i < routelist.size(); i++) {
-                    rectLine.add(routelist.get(i));
+                if (routelist.size() > 0) {
+                    PolylineOptions rectLine = new PolylineOptions().width(10).color(
+                            R.color.color_241e61);
+
+                    for (int i = 0; i < routelist.size(); i++) {
+                        rectLine.add(routelist.get(i));
+                    }
+                    ((HomeActivity) getActivity()).locationUtils.addPolyLine(rectLine, startLocation, endLocation, bookingAcceptModel.getBookingdetails().getDemoType());
+
                 }
-                ((HomeActivity)getActivity()).locationUtils.addPolyLine(rectLine,startLocation,endLocation,bookingAcceptModel.getBookingdetails().getDemoType());
-
             }
 
 
@@ -749,10 +837,47 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 }
             }
         }
+        else if(reqCode==UPLOAD_DRIVING_LICENSE){
+            RegistrationResponse registrationResponse = (RegistrationResponse) response;
+            if(registrationResponse.getResponseCode().equalsIgnoreCase("200")){
+                dlUploadcountDownTimer.cancel();
+                dlUploadcountDownTimer=null;
+                uplodDlDialog.dismiss();
+                sharedPrefUtils.saveData(Constants.IsDLUploadStatus,"Y");
+                startTimerForlocationUpdate();
+            }
+            Utils.showToast(getActivity(),registrationResponse.getDescriptions());
+        }
+        else if(reqCode==CANCEL_BOOKING){
+            BookingResponseModel registrationResponse = (BookingResponseModel) response;
+            Utils.showToast(getActivity(),registrationResponse.getDescriptions());
+            endTask();
+            sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,"null");
+            sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"null");
+            getActivity().startActivity(new Intent(getActivity(), HomeActivity.class));
+            getActivity().finish();
+
+        }
 
 
 
     }
+
+    private void startTimerForlocationUpdate() {
+        if (hourlyTask == null && (!fromNotification && bookingAcceptModel.getBookingdetails().getDemoType() != null && bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home"))) {
+            setTask();
+            calculateDistance(GET_ONLY_ROUTE, bookingAcceptModel.getBookingdetails().getSpecialistLatitude(), bookingAcceptModel.getBookingdetails().getSpecialistLongitude());
+            getHomeAddress();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (timer != null)
+                        timer.schedule(hourlyTask, 0, Constants.WAIT_MINUTE);
+                }
+            }, Constants.WAIT_MINUTE);
+        }
+    }
+
 
     private void getHomeAddress() {
         fragmentBookingBookedBinding.changeAddress.setOnClickListener(new View.OnClickListener() {
@@ -812,6 +937,10 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
                     DialogUtils.showAlertInfo(getActivity(), "Please accept storage permission to download invoice.");
                 }
+                break;
+            case Constants.DL:
+                pickDL();
+                break;
         }
     }
 
@@ -821,18 +950,28 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equalsIgnoreCase("receiveNotification")){
-                if (intent.getExtras().getString("notificationtype").equalsIgnoreCase("ChangeDemoStatus")
-                        || intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")) {
+                if (intent.getExtras().getString("notificationtype").equalsIgnoreCase("ChangeDemoStatus")) {
                     Constants.BOOKING_ID = intent.getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Demo";
-                    callBookingDetailApi(PLAY_AUDIO);
-                } else if(intent.getExtras().getString("notificationtype").equalsIgnoreCase("ChangeMeetingStatus")
-                        || intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")) {
+                    callBookingDetailApi(BOOKING_DETAILS);
+                } else if(intent.getExtras().getString("notificationtype").equalsIgnoreCase("ChangeMeetingStatus")) {
                     Constants.MEETING_ID = intent.getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Meeting";
-                    callMeetingDetailApi(PLAY_AUDIO);
+                    callBookingDetailApi(BOOKING_DETAILS);
                 }
-                if(intent.getExtras().getString("notificationtype").contains("VoiceRecording")){
+
+                if(intent.getExtras().getString("notificationtype").contains("SpecialistDemoVoiceRecording") ||
+                        intent.getExtras().getString("notificationtype").contains("SpecialistMeetVoiceRecording")){
+                    if( intent.getExtras().getString("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")){
+                        Constants.BOOKING_ID = intent.getExtras().getString("demoid");
+                        Constants.BOOK_TYPE = "Demo";
+
+                    }
+                    else{
+                        Constants.MEETING_ID = intent.getExtras().getString("demoid");
+                        Constants.BOOK_TYPE = "Meeting";
+                    }
+                    callBookingDetailApi(PLAY_AUDIO);
                     fragmentBookingBookedBinding.newVoiceMessage.setVisibility(View.VISIBLE);
                     Animation anim = new AlphaAnimation(0.0f, 1.0f);
                     anim.setDuration(100); //You can manage the blinking time with this parameter
@@ -863,6 +1002,31 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         intentFilter.addAction("receiveNotification");
         getActivity().registerReceiver(notificationReceiver,intentFilter);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+
+            // Get the Uri of the selected file
+            Uri uri = data.getData();
+            String fullFilePath = UriUtils.getPathFromUri(getActivity(),uri);
+
+            File destination = new File(fullFilePath);
+            if(destination.exists())
+            {
+                uploadDrivingLicenseToServer(destination,dialogUploadDlBinding.edittextDl.getText().toString());
+
+               /* if(dialogUploadDlBinding.warning.getText().toString().trim().length()>0 &&Utils.isvalidDl(dialogUploadDlBinding.warning.getText().toString()))
+                    uploadDrivingLicenseToServer(destination,dialogUploadDlBinding.warning.getText().toString());
+                else if(dialogUploadDlBinding.warning.getText().toString().trim().length()>0)
+                    Utils.showToast(getActivity(),"Please enter valid Driving License Number");
+            */}
+
+        }
+
+
+    }
+
 
 
 }

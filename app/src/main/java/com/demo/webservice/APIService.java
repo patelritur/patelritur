@@ -29,6 +29,7 @@ import com.demo.home.model.CarSearchResultModel;
 import com.demo.home.model.CarSectionFilterResponse;
 import com.demo.home.model.CategoryResponse;
 import com.demo.home.model.DirectionResults;
+import com.demo.home.model.DrivingLicenseDataResponse;
 import com.demo.home.model.MenuResponse;
 import com.demo.home.model.ProfileModel;
 import com.demo.home.model.WeatherResposneModel;
@@ -86,6 +87,10 @@ public interface APIService {
     @POST("upload/vaccinedoc")
     Call<RegistrationResponse> uploadAttachment(@Part MultipartBody.Part File, @Part("UserID")RequestBody userid);
 
+    @Multipart
+    @POST("upload/drivinglicensedoc")
+    Call<RegistrationResponse> uploadDrivingLicense(@Part MultipartBody.Part File, @Part("UserID")RequestBody userid,@Part("DLNumber")RequestBody dlnumber);
+
 
     @Multipart
     @POST("upload/profilepicture")
@@ -103,6 +108,7 @@ public interface APIService {
 
     @GET("car/filter/price")
     Call<CarFilterResponse> carFilterPrice();
+
 
     @GET("car/filter/segment")
     Call<CarFilterResponse> carFilterSegment();
@@ -236,6 +242,9 @@ public interface APIService {
 
     @GET("specialistlocation/{specialist_id}")
     Call<LocationResponse> getSpecialistLocation(@Path("specialist_id") String specialistId);
+
+    @GET("customer/drivinglicense/{user_id}")
+    Call<DrivingLicenseDataResponse> getDrivingLicenseData(@Path("user_id")String user_id);
 
 
     @POST("customer/location")

@@ -28,6 +28,10 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
     private FragmentTakedemoBinding fragmentTakedemoBinding;
     private String specialistId;
 
+    public TakeADemoFragment(String specialistId) {
+        this.specialistId = specialistId;
+    }
+
 
 
     @Nullable
@@ -44,6 +48,13 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewPagerFragment();
+        CarSuggestionFragment myf = new CarSuggestionFragment();
+        Bundle b = new Bundle();
+        b.putString("specialistId",specialistId);
+        myf.setArguments(b);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_carsuggestion, myf);
+        transaction.commit();
         callCarSectionApi();
         ((HomeActivity) getActivity()).setPeekheight(fragmentTakedemoBinding.parentLl.getMeasuredHeight());
     }
@@ -55,6 +66,7 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
                 Bundle b = new Bundle();
                 b.putString("carSectionId",item.getDemomenu().get(i).getMenuID());
                 b.putString("carSectionTitle",item.getDemomenu().get(i).getMenuName());
+                b.putString("specialistId",specialistId);
                 myf.setArguments(b);
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 transaction.add(R.id.dynamic_car_section, myf);

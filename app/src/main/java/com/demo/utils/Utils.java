@@ -1,6 +1,7 @@
 package com.demo.utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ActivityNotFoundException;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -108,6 +110,16 @@ public class Utils {
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
 
+    public static boolean isvalidDl(String dlNumber){
+        if(dlNumber==null)
+            return false;
+        final String pattren = "^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$";
+        Matcher matcher;
+        Pattern pattern = Pattern.compile(pattren);
+
+        matcher = pattern.matcher(dlNumber);
+        return matcher != null && matcher.matches();
+    }
     public static boolean isValidEmail(String email) {
         if (email == null) {
             return false;
@@ -315,4 +327,12 @@ public class Utils {
     }
 
 
+    public static void showDilaog(Dialog recordDialog) {
+        recordDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        WindowManager.LayoutParams lp = recordDialog.getWindow().getAttributes();
+        recordDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        lp.dimAmount = 0.8f;
+        recordDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        recordDialog.show();
+    }
 }

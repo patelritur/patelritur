@@ -87,7 +87,6 @@ public class LocationPickupFragment extends Fragment implements ApiResponseListe
             }
             else{
                 Constants.DEMOADDRESS =directionsGeocodeResponse.getResults().get(0).getFormatted_address();
-                Constants.DEMOLOCATIONTYPE ="Home";
                 if(!isSchedule)
                     ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
                 else

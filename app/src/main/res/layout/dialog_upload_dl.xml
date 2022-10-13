@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:gravity="end"
+        android:background="#00000000"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:src="@drawable/close_white"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/google_rounded_corner"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+
+                android:id="@+id/textview_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/margin_40"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center_horizontal"
+                android:text="@string/upload_dl"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/color_241e61"
+                android:textStyle="normal" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/red"
+                app:boxStrokeErrorColor="@color/red"
+                app:errorTextAppearance="@color/red"
+                app:backgroundTint="@color/color_66030303"
+                android:id="@+id/mobile_textinputlayout"
+                android:layout_margin="20dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_dl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/dl_number"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    android:textStyle="normal"
+                    android:letterSpacing="-0.02"
+                    android:textColor="@color/color_030303"
+                    android:textColorHint="@color/color_66030303"/>
+
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/uplaod_dl"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="wrap_content"
+                style="@style/redButton"
+                android:letterSpacing="-0.02"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/select_driving_license"
+                />
+
+            <TextView
+                android:id="@+id/warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/margin_40"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/textsize_20"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/color_241e61"
+                android:textStyle="normal"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

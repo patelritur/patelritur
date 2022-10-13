@@ -7,7 +7,9 @@ public class Constants {
 
     public static final String   STATENAME="STATENAME";
 
+    //pref to show ongoing demo/meeitng if any
     public static final String  BOOKING_ONGOING="booking_ongoing";
+    //preference to ddecide ongoing booking type / demo or meeting
     public static final String  BOOK_TYPE_S="book_type_s";
     public static final String  TNC="tnc";
     public static final String  URL = "http://test.ddemo.co/api/";
@@ -20,6 +22,7 @@ public class Constants {
     public static final String  LNAME = "lname";
     public static final String  IMAGE_FILE= "IMAGE_FILE";
     public static final String  ADDRESS= "ADDRESS";
+    public static final String IsDLUploadStatus="IsDLUploadStatus";
 
     public static final String  ID = "id";
     public static final String  SOCIAL_TYPE = "type";
@@ -49,39 +52,27 @@ public class Constants {
     public static final String  MYDEMO_DESCRIPTIONS = "DriveaDemoDesc";
     public static final String  SPECIALIST_DESCRIPTIONS ="MeetaSpecialistDesc";
     public static final String LEFT_HOME = "left_home";
+    public static final int DL = 200;
 
     public static String LATITUDE;
     public static String LONGITUDE ;
-    public static String REQUEST_ID;
     public static final  String SPEED="40";
     public static final String  USER_ID = "user_id";
-    public static final String REFERRER="referrer";
-    public static final String REDEMPTION_ACCEPTED="redemption_accpepted";
-    public static final String DEMOTRIPSTATUS="demotripstatus";
-    public static final String MODULE_TYPE_RESET_PIN="ResetPin";
-    public static final String STATE = "state";
-    public static final String CITY = "city";
     public static final  String TYPE = "type";
-    public static final String COMPANY = "company";
-    public static final String IMAG="image";
-    public static final String DESCRIPTIONS = "descriptions";
 
-    public static  String BOOK_TYPE;
-    public static  String MEETING_ID;
-    public static  String BOOKING_ID;
-    public static  String CARID;
-    public static  String DEMOADDRESS;
-    public static  String DEMOLOCATIONTYPE;
-
-
-    public static  String VIRTUAL_MEET_TYPE;
-    public static  String MEETING_TYPE_ID;
-    public static  String MEETING_PLACE_TYPE_ID;
+    public static  String BOOK_TYPE;//demo or meeting
+    public static  String MEETING_ID;//uniqueid for meeting
+    public static  String BOOKING_ID;//unigue id for demo
+    public static  String CARID;//booked car id
+    public static  String DEMOADDRESS;//address
+    public static  final String DEMOLOCATIONTYPE="Home";
+    public static  String VIRTUAL_MEET_TYPE;//video or audio
+    public static  String MEETING_TYPE_ID;//now ,later or schedule for meeting
+    public static  String MEETING_PLACE_TYPE_ID;//home or dealer for meeting
     public static  String DATE;
     public static  String TIME;
-    public static  String BOOKING_TYPE_ID;
-
-    public static  String BOOKING_PLACE_TYPE_ID;
+    public static  String BOOKING_TYPE_ID; //for demo
+    public static  String BOOKING_PLACE_TYPE_ID;//for demo
 
 
 }

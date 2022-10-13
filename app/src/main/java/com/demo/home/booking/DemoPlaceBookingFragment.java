@@ -104,7 +104,25 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
                     //  showLocationDialog();
                 } else {
                     if(currentLocation==null)
-                    callGeoCodeApi();
+                        callGeoCodeApi();
+                    else{
+                        if ( Constants.BOOKING_PLACE_TYPE_ID.equalsIgnoreCase("2")) {
+                            binding.customerLocation.setText(currentLocation);
+                        }
+                        else{
+                            Constants.DEMOADDRESS =currentLocation;
+                            if (preBook) {
+                                Constants.BOOKING_TYPE_ID = "Schedule";
+                                ((HomeActivity) getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
+                                return;
+                            }
+                            if(!isSchedule)
+                                ((HomeActivity) Objects.requireNonNull(getActivity())).showFragment(new BookingStatusFragment(false));
+                            else
+                                ((HomeActivity) Objects.requireNonNull(getActivity())).showScheduleFragment(new ScheduleBookingFragment());
+
+                        }
+                    }
                 }
                 Constants.BOOKING_TYPE_ID = "Now";
                 Constants.TIME = "";
@@ -125,7 +143,25 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
                 } else {
                     isSchedule=true;
                     if(currentLocation==null)
-                    callGeoCodeApi();
+                        callGeoCodeApi();
+                    else{
+                        if ( Constants.BOOKING_PLACE_TYPE_ID.equalsIgnoreCase("2")) {
+                            binding.customerLocation.setText(currentLocation);
+                        }
+                        else{
+                            Constants.DEMOADDRESS =currentLocation;
+                            if (preBook) {
+                                Constants.BOOKING_TYPE_ID = "Schedule";
+                                ((HomeActivity) getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
+                                return;
+                            }
+                            if(!isSchedule)
+                                ((HomeActivity) Objects.requireNonNull(getActivity())).showFragment(new BookingStatusFragment(false));
+                            else
+                                ((HomeActivity) Objects.requireNonNull(getActivity())).showScheduleFragment(new ScheduleBookingFragment());
+
+                        }
+                    }
                 }
             });
             layoutDemoPlaceBinding.llPlacetype.setOrientation(LinearLayoutCompat.VERTICAL);
@@ -136,10 +172,28 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
 
     private void showLocationPickerDialog(Boolean isSchedule) {
         BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-         binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout. dialog_customer_location_pickup, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout. dialog_customer_location_pickup, null, false);
         dialog.setContentView(binding.getRoot());
         if(currentLocation==null)
-        callGeoCodeApi();
+            callGeoCodeApi();
+        else{
+            if ( Constants.BOOKING_PLACE_TYPE_ID.equalsIgnoreCase("2")) {
+                binding.customerLocation.setText(currentLocation);
+            }
+            else{
+                Constants.DEMOADDRESS =currentLocation;
+                if (preBook) {
+                    Constants.BOOKING_TYPE_ID = "Schedule";
+                    ((HomeActivity) getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
+                    return;
+                }
+                if(!isSchedule)
+                    ((HomeActivity) Objects.requireNonNull(getActivity())).showFragment(new BookingStatusFragment(false));
+                else
+                    ((HomeActivity) Objects.requireNonNull(getActivity())).showScheduleFragment(new ScheduleBookingFragment());
+
+            }
+        }
         isCurrentLocation=true;
         binding.pickCurrentLocation.setBackgroundResource(R.drawable.border_red_rounded_corner);
         binding.enterLocation.setBackgroundResource(R.drawable.white_border);
@@ -168,7 +222,6 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
             if(isCurrentLocation){
                 Constants.DEMOADDRESS = Objects.requireNonNull(binding.customerLocation.getText()).toString();
                 {
-                    Constants.DEMOLOCATIONTYPE = "Home";
                     dialog.dismiss();
                     if(!isSchedule)
                         ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
@@ -180,7 +233,6 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
             else {
                 if(Objects.requireNonNull(binding.customerLocation.getText()).toString().trim().length()>0) {
                     Constants.DEMOADDRESS = binding.customerLocation.getText().toString();
-                    Constants.DEMOLOCATIONTYPE = "Home";
                     if(!isSchedule)
                         ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
                     else
@@ -223,25 +275,9 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         if(reqCode==GET_GEOCODE){
             DirectionsGeocodeResponse directionsGeocodeResponse = (DirectionsGeocodeResponse) response;
+            currentLocation = directionsGeocodeResponse.getResults().get(0).getFormatted_address();
 
-            if ( Constants.BOOKING_PLACE_TYPE_ID.equalsIgnoreCase("2")) {
-                currentLocation = directionsGeocodeResponse.getResults().get(0).getFormatted_address();
-                binding.customerLocation.setText(directionsGeocodeResponse.getResults().get(0).getFormatted_address());
-            }
-            else{
-                Constants.DEMOADDRESS =directionsGeocodeResponse.getResults().get(0).getFormatted_address();
-                Constants.DEMOLOCATIONTYPE ="Home";
-                if (preBook) {
-                    Constants.BOOKING_TYPE_ID = "Schedule";
-                    ((HomeActivity) getActivity()).showFragment(new ScheduleLaterFragment(bookDate));
-                    return;
-                }
-                if(!isSchedule)
-                    ((HomeActivity) Objects.requireNonNull(getActivity())).showFragment(new BookingStatusFragment(false));
-                else
-                    ((HomeActivity) Objects.requireNonNull(getActivity())).showScheduleFragment(new ScheduleBookingFragment());
 
-            }
         }
     }
 
