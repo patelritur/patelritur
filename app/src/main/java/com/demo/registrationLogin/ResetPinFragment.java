@@ -2,6 +2,7 @@ package com.demo.registrationLogin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,15 @@ import com.demo.utils.SharedPrefUtils;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
+import com.mindorks.editdrawabletext.DrawablePosition;
+import com.mindorks.editdrawabletext.onDrawableClickListener;
 
 import retrofit2.Call;
 
 public class ResetPinFragment extends Fragment implements ApiResponseListener {
     FragmentResetPinBinding fragmentResetPinBinding;
     private boolean isPinRest=false;
+    private boolean isShowPIN,isShowConfirmPIN = true;
 
     @Nullable
     @Override
@@ -43,6 +47,50 @@ public class ResetPinFragment extends Fragment implements ApiResponseListener {
         headerModel.setSecondImage(R.mipmap.reset_password);
         headerModel.setTitle(getString(R.string.reset_password));
         headerModel.setButtonText(getString(R.string.continue_));
+
+        fragmentResetPinBinding.newPassword.setDrawableClickListener(new onDrawableClickListener() {
+
+
+            @Override
+            public void onClick(@NonNull DrawablePosition drawablePosition) {
+                if(drawablePosition==DrawablePosition.RIGHT) {
+                    if (isShowPIN) {
+                        isShowPIN = false;
+                        fragmentResetPinBinding.newPassword.setTransformationMethod(null);
+                        fragmentResetPinBinding.newPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_off_24, 0);
+                    }
+                    else{
+                        isShowPIN = true;
+                        fragmentResetPinBinding.newPassword.setTransformationMethod(new PasswordTransformationMethod());
+                        fragmentResetPinBinding.newPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_24, 0);
+
+                    }
+                }
+            }
+        });
+
+        fragmentResetPinBinding.confirmPassword.setDrawableClickListener(new onDrawableClickListener() {
+
+
+            @Override
+            public void onClick(@NonNull DrawablePosition drawablePosition) {
+                if(drawablePosition==DrawablePosition.RIGHT) {
+                    if (isShowConfirmPIN) {
+                        isShowConfirmPIN = false;
+                        fragmentResetPinBinding.confirmPassword.setTransformationMethod(null);
+                        fragmentResetPinBinding.confirmPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_off_24, 0);
+                    }
+                    else{
+                        isShowConfirmPIN = true;
+                        fragmentResetPinBinding.confirmPassword.setTransformationMethod(new PasswordTransformationMethod());
+                        fragmentResetPinBinding.confirmPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_24, 0);
+
+                    }
+                }
+            }
+        });
+
+
         return headerModel;
     }
     private void updateUIForSuccessPinChange() {

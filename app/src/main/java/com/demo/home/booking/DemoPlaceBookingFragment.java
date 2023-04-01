@@ -1,11 +1,15 @@
 package com.demo.home.booking;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +30,9 @@ import com.demo.utils.Constants;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.rtchagas.pingplacepicker.PingPlacePicker;
 
 import java.util.Objects;
 
@@ -215,7 +221,11 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
             binding.pickCurrentLocation.setBackgroundResource(R.drawable.white_border);
             binding.customerLocation.setText(null);
             isCurrentLocation = false;
+            showPlacePicker();
+
         });
+
+
 
 
         binding.submit.setOnClickListener((View v) -> {
@@ -255,6 +265,34 @@ public class DemoPlaceBookingFragment extends Fragment implements ApiResponseLis
         dialog.show();
     }
 
+    private void showPlacePicker() {
+        PingPlacePicker.IntentBuilder builder = new PingPlacePicker.IntentBuilder();
+        builder.setAndroidApiKey("AIzaSyCUFs0ot4kLDWcYm6ZdoR9Ydgthtk-5Imw")
+                .setMapsApiKey("AIzaSyCUFs0ot4kLDWcYm6ZdoR9Ydgthtk-5Imw");
+
+        // If you want to set a initial location rather then the current device location.
+        // NOTE: enable_nearby_search MUST be true.
+        // builder.setLatLng(new LatLng(37.4219999, -122.0862462))
+
+        try {
+            Intent placeIntent = builder.build(getActivity());
+            startActivityForResult(placeIntent, 1);
+        }
+        catch (Exception ex) {
+            // Google Play services is not available...
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 1) && (resultCode == RESULT_OK)) {
+            Place place = PingPlacePicker.getPlace(data);
+            if (place != null) {
+                binding.customerLocation.setText(place.getAddress());
+//                Toast.makeText(getActivity(), "You selected the place: " + place.getName(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 
     private void callGeoCodeApi() {

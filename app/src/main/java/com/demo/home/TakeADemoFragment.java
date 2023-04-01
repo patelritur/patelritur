@@ -27,6 +27,7 @@ import com.demo.utils.PrintLog;
 public class TakeADemoFragment extends Fragment implements ClickHandlers {
     private FragmentTakedemoBinding fragmentTakedemoBinding;
     private String specialistId;
+    private CarSuggestionFragment myf;
 
     public TakeADemoFragment(String specialistId) {
         this.specialistId = specialistId;
@@ -48,7 +49,7 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewPagerFragment();
-        CarSuggestionFragment myf = new CarSuggestionFragment();
+         myf = new CarSuggestionFragment();
         Bundle b = new Bundle();
         b.putString("specialistId",specialistId);
         myf.setArguments(b);
@@ -132,6 +133,6 @@ public class TakeADemoFragment extends Fragment implements ClickHandlers {
 
     protected CarSuggestionFragment getFragment()
     {
-      return  (CarSuggestionFragment) getChildFragmentManager().findFragmentByTag("carSuggestionFragment");
+      return myf;
     }
 }

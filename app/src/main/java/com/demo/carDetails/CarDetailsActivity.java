@@ -14,10 +14,12 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +28,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.demo.BaseActivity;
 import com.demo.R;
@@ -75,7 +78,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
         super.onCreate(savedInstanceState);
         activityCarDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_car_details,null);
         carId = getIntent().getExtras().getString("carId");
-        if(Constants.BOOK_TYPE.equalsIgnoreCase("Meeting"))
+        if(Constants.BOOK_TYPE!=null && Constants.BOOK_TYPE.equalsIgnoreCase("Meeting"))
             activityCarDetailsBinding.takeademo.setText(getString(R.string.book_a_meeting));
         callDetailApi();
     }
@@ -126,10 +129,24 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
             CarDetailResponse.Carofferbanner  carofferbanner= carDetailResponse.getCardetail().getCarofferbanner().get(i);
             ItemImageviewBannerBinding itemImageviewBannerBinding = DataBindingUtil.inflate(inflater,R.layout.item_imageview_banner,null,false);
             itemImageviewBannerBinding.setImageUrl(carofferbanner.getBannerImage());
+            int finalI = i;
             itemImageviewBannerBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(carofferbanner.getBannerUrl().trim().length()>0)
+                    final Dialog dialog = new Dialog(CarDetailsActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.imagedialog);
+                    dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    dialog.setCanceledOnTouchOutside(false);
+
+                    MyPageAdapter adapter = new MyPageAdapter(CarDetailsActivity.this,carDetailResponse.getCardetail().getCarofferbanner(), finalI);
+                    ViewPager pager = (ViewPager) dialog.findViewById(R.id.viewpager);
+                    pager.setAdapter(adapter);
+                    pager.setCurrentItem(finalI);
+                    dialog.show();
+                }
+                  /*  if(carofferbanner.getBannerUrl().trim().length()>0)
                     {
                         String url = carofferbanner.getBannerUrl();
                         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -144,7 +161,7 @@ public class CarDetailsActivity  extends BaseActivity implements ApiResponseList
                             startActivity(i);
                         }
                     }
-                }
+                }*/
             });
             activityCarDetailsBinding.horizontalScrollviewPromotion.addView(itemImageviewBannerBinding.getRoot());
 

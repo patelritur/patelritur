@@ -51,19 +51,20 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     >
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/new_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:hint="@string/new_password"
-                    style="@style/edittext_style"
-                    app:backgroundTint="@color/color_3e3e3e"
+                    <com.mindorks.editdrawabletext.EditDrawableText
+                        android:id="@+id/new_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:hint="@string/new_password"
+                        style="@style/edittext_style"
+                        app:backgroundTint="@color/color_3e3e3e"
+                        android:inputType="numberPassword"
+                        android:drawableEnd="@drawable/ic_outline_visibility_24"
 
-                    >
-                    <requestFocus/>
-                </androidx.appcompat.widget.AppCompatEditText>
-                </com.google.android.material.textfield.TextInputLayout>
+                        >
+                        <requestFocus/>
+                    </com.mindorks.editdrawabletext.EditDrawableText>>                </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,18 +77,19 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     >
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/confirm_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/confirm_password"
-                    android:layout_marginTop="@dimen/margin_20"
-                    style="@style/edittext_style"
-                    android:imeOptions="actionDone"
-                    app:backgroundTint="@color/color_3e3e3e"
-                    />
-                </com.google.android.material.textfield.TextInputLayout>
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.mindorks.editdrawabletext.EditDrawableText
+                        android:id="@+id/confirm_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/confirm_password"
+                        android:layout_marginTop="@dimen/margin_20"
+                        style="@style/edittext_style"
+                        android:inputType="numberPassword"
+                        android:drawableEnd="@drawable/ic_outline_visibility_24"
+                        android:imeOptions="actionDone"
+                        app:backgroundTint="@color/color_3e3e3e"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>>            </androidx.appcompat.widget.LinearLayoutCompat>
             <TextView
                 android:onClick="@{handlers::onClickContinue}"
                 style="@style/redButton"

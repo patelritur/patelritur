@@ -31,6 +31,7 @@ import java.util.List;
 
 public class DemoApp extends Application implements LifecycleObserver {
     public static boolean isForeground;
+    private static final String TAG = "DemoApp";
 
 
 
@@ -45,21 +46,27 @@ public class DemoApp extends Application implements LifecycleObserver {
         CometChat.init(this, Constants.appID,appSettings, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String successMessage) {
+                CometChat.setSource("push-notification","android","java");
+
             }
             @Override
             public void onError(CometChatException e) {
             }
         });
-        CometChatCallListener.addCallListener("DemoApp",this);
+        CometChatCallListener.addCallListener(TAG,this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void onMoveToForeground() {
         isForeground=true;
+        CometChat.removeCallListener(TAG);
+        CometChatCallListener.addCallListener(TAG,this);
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onMoveToBackground() {
-        isForeground = true;
+        isForeground = false;
+        CometChat.removeCallListener(TAG);
+        CometChatCallListener.addCallListener(TAG,this);
     }
 
 }

@@ -326,7 +326,21 @@ public class Utils {
         return word;
     }
 
+    public static boolean dateDiff1Hour(String bookingDate) {
+        //BookingDate":"Jan 27, 2022
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy hh:mmaa");
 
+        Date strDate = null;
+        try {
+            strDate = sdf.parse(bookingDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long diff =  strDate.getTime()-new Date().getTime() ;
+
+        int minutes = (int) (diff / (1000 * 60));
+        return minutes <= 16;
+    }
     public static void showDilaog(Dialog recordDialog) {
         recordDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         WindowManager.LayoutParams lp = recordDialog.getWindow().getAttributes();

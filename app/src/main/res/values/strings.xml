@@ -98,10 +98,11 @@
     <string name="demos_completed">Demos Completed</string>
     <string name="virtual_meet">Virtual Meet</string>
     <string name="schedue">Schedule</string>
-    <string name="if_your_desired_date_and_timing_is_not_available_then_try_another_car_schedule">if your desired date and timing is not available then try <font color='#241e61'> another car schedule</font></string>
+    <string name="if_your_desired_date_and_timing_is_not_available_then_try_another_car_schedule">If your desired date and timing is not available then try <font color='#241e61'> another car schedule</font></string>
     <string name="tip_click_here_to_see_how_to_get_the_most_out_of_your_demo_experience">Tip: <font color='#241e61'> Click here </font>to see how to get the most out of your Demo Experience</string>
     <string name="cancel_demo">Cancel Demo</string>
     <string name="cancel_meeting">Cancel Meeting</string>
+    <string name="contact_demo">Contact Demo Specialist</string>
     <string name="notifications">Notifications</string>
     <string name="sign_out">SIGN OUT</string>
     <string name="leave_a_voice_message">Leave a Voice Message</string>
@@ -135,7 +136,7 @@
     <string name="let_s_start">Let\'s Start</string>
     <string name="my_demo_trips">My Demo Trips</string>
     <string name="choose_your_budget">CHOOSE YOUR BUDGET</string>
-    <string name="join_call">Join Call</string>
+    <string name="join_call">Start Call</string>
     <string name="book_a_meeting">Book A Meeting</string>
     <string name="performa_invoice">Performa Invoice</string>
     <string name="play_Recording">Voice Message</string>
@@ -160,7 +161,7 @@
     <string name="insurance">Insurance</string>
     <string name="exchange_bonus">Exchange Bonus</string>
     <string name="cash_discount">Cash Discount</string>
-    <string name="already_user_pin_msg">you are already registered user. please proceed with PIN</string>
+    <string name="already_user_pin_msg">you are already registered user. please proceed with OTP</string>
     <string name="ex_showroom_price">Ex-Showroom Price</string>
     <string name="tnc_apply">(TnC apply)</string>
     <string name="upload_dl">Upload Driving License</string>
@@ -174,7 +175,7 @@
     <string name="download">Download</string>
     <string name="select_driving_license">Select Driving License</string>
     <string name="welcome_messages">You have , %1$s! Minutes to upload Driving license or else booking will be cancelled</string>
-
+    <string name="please_do_share_this_with_demo_specialist">Please do share this with Demo Specialist</string>
 
 
 </resources>

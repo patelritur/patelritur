@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:bind="http://schemas.android.com/tools">
     <data>
-        <variable name="handlers" type="com.demo.registrationLogin.ForgotPinFragment"/>
         <variable
             name="headermodel"
             type="com.demo.registrationLogin.model.HeaderModel" />
@@ -35,20 +34,20 @@
             android:text="@string/enter_your_registered_number_below_to_retrive_your_account"
            />
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <com.mindorks.editdrawabletext.EditDrawableText
             android:id="@+id/edittext_mobile"
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/mobile_number"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:maxLength="10"
+            android:drawableRight="@drawable/ic_outline_visibility_24"
             app:backgroundTint="@color/color_3e3e3e"
             android:textStyle="normal"
             android:textColorHint="@color/color_66030303"/>
 
         <TextView
-            android:onClick="@{handlers::onClickSendOTP}"
             style="@style/redButton"
             android:letterSpacing="-0.02"
             android:layout_gravity="center_horizontal"

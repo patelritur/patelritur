@@ -1,10 +1,15 @@
 package com.demo.home.booking.model;
 
+import android.text.format.DateUtils;
+
 import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Keep
 public class BookingAcceptModel {
@@ -68,6 +73,16 @@ public class BookingAcceptModel {
     @SerializedName(value = "BookingMessage",alternate = "MeetingMessage")
     public String bookingMessage;
 
+    public String getBookingOTP() {
+        return bookingOTP;
+    }
+
+    public void setBookingOTP(String bookingOTP) {
+        this.bookingOTP = bookingOTP;
+    }
+
+    @SerializedName(value = "BookingOTP",alternate = "MeetingOTP")
+    public String bookingOTP;
     public String getBookingTime() {
         return BookingTime;
     }
@@ -78,6 +93,40 @@ public class BookingAcceptModel {
 
     @SerializedName(value = "BookingTime",alternate = "MeetingTime")
     public String BookingTime;
+
+    public String getFormattedBookingDate() {
+        return BookingDate!=null?getBookingDateFormat():null;
+    }
+
+    private String getBookingDateFormat() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
+        try {
+            Date strDate= sdf.parse(BookingDate);
+            Date dCurrentDate = sdf.parse(sdf.format(new Date()));
+            if ( DateUtils.isToday(strDate.getTime() - DateUtils.DAY_IN_MILLIS)) {
+                return "Tomorrow";
+            }
+            else if(dCurrentDate.compareTo(strDate)==0)
+                return "Today";
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return BookingDate;
+    }
+
+    public String getBookingDate() {
+        return BookingDate;
+    }
+
+    public void setBookingDate(String bookingDate) {
+        BookingDate = bookingDate;
+    }
+
+    @SerializedName(value = "BookingDate",alternate = "MeetingDate")
+    public String BookingDate;
+
 
 
 
@@ -101,7 +150,16 @@ public class BookingAcceptModel {
 
     @Keep
     public class Bookingdetails{
+        public String getCustomerAddress() {
+            return CustomerAddress;
+        }
 
+        public void setCustomerAddress(String customerAddress) {
+            CustomerAddress = customerAddress;
+        }
+
+        @SerializedName("CustomerAddress")
+        public String CustomerAddress;
 
         public String getCarID() {
             return CarID;
@@ -112,6 +170,16 @@ public class BookingAcceptModel {
         }
 
         public String CarID;
+
+        public String getBookingOTP() {
+            return BookingOTP;
+        }
+
+        public void setBookingOTP(String bookingOTP) {
+            BookingOTP = bookingOTP;
+        }
+
+        public String BookingOTP;
 
         public String getVoiceRecordingAudio() {
             return VoiceRecordingAudio;
@@ -358,7 +426,7 @@ public class BookingAcceptModel {
             DemoType = demoType;
         }
 
-        @SerializedName("DemoType")
+        @SerializedName(value ="DemoType",alternate = "MeetBookingType")
         public String DemoType;
 
 
@@ -376,6 +444,15 @@ public class BookingAcceptModel {
         @SerializedName(value = "DemoStatusID",alternate = "MeetStatusID")
         public String demoStatusId;
 
+        public String getCustomDemoStatusId() {
+            return customDemoStatusId;
+        }
+
+        public void setCustomDemoStatusId(String customDemoStatusId) {
+            this.customDemoStatusId = customDemoStatusId;
+        }
+
+        public String customDemoStatusId;
         @SerializedName("VoiceMessageStatus")
         public String voiceMessageStatus;
         @SerializedName("CancelBtnStatus")

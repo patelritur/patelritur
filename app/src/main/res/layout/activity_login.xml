@@ -62,6 +62,8 @@
                 app:errorTextColor="@color/red"
                 app:boxStrokeErrorColor="@color/red"
                 app:errorTextAppearance="@color/red"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:background="@android:color/transparent"
                 app:backgroundTint="@color/color_66030303"
                 android:id="@+id/mobile_textinputlayout"
                 android:layout_margin="20dp"

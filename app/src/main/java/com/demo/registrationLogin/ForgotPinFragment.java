@@ -1,6 +1,8 @@
+/*
 package com.demo.registrationLogin;
 
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,13 @@ import com.demo.R;
 import com.demo.databinding.FragmentForgotPinBinding;
 import com.demo.registrationLogin.model.CommanRequestModel;
 import com.demo.registrationLogin.model.HeaderModel;
+import com.mindorks.editdrawabletext.DrawablePosition;
+import com.mindorks.editdrawabletext.onDrawableClickListener;
 
 public class ForgotPinFragment extends Fragment  {
 
     private FragmentForgotPinBinding fragmentForgotPinBinding;
-
+    private boolean isShowPIN=true;
 
 
     @Nullable
@@ -35,6 +39,27 @@ public class ForgotPinFragment extends Fragment  {
         HeaderModel headerModel = new HeaderModel();
         headerModel.setSecondImage(R.mipmap.forgot_password);
         headerModel.setTitle(getString(R.string.enter_verification_code));
+
+        fragmentForgotPinBinding.edittextMobile.setDrawableClickListener(new onDrawableClickListener() {
+
+
+            @Override
+            public void onClick(@NonNull DrawablePosition drawablePosition) {
+                if(drawablePosition==DrawablePosition.RIGHT) {
+                    if (isShowPIN) {
+                        isShowPIN = false;
+                        fragmentForgotPinBinding.edittextMobile.setTransformationMethod(null);
+                        fragmentForgotPinBinding.edittextMobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_off_24, 0);
+                    }
+                    else{
+                        isShowPIN = true;
+                        fragmentForgotPinBinding.edittextMobile.setTransformationMethod(new PasswordTransformationMethod());
+                        fragmentForgotPinBinding.edittextMobile.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_24, 0);
+
+                    }
+                }
+            }
+        });
         return headerModel;
     }
 
@@ -53,3 +78,4 @@ public class ForgotPinFragment extends Fragment  {
     }
 
 }
+*/

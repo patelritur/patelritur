@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.demo.home.HomeActivity
 import com.demo.tutorial.TutorialActivity
 import com.demo.utils.Constants
@@ -18,9 +19,9 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_splash)
         findViewById<RippleBackground>(R.id.content).startRippleAnimation()
-
 
         val mHandler = Handler()
         mHandler.postDelayed(Runnable {

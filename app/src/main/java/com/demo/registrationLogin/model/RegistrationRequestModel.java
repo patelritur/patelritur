@@ -23,7 +23,7 @@ public class RegistrationRequestModel extends BaseObservable {
     @SerializedName("LastName")
     String lastName;
     @SerializedName("Pin")
-    String pin;
+    String pin="1234";
     String SocialLogin="";
     String SocialLoginID="";
 

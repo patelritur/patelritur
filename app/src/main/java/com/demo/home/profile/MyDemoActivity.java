@@ -24,17 +24,24 @@ import com.demo.BaseActivity;
 import com.demo.R;
 import com.demo.databinding.FragmentProfileBinding;
 import com.demo.home.HomeActivity;
+import com.demo.home.booking.model.DirectionsGeocodeResponse;
 import com.demo.home.model.AppContentModel;
 import com.demo.home.model.viewmodel.AppContentViewModel;
 import com.demo.home.model.viewmodel.AppContentViewModelFactory;
 import com.demo.utils.Constants;
 import com.demo.utils.PrintLog;
 import com.demo.utils.SharedPrefUtils;
+import com.demo.webservice.ApiResponseListener;
+import com.demo.webservice.RestClient;
 import com.google.android.material.tabs.TabLayout;
 
-public class MyDemoActivity extends BaseActivity {
-   private FragmentProfileBinding fragmentProfileBinding;
-   private SharedPrefUtils sharedPrefUtils;
+import java.util.Objects;
+
+import retrofit2.Call;
+
+public class MyDemoActivity extends BaseActivity implements ApiResponseListener {
+    private FragmentProfileBinding fragmentProfileBinding;
+    private SharedPrefUtils sharedPrefUtils;
     private AppCompatImageView dotImageview;
 
     @Override
@@ -44,7 +51,13 @@ public class MyDemoActivity extends BaseActivity {
         sharedPrefUtils = new SharedPrefUtils(this);
         fragmentProfileBinding.name.setText(sharedPrefUtils.getStringData(Constants.FNAME)+" "+sharedPrefUtils.getStringData(Constants.LNAME));
         fragmentProfileBinding.email.setText(sharedPrefUtils.getStringData(Constants.EMAIL));
-        fragmentProfileBinding.vaccinated.setText(sharedPrefUtils.getStringData(Constants.ISVACCINATED).equalsIgnoreCase("Y") ?"Vaccinated" : "Not Vaccinated");
+        if(sharedPrefUtils.getStringData(Constants.ADDRESS)!=null && sharedPrefUtils.getStringData(Constants.ADDRESS).trim().length()>0)
+            fragmentProfileBinding.address.setText(sharedPrefUtils.getStringData(Constants.ADDRESS));
+        else{
+            callGeoCodeApi();
+        }
+
+        fragmentProfileBinding.vaccinated.setText( sharedPrefUtils.getStringData(Constants.ISVACCINATED).equalsIgnoreCase("Y") ?"Vaccinated" : "Not Vaccinated");
         setProfileImage();
         setBottomMenuLabels(fragmentProfileBinding.llBottom);
         setMenuLabels(fragmentProfileBinding.leftMenu.menuRecyclerview);
@@ -53,6 +66,15 @@ public class MyDemoActivity extends BaseActivity {
         callMyDemoOptionsApi();
 
     }
+    private void callGeoCodeApi() {
+
+        Call objectCall = RestClient.getApiService().getGeocode(Constants.LATITUDE + "," + Constants.LONGITUDE);
+        RestClient.makeApiRequest(this, objectCall, this, 2, true);
+
+
+
+    }
+
 
     private void setProfileImage() {
         RequestOptions requestOptions = new RequestOptions();
@@ -112,10 +134,10 @@ public class MyDemoActivity extends BaseActivity {
             TextView tab_label = (TextView) tab.findViewById(R.id.textview);
             if(i==fragmentProfileBinding.pager.getCurrentItem()-1){
                 Typeface typeface = getResources().getFont(R.font.montserrat_bold);
-               tab_label.setTypeface(typeface);
+                tab_label.setTypeface(typeface);
             }
             if(i==2){
-                 dotImageview = (AppCompatImageView) tab.findViewById(R.id.dot_iamgeview);
+                dotImageview = (AppCompatImageView) tab.findViewById(R.id.dot_iamgeview);
             }
             AppCompatImageView tab_icon = (AppCompatImageView) tab.findViewById(R.id.iamgeview);
             tab_label.setText(item.getLabels().get(i).getLabelInLanguage());
@@ -136,11 +158,11 @@ public class MyDemoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_home:
-                   startActivity(new Intent(this, HomeActivity.class));
-                   finish();
+                startActivity(new Intent(this, HomeActivity.class));
+                finish();
                 break;
             case R.id.ll_mydemos:
-               // startActivity(new Intent(this, MyDemoActivity.class));
+                // startActivity(new Intent(this, MyDemoActivity.class));
                 break;
             case R.id.ll_takedemo:
                 startActivity(new Intent(this, HomeActivity.class).putExtra("comeFrom","takeAdemo"));
@@ -181,5 +203,21 @@ public class MyDemoActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
+        if(reqCode==2){
+            DirectionsGeocodeResponse directionsGeocodeResponse = (DirectionsGeocodeResponse) response;
+            String currentLocation = directionsGeocodeResponse.getResults().get(0).getFormatted_address();
+            if(sharedPrefUtils.getStringData(Constants.ADDRESS).trim().length()==0 || sharedPrefUtils.getStringData(Constants.ADDRESS).equalsIgnoreCase("ADDRESS"))
+                sharedPrefUtils.saveData(Constants.ADDRESS,currentLocation);
+            fragmentProfileBinding.address.setText(currentLocation);
+        }
+    }
+
+    @Override
+    public void onApiError(Call<Object> call, Object response, int reqCode) throws Exception {
+
     }
 }

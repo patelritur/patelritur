@@ -19,6 +19,7 @@ public class RecorderUtils
     private MediaRecorder mRecorder;
  public void stopRecording(){
      mRecorder.stop();
+
  }
     public void startRecording() {
         // check permission method is used to check
@@ -57,12 +58,13 @@ public class RecorderUtils
                 // below mwthod will prepare
                 // our audio recorder class
                 mRecorder.prepare();
+                mRecorder.start();
             } catch (IOException e) {
                 Log.e("TAG", "prepare() failed");
             }
             // start method will start
             // the audio recording.
-            mRecorder.start();
+
         }
     }
 

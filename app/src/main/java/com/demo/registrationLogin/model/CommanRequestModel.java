@@ -6,6 +6,15 @@ public class CommanRequestModel {
     private static CommanRequestModel instance;
 
 
+    public String getIsPinStatus() {
+        return IsPinStatus;
+    }
+
+    public void setIsPinStatus(String isPinStatus) {
+        IsPinStatus = isPinStatus;
+    }
+
+    public String IsPinStatus="N";
     public String mobile;
     public String userType;
     public String moduleName;

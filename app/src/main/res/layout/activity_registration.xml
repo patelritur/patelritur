@@ -112,6 +112,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
@@ -130,7 +131,6 @@
                 android:hint="@string/pin"
                 android:backgroundTint="@color/color_3d3d3d"
                 style="@style/register_input"
-                android:text="@={registrationmodel.pin}"
                 android:maxLength="@integer/pin_length"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

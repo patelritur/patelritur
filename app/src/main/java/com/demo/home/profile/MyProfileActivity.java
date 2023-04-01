@@ -173,12 +173,12 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
 
                 break;
-            case R.id.upload:
+            /*case R.id.upload:
                 showUploadDlDialog();
-                break;
-            case R.id.download_dl:
+                break;*/
+         /*   case R.id.download_dl:
                 showDownloadDLDialog();
-                break;
+                break;*/
             case R.id.save_continue:
                 callSaveContinueApi();
                 break;
@@ -207,11 +207,11 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         });
         dialogUploadDlBinding.uplaodDl.setOnClickListener(view -> {
 
-            if (!Permissionsutils.checkForStoragePermission(MyProfileActivity.this)) {
-                Permissionsutils.askForStoragePermission(MyProfileActivity.this,Constants.DL);
-            } else {
-                pickDL();
-            }
+//            if (!Permissionsutils.checkForStoragePermission(MyProfileActivity.this)) {
+//                Permissionsutils.askForStoragePermission(MyProfileActivity.this,Constants.DL);
+//            } else {
+//                pickDL();
+//            }
 
 
         });
@@ -220,10 +220,10 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void pickDL() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, Constants.DL);
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        startActivityForResult(intent, Constants.DL);
     }
 
     private void changeBackgroundTint(AppCompatEditText edittextAddress) {
@@ -373,7 +373,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             }
             //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
-        else  if (requestCode == Constants.DL && resultCode == Activity.RESULT_OK) {
+        /*else  if (requestCode == Constants.DL && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             String fullFilePath = UriUtils.getPathFromUri(this,uri);
 
@@ -386,7 +386,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
 
                 }
             }
-        }
+        }*/
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -397,8 +397,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                  pickImage();
             else if(requestCode==PICK_IMAGE_CAMERA)
                 pickCameraImage();
-            else if(requestCode==Constants.DL)
-                pickDL();
+          /*  else if(requestCode==Constants.DL)
+                pickDL();*/
             else if(requestCode==10)
                 downloadDL();
 

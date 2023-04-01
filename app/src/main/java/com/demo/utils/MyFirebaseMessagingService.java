@@ -50,9 +50,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
-        Log.e("newToken", token);
-
-
     }
 
 
@@ -60,6 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         sharedPrefUtils = new SharedPrefUtils(getApplicationContext());
+        Log.e("remoteMessage", String.valueOf(remoteMessage));
         Log.e("remoteMessage", String.valueOf(remoteMessage.getData()));
         isRingtone=false;
         // {"customerid":"48","demoid":"264","contenturl":"","contentTitle":"Change Demo Status","message":"Your Demo is booked!","notificationtype":"ChangeDemoStatus"}
@@ -69,25 +67,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationIntent = new Intent(getApplicationContext(), HomeActivity.class).
                     putExtra("demoid",remoteMessage.getData().get("demoid")).
                     putExtra("notificationtype",remoteMessage.getData().get("notificationtype")).
+                    putExtra("bookingtype",remoteMessage.getData().get("bookingtype")).
                     setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).
                     setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntentWithParentStack(notificationIntent);
-            if(remoteMessage.getData().get("notificationtype").equalsIgnoreCase("AcceptMeetRequest")){
-               sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"Meeting");
-            }
-            else
-                sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"Demo");
+            if(!remoteMessage.getData().get("bookingtype").equalsIgnoreCase("schedule")) {
+                if (remoteMessage.getData().get("notificationtype").equalsIgnoreCase("AcceptMeetRequest")) {
+                    sharedPrefUtils.saveData(Constants.BOOK_TYPE_S, "Meeting");
+                } else
+                    sharedPrefUtils.saveData(Constants.BOOK_TYPE_S, "Demo");
 
-            sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,remoteMessage.getData().get("demoid"));
-            resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                sharedPrefUtils.saveData(Constants.BOOKING_ONGOING, remoteMessage.getData().get("demoid"));
+                sharedPrefUtils.saveData(Constants.OTP_SHOW,false);
+            }
+            Log.e("remoteMessage", remoteMessage.getData().get("demoid"));
+            Log.e("sharedPrefUtils", sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING));
+            resultPendingIntent = stackBuilder.getPendingIntent(0,  PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             broadcastNotification(remoteMessage);
             sendPushNotification(getApplicationContext(),remoteMessage.getData().get("message"),remoteMessage.getData().get("contentTitle"));
         }
-        else  if(remoteMessage.getData().get("notificationtype")!=null && (remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeDemoStatus") ||
+        else  if(remoteMessage.getData().get("notificationtype")!=null &&( (remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeDemoStatus") ||
                 remoteMessage.getData().get("notificationtype").equalsIgnoreCase("ChangeMeetingStatus"))
                 ||remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")
-                || remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")){
+                || remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording"))){
             if(remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistDemoVoiceRecording")||
                     remoteMessage.getData().get("notificationtype").equalsIgnoreCase("SpecialistMeetVoiceRecording")){
                 isRingtone=true;
@@ -102,12 +105,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Constants.BOOK_TYPE = "Meeting";
                 Constants.MEETING_ID = remoteMessage.getData().get("demoid");
             }
-            if(remoteMessage.getData().get("message").contains("Rejected")||
-            remoteMessage.getData().get("message").contains("rejected")
-            || remoteMessage.getData().get("message").contains("completed")
-            || remoteMessage.getData().get("message").contains("Completed")){
+            if(remoteMessage.getData().get("message").contains("completed")
+                    || remoteMessage.getData().get("message").contains("Completed")||
+                    remoteMessage.getData().get("message").contains("Rejected")||
+                    remoteMessage.getData().get("message").contains("rejected")){
                 sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"null");
                 sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,"null");
+                sharedPrefUtils.saveData(Constants.OTP_SHOW,false);
             }
 
             notificationIntent = new Intent(getApplicationContext(), HomeActivity.class).
@@ -115,12 +119,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     putExtra("comeFrom",remoteMessage.getData().get("notifications")).
                     putExtra("notificationtype",remoteMessage.getData().get("notificationtype")).
                     putExtra("customerid",remoteMessage.getData().get("customerid")).
+                    putExtra("message",remoteMessage.getData().get("message")).
+                    putExtra("bookingtype",remoteMessage.getData().get("bookingtype")).
+
                     setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).
                     setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntentWithParentStack(notificationIntent);
             resultPendingIntent =
-                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    stackBuilder.getPendingIntent(0,  PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             broadcastNotification(remoteMessage);
             sendPushNotification(getApplicationContext(), remoteMessage.getData().get("message"), remoteMessage.getData().get("contentTitle"));
         }
@@ -277,7 +284,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                         .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                         .build();
-                @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
+                @SuppressLint("WrongConstant")
+                NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
                         CHANNEL_ONE_NAME, notificationManagerCompat.IMPORTANCE_HIGH);
                 notificationChannel.enableLights(true);
                 notificationChannel.setLightColor(Color.RED);

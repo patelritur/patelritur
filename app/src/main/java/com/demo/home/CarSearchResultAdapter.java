@@ -69,6 +69,7 @@ public class CarSearchResultAdapter extends RecyclerView.Adapter<CarSearchResult
             public void onClick(View v) {
                 Intent intent = new Intent(context, CarDetailsActivity.class);
                 intent.putExtra("carId",dataModel.getCarID());
+                intent.putExtra("specialistId","0");
 
                 ((HomeActivity)context).startActivity(intent);
                 ((HomeActivity)context).finish();

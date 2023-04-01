@@ -42,19 +42,21 @@
             android:fontFamily="@font/montserrat_regular"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             >
-        <androidx.appcompat.widget.AppCompatEditText
-            android:visibility="gone"
-            android:id="@+id/enter_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:hint="@string/pin"
-            android:layout_marginStart="0dp"
-            style="@style/edittext_style"
-            app:backgroundTint="@color/color_3e3e3e"
-            >
-            <requestFocus/>
-        </androidx.appcompat.widget.AppCompatEditText>
+            <com.mindorks.editdrawabletext.EditDrawableText
+                android:visibility="gone"
+                android:inputType="numberPassword"
+                android:drawableRight="@drawable/ic_outline_visibility_24"
+                android:id="@+id/enter_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:hint="@string/pin"
+                android:layout_marginStart="0dp"
+                style="@style/edittext_style"
+                app:backgroundTint="@color/color_3e3e3e"
+                >
+                <requestFocus/>
+            </com.mindorks.editdrawabletext.EditDrawableText>
         </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:id="@+id/root_otp_layout"
@@ -149,6 +151,18 @@
             tools:text="Resend OTP"
             android:fontFamily="@font/montserrat_regular"
             android:text="@{headermodel.bottomText}"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/incorrect_otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_131313"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="10dp"
+            android:textSize="@dimen/textsize_15"
+            android:text="@string/otp_entered_is_incorrect"
+            android:fontFamily="@font/montserrat_regular"
+            />
         <TextView
             android:visibility="gone"
             android:id="@+id/timer_otp"

@@ -1,19 +1,22 @@
 package com.demo.home.booking;
 
-import static android.app.Activity.RESULT_OK;
+import static android.content.Context.ALARM_SERVICE;
+
+import static com.demo.utils.comectChat.call_manager.CometChatStartCallActivity.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -23,7 +26,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
@@ -32,8 +34,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
 import com.cometchat.pro.constants.CometChatConstants;
@@ -45,7 +47,6 @@ import com.demo.carDetails.model.CarDetailRequest;
 import com.demo.carDetails.model.CarPorfomaInvoiceModel;
 import com.demo.databinding.DialogRecordBinding;
 import com.demo.databinding.DialogReviewsBinding;
-import com.demo.databinding.DialogUploadDlBinding;
 import com.demo.databinding.FragmentBookingBookedBinding;
 import com.demo.databinding.ItemCarFacilitiesBinding;
 import com.demo.home.HomeActivity;
@@ -57,7 +58,6 @@ import com.demo.home.booking.model.LocationResponse;
 import com.demo.home.booking.model.StatusRequestModel;
 import com.demo.home.booking.model.UpdateStatusRequestModel;
 import com.demo.home.model.DirectionResults;
-import com.demo.home.profile.MyProfileActivity;
 import com.demo.registrationLogin.model.RegistrationResponse;
 import com.demo.utils.Constants;
 import com.demo.utils.DialogUtils;
@@ -67,7 +67,6 @@ import com.demo.utils.Permissionsutils;
 import com.demo.utils.PrintLog;
 import com.demo.utils.RecorderUtils;
 import com.demo.utils.SharedPrefUtils;
-import com.demo.utils.UriUtils;
 import com.demo.utils.Utils;
 import com.demo.utils.comectChat.utils.CallUtils;
 import com.demo.webservice.ApiResponseListener;
@@ -77,8 +76,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -93,7 +97,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private static final int BOOKING_DETAILS = 1;
     private static final int PERFORMA_INVOICE = 4;
     private static final int RECORD_AUDIO = 2;
-    private static final int UPLOAD_DRIVING_LICENSE = 10;
+    //    private static final int UPLOAD_DRIVING_LICENSE = 10;
     private static final int UPDATE_STATUS = 6;
     private static final int GET_ROUTE = 7;
     private static final int GET_ONLY_ROUTE = 8;
@@ -115,12 +119,14 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private String specialistId;
     private String userId;
     private DialogRecordBinding dialogRecordBinding;
-    private Dialog recordDialog,uplodDlDialog;
+    private Dialog recordDialog;
     private Long duration;
     private Long distance;
     private CountUpTimer countuptimer;
-    private DialogUploadDlBinding dialogUploadDlBinding;
+    private String durationInMin;
+    //    private DialogUploadDlBinding dialogUploadDlBinding;
     private CountDownTimer dlUploadcountDownTimer;
+//    private Handler m15MinutesTimer,m5minutesTimer;
 
     public BookingConfirmedFragment(boolean fromNotification) {
         this.fromNotification = fromNotification;
@@ -140,8 +146,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         userId = sharedPrefUtils.getStringData(Constants.USER_ID);
         timer = new Timer();
 
-        if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME) )
-            fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
+      /*  if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME) )
+            fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
 
         return fragmentBookingBookedBinding.getRoot();
     }
@@ -155,9 +161,11 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         fragmentBookingBookedBinding.bookDemo.setOnClickListener(this);
         fragmentBookingBookedBinding.joinCall.setOnClickListener(this);
         fragmentBookingBookedBinding.tvCancel.setOnClickListener(this);
+        fragmentBookingBookedBinding.tvContact.setOnClickListener(this);
         fragmentBookingBookedBinding.recordAudio.setOnClickListener(this);
         fragmentBookingBookedBinding.playVoiceMessage.setOnClickListener(this);
-        fragmentBookingBookedBinding.tvLeftHome.setOnClickListener(this);
+
+        //   fragmentBookingBookedBinding.tvLeftHome.setOnClickListener(this);
 
         callBookingDetailApi(BOOKING_DETAILS);
     }
@@ -186,8 +194,6 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         RestClient.makeApiRequest(getActivity(), objectCall, this, reqCode, true);
 
     }
-
-
 
 
     private void callPorfomaInvoiceApi() {
@@ -226,14 +232,14 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     }
 
 
-    private void uploadDrivingLicenseToServer(File destination,String dlNumber) {
+    /*private void uploadDrivingLicenseToServer(File destination,String dlNumber) {
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("File", destination.getName(), RequestBody.create(MediaType.parse("image/*"), destination));
         Call<RegistrationResponse> call;
         call = RestClient.getApiService().uploadDrivingLicense(filePart, RequestBody.create(MediaType.parse("text/plain"), userId), RequestBody.create(MediaType.parse("text/plain"), dlNumber));
 
         RestClient.makeApiRequest(getActivity(), call, this, UPLOAD_DRIVING_LICENSE, true);
     }
-
+*/
 
     private void uploadFileToServer(File destination) {
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("File", destination.getName(), RequestBody.create(MediaType.parse("image/*"), destination));
@@ -342,7 +348,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
 
 
-    private void showDLUploadDialog() {
+    /*private void showDLUploadDialog() {
 
         uplodDlDialog = new Dialog(getActivity());
         dialogUploadDlBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_upload_dl, null, false);
@@ -365,12 +371,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             },"Yes, Cancel it","Upload Driving License");
         });
         dialogUploadDlBinding.uplaodDl.setOnClickListener(view -> {
-
+*//*
             if (!Permissionsutils.checkForStoragePermission(getActivity())) {
                 Permissionsutils.askForStoragePermission(getActivity(),Constants.DL);
             } else {
                 pickDL();
-            }
+            }*//*
 
 
 
@@ -383,35 +389,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     }
 
     private void pickDL() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        ((Activity)getActivity()).startActivityForResult(intent, Constants.DL);
-    }
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        ((Activity)getActivity()).startActivityForResult(intent, Constants.DL);
+    }*/
 
-    private CountDownTimer start5minutesTimer(TextView warning) {
-        return new CountDownTimer(300000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-                int minutes = seconds / 60;
-                seconds = seconds % 60;
-                String time =  String.format("%02d", minutes)
-                        + ":" + String.format("%02d", seconds);
-
-                warning.setText(String.format(getActivity().getResources().getString(R.string.welcome_messages),time));
-                // logic to set the EditText could go here
-            }
-
-            public void onFinish() {
-                PrintLog.v("finish");
-                warning.setText("Finish!");
-                callcancelBookingApi();
-
-            }
-
-        }.start();
-    }
 
     private void callcancelBookingApi() {
 
@@ -587,7 +570,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 }
                 break;
             case R.id.tv_cancel:
-                ((HomeActivity) getActivity()).showFragment(new CancelDemoFragment());
+                showCancelAlert();
+
+                break;
+            case R.id.tv_contact:
+                fragmentBookingBookedBinding.call.performClick();
+
                 break;
             case R.id.performa_invoice:
                 callPorfomaInvoiceApi();
@@ -604,7 +592,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 else
                     callBookingDetailApi(PLAY_AUDIO);
                 break;
-            case R.id.tv_left_home:
+            /*case R.id.tv_left_home:
                 if (hourlyTask == null && timer!=null ) {
                     setTask();
                     timer.schedule(hourlyTask, 0l, Constants.WAIT_MINUTE);
@@ -612,9 +600,23 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 }
                 sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
                 fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
-                break;
+                break;*/
         }
 
+    }
+
+    private void showCancelAlert() {
+        DialogUtils.showConfirmDialog(getActivity(), "Are you sure you want to cancel this " + Constants.BOOK_TYPE+"?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((HomeActivity) getActivity()).showFragment(new CancelDemoFragment());
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        },"YES","NO");
     }
 
     private void setTask() {
@@ -663,99 +665,149 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             bookingAcceptModel = (BookingAcceptModel) response;
             if (bookingAcceptModel.getResponseCode().equalsIgnoreCase("200")) {
                 fragmentBookingBookedBinding.setBookingDetail(bookingAcceptModel);
-                fragmentBookingBookedBinding.submessage.setText(bookingAcceptModel.getBookingSubMessage());
-                specialistId = bookingAcceptModel.getBookingdetails().getSpecialistID();
-                updateCarCheckList();
-                if (bookingAcceptModel.getBookingdetails()!=null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
-                    fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.VISIBLE);
-                else
-                    fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.GONE);
+                Date currentDate = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mmaa", Locale.US);
+                String bookingDate = bookingAcceptModel.BookingDate;
+                String bookingTime = bookingAcceptModel.BookingTime;
+                String bookingDateTimeString = bookingDate + " " + bookingTime;
+                Date  bookingDateTime = format.parse(bookingDateTimeString);
 
-                fragmentBookingBookedBinding.executePendingBindings();
-                if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME) )
-                    fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
-                if (!(bookingAcceptModel.getBookingdetails().getVirtualMeetStatus()!=null && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")))
-                    {
-                        if ((sharedPrefUtils.getStringData(Constants.IsDLUploadStatus) != null && sharedPrefUtils.getStringData(Constants.IsDLUploadStatus).equalsIgnoreCase("Y"))) {
+                if (bookingDateTime != null && bookingDateTime.after(currentDate)) {
+                    PrintLog.v("tvs vs tvs =====schedule"+bookingDateTime.after(currentDate)+bookingDateTime+currentDate);
+                    if(!Utils.dateDiff1Hour(bookingDateTimeString)) {
+                        setLocalOnTimeReminder(bookingDateTime);
+                        setLocal15MinutesBeforeReminder(bookingDateTime);
+                    }
+
+                } else {
+                    // The booking date and time is on or before the current date and time
+                    PrintLog.v("now");
+
+                    sharedPrefUtils.saveData(Constants.SNAME, bookingAcceptModel.getBookingdetails().getSpecialistName());
+                    fragmentBookingBookedBinding.submessage.setText(bookingAcceptModel.getBookingSubMessage());
+                    specialistId = bookingAcceptModel.getBookingdetails().getSpecialistID();
+                    updateCarCheckList();
+//                if(bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home")){
+//                    fragmentBookingBookedBinding.tvCancel.setText("Contact Demo Specialist");
+//                }
+                    if (bookingAcceptModel.getBookingdetails() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
+                        fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.VISIBLE);
+                    else
+                        fragmentBookingBookedBinding.playVoiceMessage.setVisibility(View.GONE);
+
+                    fragmentBookingBookedBinding.executePendingBindings();
+              /*  if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME) )
+                    fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
+                    if (!(bookingAcceptModel.getBookingdetails().getVirtualMeetStatus() != null && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y"))) {
+                        startTimerForlocationUpdate();
+                        //remove driving license need as on 22/12
+                       /* if ((sharedPrefUtils.getStringData(Constants.IsDLUploadStatus) != null && sharedPrefUtils.getStringData(Constants.IsDLUploadStatus).equalsIgnoreCase("Y"))) {
                             startTimerForlocationUpdate();
                         } else {
                             showDLUploadDialog();
-                        }
+                        }*/
                     }
-                switch (bookingAcceptModel.getBookingdetails().getDemoStatusId()) {
-                    case "5":
-                        fragmentBookingBookedBinding.status.setText("Completed");
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                endTask();
-                                sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,"null");
-                                sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"null");
-                                ((HomeActivity) getActivity()).showFragment(new BookingFeedbackFragment(bookingAcceptModel.getBookingdetails().getSpecialistName(), bookingAcceptModel.getBookingdetails().getSpecialistID()));
-                            }
-                        }, 5000);
-                        break;
-                    case "2":
-                    case "3":
+                    if(sharedPrefUtils.getBooleanData(Constants.OTP_SHOW)){
+                        bookingAcceptModel.bookingdetails.setCustomDemoStatusId("2");
+                        fragmentBookingBookedBinding.setBookingDetail(bookingAcceptModel);
+                        fragmentBookingBookedBinding.executePendingBindings();
+                    }
+                    switch (bookingAcceptModel.getBookingdetails().getDemoStatusId()) {
 
-                        fragmentBookingBookedBinding.call.setVisibility(View.GONE);
-                        fragmentBookingBookedBinding.arrivingTime.setVisibility(View.GONE);
-                        break;
-                    case "4":
+                        case "5":
+                            fragmentBookingBookedBinding.status.setText("Completed");
+                            new Handler().postDelayed(new Runnable() {
+                                @SuppressLint("SuspiciousIndentation")
+                                @Override
+                                public void run() {
+                                    endTask();
+                                    sharedPrefUtils.saveData(Constants.BOOKING_ONGOING, "null");
+                                    sharedPrefUtils.saveData(Constants.OTP_SHOW, false);
+                                    sharedPrefUtils.saveData(Constants.TIMER, "null");
+                                    sharedPrefUtils.saveData(Constants.BOOK_TYPE_S, "null");
+                                    if ((((HomeActivity) getActivity())) != null)
+                                        ((HomeActivity) getActivity()).showFragment(new BookingFeedbackFragment(bookingAcceptModel.getBookingdetails().getSpecialistName(), bookingAcceptModel.getBookingdetails().getSpecialistID()));
+                                }
+                            }, 200);
+                            break;
+                        case "2":
+                            sharedPrefUtils.saveData(Constants.OTP_SHOW,true);
+                            bookingAcceptModel.bookingdetails.setCustomDemoStatusId("2");
+                            fragmentBookingBookedBinding.setBookingDetail(bookingAcceptModel);
+                            fragmentBookingBookedBinding.executePendingBindings();
+                        case "3":
+
+                            fragmentBookingBookedBinding.call.setVisibility(View.GONE);
+                            fragmentBookingBookedBinding.arrivingTime.setVisibility(View.GONE);
+                            break;
+                        case "4":
 //                        fragmentBookingBookedBinding.status.setText(getString(R.string.arrived));
-                        fragmentBookingBookedBinding.status.setText("Started");
-                        endTask();
-                        break;
-                    case "7":
-                        endTask();
-                        fragmentBookingBookedBinding.status.setText(getString(R.string.rejected));
-                        fragmentBookingBookedBinding.bookDemo.setVisibility(View.VISIBLE);
-                        fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
-                        fragmentBookingBookedBinding.joinCall.setVisibility(View.GONE);
-                        if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
-                            fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.takedemos));
-                        else
-                            fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.book_a_meeting));
 
-                        break;
-                    case "9":
-                        fragmentBookingBookedBinding.status.setText("Arriving Soon");
-                        fragmentBookingBookedBinding.call.setVisibility(View.GONE);
-                        fragmentBookingBookedBinding.arrivingTime.setVisibility(View.GONE);
-                        break;
-                    case "10":
-                        endTask();
-                        fragmentBookingBookedBinding.call.setVisibility(View.VISIBLE);
-                        fragmentBookingBookedBinding.status.setText(getString(R.string.arrived));
-                        break;
+                            sharedPrefUtils.saveData(Constants.TIMER,"null");
 
-                    case "13":
-                        fragmentBookingBookedBinding.status.setText(getString(R.string.delayed));
-                        break;
+                            fragmentBookingBookedBinding.status.setText("Started");
+                            if (!fromNotification && bookingAcceptModel.getBookingdetails().getMeetingType() != null && bookingAcceptModel.getBookingdetails().getMeetingType().equalsIgnoreCase("now") && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
+                                if (bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
+                                    fragmentBookingBookedBinding.joinCall.setVisibility(View.VISIBLE);
+                                }
 
-                    default:
-                        PrintLog.v("default====");
-                        if (!fromNotification && bookingAcceptModel.getBookingdetails().getMeetingType() != null && bookingAcceptModel.getBookingdetails().getMeetingType().equalsIgnoreCase("now") && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
-                            if (bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
-                                fragmentBookingBookedBinding.joinCall.setVisibility(View.VISIBLE);
-                                fragmentBookingBookedBinding.dlReady.setVisibility(View.GONE);
                             }
+                        /*sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
+                        fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
+                            endTask();
+                            break;
+                        case "7":
+                            endTask();
+                            fragmentBookingBookedBinding.status.setText(getString(R.string.rejected));
+                            fragmentBookingBookedBinding.bookDemo.setVisibility(View.VISIBLE);
+                            fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
+                            fragmentBookingBookedBinding.joinCall.setVisibility(View.GONE);
+                            if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
+                                fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.takedemos));
+                            else
+                                fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.book_a_meeting));
 
-                        }
-                        break;
+                            break;
+                        case "9":
+                            fragmentBookingBookedBinding.status.setText("Arriving Soon");
+                            fragmentBookingBookedBinding.call.setVisibility(View.GONE);
+                            fragmentBookingBookedBinding.arrivingTime.setVisibility(View.GONE);
+                            break;
+                        case "10":
+                            endTask();
+                       /* sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
+                        fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
+                            fragmentBookingBookedBinding.call.setVisibility(View.VISIBLE);
+                            fragmentBookingBookedBinding.status.setText(getString(R.string.arrived));
+
+                            break;
+
+                        case "13":
+                            fragmentBookingBookedBinding.status.setText(getString(R.string.delayed));
+                            break;
+
+                        default:
+                            PrintLog.v("default====");
+                            if (!fromNotification && bookingAcceptModel.getBookingdetails().getMeetingType() != null && bookingAcceptModel.getBookingdetails().getMeetingType().equalsIgnoreCase("now") && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
+                                if (bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
+                                    fragmentBookingBookedBinding.joinCall.setVisibility(View.VISIBLE);
+                                }
+
+                            }
+                            break;
 
 
+                    }
+
+                    //  ((HomeActivity) getActivity()).locationUtils.drawOnMap(bookingAcceptModel.bookingdetails.getSpecialistLatitude(), bookingAcceptModel.bookingdetails.getSpecialistLongitude());
+                    ((HomeActivity) getActivity()).setPeekheight(fragmentBookingBookedBinding.parentLl.getMeasuredHeight());
                 }
-
-                //  ((HomeActivity) getActivity()).locationUtils.drawOnMap(bookingAcceptModel.bookingdetails.getSpecialistLatitude(), bookingAcceptModel.bookingdetails.getSpecialistLongitude());
-                ((HomeActivity) getActivity()).setPeekheight(fragmentBookingBookedBinding.parentLl.getMeasuredHeight());
-
             }
         }
         else if(reqCode==PLAY_AUDIO){
             bookingAcceptModel = (BookingAcceptModel) response;
-            if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME))
-                fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
+            /*if(sharedPrefUtils.getBooleanData(Constants.LEFT_HOME))
+                fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
             if (bookingAcceptModel.getBookingdetails()!=null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio() != null && bookingAcceptModel.getBookingdetails().getVoiceRecordingAudio().trim().length() > 0)
                 playAudio();
         }
@@ -765,8 +817,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             recordDialog.dismiss();
             Utils.showToast(getActivity(), registrationResponse.getDescriptions());
         } else if (reqCode == GET_SPECIALIST_LOCATION) {
-            LocationResponse bookingAcceptModel = ((LocationResponse) response);
-            calculateDistance(GET_ROUTE, bookingAcceptModel.getUserLatitude(), bookingAcceptModel.getUserLongitude());
+            LocationResponse locationResponse = ((LocationResponse) response);
+            calculateDistance(GET_ROUTE, locationResponse.getUserLatitude(), locationResponse.getUserLongitude());
 
         } else if (reqCode == PERFORMA_INVOICE) {
             CarPorfomaInvoiceModel carDetailReviewModel = (CarPorfomaInvoiceModel) response;
@@ -784,12 +836,21 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 DirectionResults.Route routeA = directionResults.getRoutes().get(0);
                 if (routeA.getLegs().size() > 0) {
                     List<DirectionResults.Steps> steps = routeA.getLegs().get(0).getSteps();
-                    fragmentBookingBookedBinding.distanceText.setText("(" + routeA.getLegs().get(0).getDistance().getText() + " away, " + routeA.getLegs().get(0).getDuration().getText() + ")");
                     duration = routeA.getLegs().get(0).getDuration().getValue();//seconds
                     distance = routeA.getLegs().get(0).getDistance().getValue();//meters
+                    if(distance>2000) {
+                        fragmentBookingBookedBinding.distanceText.setText("(" + routeA.getLegs().get(0).getDistance().getText() + " away, " + routeA.getLegs().get(0).getDuration().getText() + ")");
+                    }else {
+                        /*PrintLog.v("Timmer===startout"+sharedPrefUtils.getStringData(Constants.TIMER));
+                        if(sharedPrefUtils.getStringData(Constants.TIMER)==null || sharedPrefUtils.getStringData(Constants.TIMER).equalsIgnoreCase("null")) {
+                            start15minutesTimer();
+                            PrintLog.v("Timmer===startloop");
+                        }*/
+                        fragmentBookingBookedBinding.distanceText.setText("(" + routeA.getLegs().get(0).getDuration().getText() + ")");
+                    }
+                    durationInMin=routeA.getLegs().get(0).getDuration().getText();
                     if (fragmentBookingBookedBinding.address.getText().toString().trim().length() == 0)
                         fragmentBookingBookedBinding.address.setText(routeA.getLegs().get(0).getStart_address());
-                    startLocation = routeA.getLegs().get(0).getStartLocation();
                     endLocation = routeA.getLegs().get(0).getEndLocation();
                     DirectionResults.Steps step;
                     DirectionResults.Location location;
@@ -808,12 +869,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
                 if (routelist.size() > 0) {
                     PolylineOptions rectLine = new PolylineOptions().width(10).color(
-                            R.color.color_241e61);
+                            ContextCompat.getColor(getActivity(),R.color.color_241e61));
 
                     for (int i = 0; i < routelist.size(); i++) {
                         rectLine.add(routelist.get(i));
                     }
-                    ((HomeActivity) getActivity()).locationUtils.addPolyLine(rectLine, startLocation, endLocation, bookingAcceptModel.getBookingdetails().getDemoType());
+                    ((HomeActivity) getActivity()).locationUtils.addPolyLine(rectLine,  endLocation, bookingAcceptModel.getBookingdetails().getDemoType(),durationInMin);
 
                 }
             }
@@ -824,6 +885,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     destinationTime = Utils.getNextTime(Math.toIntExact(duration));
                 if (distance <= 200) {
                     fragmentBookingBookedBinding.status.setText("Arrived");
+                   /* sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
+                    fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
                     updateStatusApi("10");
 
                 } else if (distance <= 1000) {
@@ -837,7 +900,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 }
             }
         }
-        else if(reqCode==UPLOAD_DRIVING_LICENSE){
+        /*else if(reqCode==UPLOAD_DRIVING_LICENSE){
             RegistrationResponse registrationResponse = (RegistrationResponse) response;
             if(registrationResponse.getResponseCode().equalsIgnoreCase("200")){
                 dlUploadcountDownTimer.cancel();
@@ -847,13 +910,15 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 startTimerForlocationUpdate();
             }
             Utils.showToast(getActivity(),registrationResponse.getDescriptions());
-        }
+        }*/
         else if(reqCode==CANCEL_BOOKING){
             BookingResponseModel registrationResponse = (BookingResponseModel) response;
             Utils.showToast(getActivity(),registrationResponse.getDescriptions());
             endTask();
             sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,"null");
+            sharedPrefUtils.saveData(Constants.OTP_SHOW, false);
             sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,"null");
+            sharedPrefUtils.saveData(Constants.TIMER,"null");
             getActivity().startActivity(new Intent(getActivity(), HomeActivity.class));
             getActivity().finish();
 
@@ -863,18 +928,88 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
 
     }
 
+    /*private void start15minutesTimer() {
+        m15MinutesTimer =   new Handler();
+        sharedPrefUtils.saveData(Constants.TIMER,"15");
+        PrintLog.v("15 Timmer start==");
+        m15MinutesTimer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // call your method here
+                sharedPrefUtils.saveData(Constants.TIMER,"5");
+                start5MinutesTimer();
+                DialogUtils.showConfirmDialog(getActivity(), "Do you want to extend for 5 minutes?" , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        m15MinutesTimer.removeCallbacksAndMessages(null);
+                        sharedPrefUtils.saveData(Constants.TIMER,"5");
+                        start5MinutesTimer();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        m15MinutesTimer.removeCallbacksAndMessages(null);
+                        callcancelBookingApi();
+                    }
+                },"YES","NO");
+            }
+        }, 30000);
+    }
+
+    private void start5MinutesTimer() {
+        PrintLog.v("5 Timmer start==");
+        m5minutesTimer =   new Handler();
+        m5minutesTimer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // call your method here
+                PrintLog.v("5 Timmer finish==");
+                callcancelBookingApi();
+            }
+        }, 1*60000);
+    }*/
+
+    private void setLocal15MinutesBeforeReminder(Date bookingDateTime) {
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getActivity(), My15MinutesLocalReceiver.class);
+        intent.putExtra("is15MinutesBefore",true);
+        intent.putExtra("bookingId",bookingAcceptModel.bookingID);
+        intent.putExtra("demoType",Constants.BOOK_TYPE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(bookingDateTime);
+        calendar.add(Calendar.MINUTE,-15);
+        PrintLog.v("tvs vs tvs =====15 min"+calendar.getTime().getTime());
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTime().getTime(), pendingIntent);
+    }
+
+    private void setLocalOnTimeReminder(Date bookingDateTime) {
+        PrintLog.v("tvs vs tvs =====scheduleontime");
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getActivity(), MyLocalReceiver.class);
+        intent.putExtra("is15MinutesBefore",false);
+        intent.putExtra("bookingId",bookingAcceptModel.bookingID);
+        intent.putExtra("demoType",Constants.BOOK_TYPE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 1, intent, PendingIntent.FLAG_IMMUTABLE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(bookingDateTime);
+        calendar.add(Calendar.MINUTE,-5);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTime().getTime(), pendingIntent);
+
+    }
+
     private void startTimerForlocationUpdate() {
-        if (hourlyTask == null && (!fromNotification && bookingAcceptModel.getBookingdetails().getDemoType() != null && bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home"))) {
+        if (hourlyTask == null && (!fromNotification /*&& bookingAcceptModel.getBookingdetails().getDemoType() != null && bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home"))*/)) {
             setTask();
             calculateDistance(GET_ONLY_ROUTE, bookingAcceptModel.getBookingdetails().getSpecialistLatitude(), bookingAcceptModel.getBookingdetails().getSpecialistLongitude());
-            getHomeAddress();
+            //   getHomeAddress();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if (timer != null)
                         timer.schedule(hourlyTask, 0, Constants.WAIT_MINUTE);
                 }
-            }, Constants.WAIT_MINUTE);
+            }, 0);
         }
     }
 
@@ -938,9 +1073,16 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     DialogUtils.showAlertInfo(getActivity(), "Please accept storage permission to download invoice.");
                 }
                 break;
-            case Constants.DL:
+          /*  case Constants.DL:
                 pickDL();
-                break;
+                break;*/
+        }
+    }
+
+    public void onCallEnded() {
+        if (bookingAcceptModel!=null && bookingAcceptModel.getBookingdetails().getVirtualMeetStatus().equalsIgnoreCase("Y")) {
+            fragmentBookingBookedBinding.joinCall.setText("Restart Call");
+            fragmentBookingBookedBinding.reconnect.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1001,9 +1143,14 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         IntentFilter intentFilter  =new IntentFilter();
         intentFilter.addAction("receiveNotification");
         getActivity().registerReceiver(notificationReceiver,intentFilter);
+        if(activity!=null && activity.callended){
+            onCallEnded();
+        }
+
+
     }
 
-    @Override
+  /*  @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
 
@@ -1016,16 +1163,16 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             {
                 uploadDrivingLicenseToServer(destination,dialogUploadDlBinding.edittextDl.getText().toString());
 
-               /* if(dialogUploadDlBinding.warning.getText().toString().trim().length()>0 &&Utils.isvalidDl(dialogUploadDlBinding.warning.getText().toString()))
+               *//* if(dialogUploadDlBinding.warning.getText().toString().trim().length()>0 &&Utils.isvalidDl(dialogUploadDlBinding.warning.getText().toString()))
                     uploadDrivingLicenseToServer(destination,dialogUploadDlBinding.warning.getText().toString());
                 else if(dialogUploadDlBinding.warning.getText().toString().trim().length()>0)
                     Utils.showToast(getActivity(),"Please enter valid Driving License Number");
-            */}
+            *//*}
 
         }
+*/
 
 
-    }
 
 
 

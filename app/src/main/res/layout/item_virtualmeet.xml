@@ -13,8 +13,8 @@
 
         >
         <View
-            android:layout_width="@dimen/margin_20"
-            android:layout_height="@dimen/margin_20"
+            android:layout_width="@dimen/margin_10"
+            android:layout_height="@dimen/margin_10"
 
             />
         <androidx.cardview.widget.CardView
@@ -52,8 +52,8 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.cardview.widget.CardView>
         <View
-            android:layout_width="@dimen/margin_20"
-            android:layout_height="@dimen/margin_20"
+            android:layout_width="@dimen/margin_10"
+            android:layout_height="@dimen/margin_10"
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -1,6 +1,7 @@
 package com.demo.utils;
 
 import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
@@ -11,7 +12,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -25,6 +28,14 @@ public class Permissionsutils {
         return checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                 checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public static boolean checkForNotificationPermission(Context context)
+    {
+        //File write logic here
+        return checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED ;
+    }
+
 
 
     public static boolean CheckForLocationPermission(Context context)
@@ -77,4 +88,9 @@ public class Permissionsutils {
     }
 
 
+
+    public static void askForNotificationPermission(Context context) {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{ POST_NOTIFICATIONS}, 10);
+
+    }
 }

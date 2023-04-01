@@ -8,9 +8,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
@@ -25,15 +29,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.demo.BaseActivity;
-import com.demo.DemoApp;
 import com.demo.R;
 import com.demo.carDetails.model.CarDetailRequest;
 import com.demo.databinding.ActivityHomeBinding;
 import com.demo.databinding.DialogHomeKnowMoreBinding;
 import com.demo.home.booking.BookingConfirmedFragment;
-import com.demo.home.booking.CancelDemoFragment;
+import com.demo.home.booking.BookingFeedbackFragment;
+import com.demo.home.booking.BookingStatusFragment;
 import com.demo.home.booking.DemoPlaceBookingFragment;
 import com.demo.home.booking.ScheduleBookingFragment;
+import com.demo.home.booking.model.DirectionsGeocodeResponse;
 import com.demo.home.booking.model.MapLocationResponseModel;
 import com.demo.home.meeting.MeetingPlaceFragment;
 import com.demo.home.meeting.VirtualMeetFragment;
@@ -48,6 +53,7 @@ import com.demo.home.profile.MyDemoActivity;
 import com.demo.home.profile.MyProfileActivity;
 import com.demo.utils.Constants;
 import com.demo.utils.LocationUtils;
+import com.demo.utils.Permissionsutils;
 import com.demo.utils.PrintLog;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
@@ -74,10 +80,12 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     private int height;
     private ViewTreeObserver.OnGlobalLayoutListener globalListener = null;
     public String specialistId="0";
+    private String currentLocation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
         userId = sharedPrefUtils.getStringData(Constants.USER_ID);
@@ -100,6 +108,11 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        params.height = (int) (displayMetrics.heightPixels/3.2);
+        mapFragment.getView().setLayoutParams(params);
         locationUtils = new LocationUtils(this,mapFragment);
         setBottomMenuLabels(activityHomeBinding.llBottom);
         setMenuLabels(activityHomeBinding.leftMenu.menuRecyclerview);
@@ -109,6 +122,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         activityHomeBinding.layoutOptionsDemo.setHomeModel(homeModel);
         activityHomeBinding.executePendingBindings();
         setBottomSheetBehaviour();
+
 //        getWeatherData();
         locationUtils.getMutableLoc().observe(this,new Observer<Location>() {
             @Override
@@ -119,22 +133,64 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 Constants.LATITUDE = changedValue.getLatitude()+"";
                 Constants.LONGITUDE = changedValue.getLongitude()+"";
                 getWeatherData();
+
+
             }
         });
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if(Permissionsutils.CheckForLocationPermission(this) && !Permissionsutils.checkForNotificationPermission(this))
+                Permissionsutils.askForNotificationPermission(this);
+        }
         if(getIntent().getExtras()!=null)
         {
             Utils.cancelJob(this);
             if(getIntent().getExtras().getString("notificationtype")!=null && getIntent().getExtras().getString("comeFrom")==null) {
+                PrintLog.v("comple1");
                 if (getIntent().getExtras().getString("notificationtype").equalsIgnoreCase("AcceptDemoRequest")) {
                     Constants.BOOKING_ID = getIntent().getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Demo";
+                    if(getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("schedule") ||
+                            getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("After30Min"))
+                    {
+                        showFragment(new BookingConfirmedFragment(true));
+                    }
                 } else if(getIntent().getExtras().getString("notificationtype").equalsIgnoreCase("AcceptMeetRequest")){
                     Constants.MEETING_ID = getIntent().getExtras().getString("demoid");
                     Constants.BOOK_TYPE = "Meeting";
+                    if(getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("schedule") ||
+                            getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("After30Min"))
+                    {
+                        showFragment(new BookingConfirmedFragment(true));
+                    }
+                }
+
+                if(getIntent().getExtras().getString("message")!=null && (getIntent().getExtras().getString("message").contains("completed") || getIntent().getExtras().getString("message").contains("Completed") )){
+                    PrintLog.v("comple");
+                    showFragment(new BookingFeedbackFragment(sharedPrefUtils.getStringData(Constants.SNAME),getIntent().getExtras().getString("customerid")));
+                }
+                else if(getIntent().getExtras().getString("message")!=null && (getIntent().getExtras().getString("message").contains("rejected") || getIntent().getExtras().getString("message").contains("Rejected") )){
+                    if(getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("schedule") ||
+                            getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("After30Min"))
+                        showFragment(new BookingStatusFragment(getIntent().getExtras().getString("demoid"),getIntent().getExtras().getString("bookingtype")));
+                    else
+                        showFragment(new BookingConfirmedFragment());
                 }
                 if(sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null"))
                     showFragment(new BookingConfirmedFragment());
+            }
+            else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("LocalNotification")){
+                sharedPrefUtils.saveData(Constants.BOOK_TYPE_S,getIntent().getExtras().getString("demoType"));
+                sharedPrefUtils.saveData(Constants.BOOKING_ONGOING,getIntent().getExtras().getString("bookingId"));
+                Constants.BOOK_TYPE=getIntent().getExtras().getString("demoType");
+                Constants.BOOKING_ID=getIntent().getExtras().getString("bookingId");
+                Constants.MEETING_ID=getIntent().getExtras().getString("bookingId");
+                showFragment(new BookingConfirmedFragment(false));
+            }
+            else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("LocalNotification15")){
+                Constants.BOOK_TYPE=getIntent().getExtras().getString("demoType");
+                Constants.BOOKING_ID=getIntent().getExtras().getString("bookingId");
+                Constants.MEETING_ID=getIntent().getExtras().getString("bookingId");
+                showFragment(new BookingConfirmedFragment(true));
             }
             else if(getIntent().getExtras().getString("comeFrom").equalsIgnoreCase("notifications")){
                 showFragment(new BookingConfirmedFragment(true));
@@ -179,6 +235,8 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
     }
 
+
+
     private void getWeatherData() {
 
 
@@ -191,6 +249,8 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             homeModel.setTemp_c(item.current.temp_c+"°");
             homeModel.setDayOfWeek(Utils.getDayOfWeek());
             activityHomeBinding.setHomeModel(homeModel);
+           /* if(currentLocation==null)
+            callGeoCodeApi();*/
 
         });
     }
@@ -254,6 +314,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                         showFragment(new MeetingPlaceFragment());
                     }
 
+
                 }
                 else if(newState==STATE_COLLAPSED){
                     if(locationUtils!=null)
@@ -296,6 +357,9 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                     else if(fragment.toString().contains("DemoPlaceBookingFragment") ||fragment.toString().contains("MeetingPlaceFragment")  ){
                         HomeActivity.super.onBackPressed();
 
+                    }
+                    else if(fragment.toString().contains("CancelDemoFragment")){
+                        activityHomeBinding.bookingOngoing.performClick();
                     }
                 }
 
@@ -516,12 +580,17 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         if(requestCode==100){
             ((VirtualMeetFragment)this.fragment).onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
-        else if (requestCode==Constants.DL){
+        /*else if (requestCode==Constants.DL){
             ((BookingConfirmedFragment)fragment).onRequestPermissionsResult(requestCode,permissions,grantResults);
 
+        }*/
+        else if(requestCode==1) {
+            locationUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if(!Permissionsutils.checkForNotificationPermission(this))
+                    Permissionsutils.askForNotificationPermission(this);
+            }
         }
-        else
-            locationUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
 
 
     }
@@ -534,9 +603,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         {
             locationUtils.onActivityResult(requestCode,resultCode,data);
         }
-        else if(requestCode==Constants.DL){
+
+       /* else if(requestCode==Constants.DL){
             ((BookingConfirmedFragment)fragment).onActivityResult(requestCode,resultCode,data);
-        }
+        }*/
 
     }
 
@@ -610,7 +680,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
         searchResultViewModel.getSearchResultLiveData().observe(this, item -> {
             searchResultInterface.onSearch(item);
+            if(takeAdemoFragment==null)
+                takeAdemoFragment = new TakeADemoFragment(specialistId);
             takeAdemoFragment.getFragment().updateCarList(item);
+
 
         });
     }
@@ -629,6 +702,12 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             MapLocationResponseModel mapLocationResponseModel = (MapLocationResponseModel) response;
             locationUtils.setLocationOnMap(mapLocationResponseModel.getMaplocationlist());
         }
+     /*   else if(reqCode==2){
+            DirectionsGeocodeResponse directionsGeocodeResponse = (DirectionsGeocodeResponse) response;
+             currentLocation = directionsGeocodeResponse.getResults().get(0).getFormatted_address();
+            if(sharedPrefUtils.getStringData(Constants.ADDRESS).trim().length()==0 || sharedPrefUtils.getStringData(Constants.ADDRESS).equalsIgnoreCase("ADDRESS"))
+            sharedPrefUtils.saveData(Constants.ADDRESS,currentLocation);
+        }*/
 
     }
 

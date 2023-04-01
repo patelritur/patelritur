@@ -233,6 +233,17 @@ public class DemoTripResponseModel {
         public String demoStatus;
         @SerializedName("DemoType")
         public String demoType;
+
+        public String getBookingType() {
+            return BookingType;
+        }
+
+        public void setBookingType(String bookingType) {
+            BookingType = bookingType;
+        }
+
+        @SerializedName("BookingType")
+        public String BookingType;
     }
     
 }

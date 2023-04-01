@@ -246,6 +246,7 @@
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="gone"
             android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_30"
             android:layout_width="match_parent"
@@ -289,6 +290,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:visibility="gone"
             android:inputType="number"
             android:id="@+id/dl_number"
             android:layout_width="match_parent"

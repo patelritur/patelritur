@@ -322,11 +322,13 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:text="@{carDetailModel.cardetail.carAwardBannerTitle}"
                     android:textAllCaps="true"
+                    tools:text="Top Awards"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/color_241e61" />
 
 
                 <HorizontalScrollView
+                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_10"
@@ -337,9 +339,7 @@
                         android:id="@+id/horizontal_scrollview_award"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_marginStart="@dimen/margin_20"
-                        android:gravity="center"
                         android:orientation="horizontal"
 
                         />

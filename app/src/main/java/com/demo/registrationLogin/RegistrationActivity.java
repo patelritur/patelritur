@@ -134,7 +134,7 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
             activityRegistrationBinding.edittextEmail.requestFocus();
             return false;
         }
-        else if(registrationRequestModel.getPin() == null || registrationRequestModel.getPin().trim().length()==0)
+       /* else if(registrationRequestModel.getPin() == null || registrationRequestModel.getPin().trim().length()==0)
         {
             activityRegistrationBinding.inputlayoutPin.setError(getString(R.string.validation_enter_pin));
 
@@ -149,7 +149,7 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
             return false;
 //            activityRegistrationBinding.textinputLayoutPin.setError(getString(R.string.validation_enter_pin));
         }
-
+*/
         else if(!registrationRequestModel.isTnCAccepted())
         {
             DialogUtils.showAlertInfo(context,"Please accept DDEMO Terms & Conditions to continue using the app");
@@ -226,7 +226,6 @@ public class RegistrationActivity  extends BaseActivity implements ApiResponseLi
                 sharedPrefUtils.saveData( Constants.USER_ID, registrationResponse.getUserID());
                 sharedPrefUtils.saveData( Constants.FNAME, registrationRequestModel.getFirstName());
                 sharedPrefUtils.saveData( Constants.LNAME, registrationRequestModel.getLastName());
-
                 sharedPrefUtils.saveData( Constants.EMAIL, registrationRequestModel.getEmail());
                 sharedPrefUtils.saveData(Constants.ISVACCINATED,"N");
 

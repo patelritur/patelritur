@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="imageUrl"
@@ -8,21 +9,31 @@
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="@dimen/margin_20">
+      >
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:visibility="gone"
             android:textColor="@color/color_241e61"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/margin_10"
+            tools:visibility="visible"
+            tools:text ="dfjdgfd"
             android:id="@+id/award_year"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:maxHeight="200dp"
+            android:maxWidth="200dp"
+            android:padding="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:detailImage="@{imageUrl}"
@@ -30,5 +41,6 @@
             >
         </androidx.appcompat.widget.AppCompatImageView>
 
+    </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

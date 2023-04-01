@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +40,7 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentCancelDemoBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_cancel_demo,container,false);
         callGetReasonApi();
+
         fragmentCancelDemoBinding.textviewCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +50,8 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
                     Utils.showToast(getActivity(),"Please select one valid reason to cancel");
             }
         });
+        fragmentCancelDemoBinding.backIcon.setOnClickListener(v -> ((HomeActivity)getActivity()).hideBottomSheet());
+
 
         return fragmentCancelDemoBinding.getRoot();
 
@@ -91,14 +92,20 @@ public class CancelDemoFragment extends Fragment implements ApiResponseListener 
     @Override
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         BookingResponseModel registrationResponse = (BookingResponseModel) response;
-        if(registrationResponse.getResponseCode().equalsIgnoreCase("106")){
+        if(registrationResponse.getResponseCode().equalsIgnoreCase("106") || registrationResponse.getResponseCode().equalsIgnoreCase("204")) {
             new SharedPrefUtils(getActivity()).saveData(Constants.BOOKING_ONGOING,"null");
+            new SharedPrefUtils(getActivity()).saveData(Constants.BOOK_TYPE_S,"null");
+            new SharedPrefUtils(getActivity()).saveData(Constants.TIMER,"null");
+            new SharedPrefUtils(getActivity()).saveData(Constants.OTP_SHOW, false);
             Utils.showToast(getActivity(),registrationResponse.getDescriptions());
             getActivity().startActivity(new Intent(getActivity(), HomeActivity.class));
             getActivity().finish();
         }
-        else if(registrationResponse.getResponseCode().equalsIgnoreCase("200")|| registrationResponse.getResponseCode().equalsIgnoreCase("201")){
+        else if(registrationResponse.getResponseCode().equalsIgnoreCase("200")||
+        registrationResponse.getResponseCode().equalsIgnoreCase("201")){
             new SharedPrefUtils(getActivity()).saveData(Constants.BOOKING_ONGOING,"null");
+            new SharedPrefUtils(getActivity()).saveData(Constants.BOOK_TYPE_S,"null");
+            new SharedPrefUtils(getActivity()).saveData(Constants.OTP_SHOW, false);
             ((HomeActivity)getActivity()).showFragment(new BookingStatusFragment(true,registrationResponse));
 
 

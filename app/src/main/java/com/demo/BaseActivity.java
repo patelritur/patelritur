@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.demo.databinding.BottomMenuBinding;
+import com.demo.home.HomeActivity;
 import com.demo.home.HomeMenuAdapter;
 import com.demo.home.model.AppContentModel;
 import com.demo.home.model.HomeModel;
@@ -45,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         sharedPrefUtils = new SharedPrefUtils(this);
         homeModel = new HomeModel(this);
         homeModel.setfName(sharedPrefUtils.getStringData(Constants.FNAME));
@@ -131,4 +134,5 @@ public abstract class BaseActivity extends AppCompatActivity implements ClickHan
             homeModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
         }
     }
+
 }

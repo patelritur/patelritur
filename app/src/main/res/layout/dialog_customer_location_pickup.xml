@@ -98,6 +98,8 @@
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/customer_location"
+                        android:editable="false"
+                        android:enabled="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

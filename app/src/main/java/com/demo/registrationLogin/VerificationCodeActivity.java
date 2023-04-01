@@ -6,13 +6,11 @@ import static com.demo.utils.Constants.USER_TYPE;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -40,7 +38,6 @@ import com.demo.webservice.RestClient;
 
 import java.util.Objects;
 
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 import retrofit2.Call;
 
 public class VerificationCodeActivity extends BaseActivity implements ApiResponseListener {
@@ -56,7 +53,10 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
     private  SharedPrefUtils sharedPrefUtils;
     private boolean isPinForgot;
     private CountDownTimer countDownTimer;
+    private int isOTPResent=0;
+    private boolean isShowPIN=true;
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,16 +77,16 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                 sendOTP(SEND_OTP);
             else
             {
-                if(mobileNumber==null || mobileNumber.toString().trim().length()==0)
-                mobileNumber = sharedPrefUtils.getStringData(context,Constants.MOBILE_NO);
-                enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
+
+              //  sendOTP(SEND_OTP);
+            //    enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
             }
         }
-        else
+      /*  else
         {
             mobileNumber = sharedPrefUtils.getStringData(context,Constants.MOBILE_NO);
             enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
-        }
+        }*/
 
     }
 
@@ -111,17 +111,38 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         enterVerificationCodeBinding.enterPassword.setVisibility(View.GONE);
         enterVerificationCodeBinding.inputlayoutPassword.setVisibility(View.GONE);
         enterVerificationCodeBinding.didntReceiveOtp.setVisibility(View.VISIBLE);
+        enterVerificationCodeBinding.commanHeaderLayout.tootlipImageview.setVisibility(View.GONE);
         headerModel.setTitle(getString(R.string.enter_verification_code));
         headerModel.setButtonText(getString(R.string.verify_proceed));
         headerModel.setBottomText(getString(R.string.resend_otp));
         return headerModel;
     }
 
-    private HeaderModel getHeaderModelforPINVerificationActivity() {
+   /* private HeaderModel getHeaderModelforPINVerificationActivity() {
         isShowEnterPIN = true;
         enterVerificationCodeBinding.rootOtpLayout.setVisibility(View.GONE);
         enterVerificationCodeBinding.timerOtp.setVisibility(View.GONE);
         enterVerificationCodeBinding.enterPassword.setVisibility(View.VISIBLE);
+        enterVerificationCodeBinding.enterPassword.setDrawableClickListener(new onDrawableClickListener() {
+
+
+            @Override
+            public void onClick(@NonNull DrawablePosition drawablePosition) {
+                if(drawablePosition==DrawablePosition.RIGHT) {
+                    if (isShowPIN) {
+                        isShowPIN = false;
+                        enterVerificationCodeBinding.enterPassword.setTransformationMethod(null);
+                        enterVerificationCodeBinding.enterPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_off_24, 0);
+                    }
+                    else{
+                        isShowPIN = true;
+                        enterVerificationCodeBinding.enterPassword.setTransformationMethod(new PasswordTransformationMethod());
+                        enterVerificationCodeBinding.enterPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_outline_visibility_24, 0);
+
+                    }
+                }
+            }
+        });
         enterVerificationCodeBinding.inputlayoutPassword.setVisibility(View.VISIBLE);
         HeaderModel headerModel = new HeaderModel();
         headerModel.setSecondImage(R.drawable.ic_verification);
@@ -163,12 +184,15 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
             }
         });
         return headerModel;
-    }
+    }*/
 
 
 
     public void resendOtp(View view){
         if(!isShowEnterPIN){
+            isOTPResent=0;
+            enterVerificationCodeBinding.incorrectOtp.setVisibility(View.GONE);
+            if (countDownTimer!=null)
             countDownTimer.cancel();
             sendOTP(SEND_OTP);
         } else {
@@ -188,7 +212,8 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
 
             enterVerificationCodeBinding.inputlayoutPassword.setError(null);
 
-            if (!isShowEnterPIN) {
+//            if (moduleName.equalsIgnoreCase(MODULE_TYPE_REGISTER))
+            {
                 if (isOTPEntered()) {
                     if(countDownTimer!=null)
                         countDownTimer.cancel();
@@ -204,19 +229,6 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
 
                     Call objectCall = RestClient.getApiService().otpValidation(commanRequestModel);
                     RestClient.makeApiRequest(this, objectCall, this, OTP_VALIDATION, true);
-                }
-            } else {
-                if(enterVerificationCodeBinding.enterPassword.getText().toString().trim().length()>0) {
-                    commanRequestModel.setMobile(mobileNumber);
-                    commanRequestModel.setUserType(Constants.USER_TYPE);
-                    commanRequestModel.setPin(enterVerificationCodeBinding.enterPassword.getText().toString());
-                    commanRequestModel.setMobileIdentity(Utils.getDeviceUniqueID(this));
-
-                    Call objectCall = RestClient.getApiService().userloginbypin(commanRequestModel);
-                    RestClient.makeApiRequest(this, objectCall, this, PIN_VALIDATION, true);
-                }
-                else{
-                    enterVerificationCodeBinding.inputlayoutPassword.setError(getString(R.string.validation_enter_pin));
                 }
             }
 
@@ -308,8 +320,24 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                 }
                 else {
                     if (moduleName.equalsIgnoreCase(Constants.MODULE_TYPE_LOGIN)) {
-                        clearAll4Field();
-                        enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
+//                        clearAll4Field();
+//                        enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
+                        if(mobileNumber==null || mobileNumber.trim().length()==0)
+                            mobileNumber = sharedPrefUtils.getStringData(context,Constants.MOBILE_NO);
+                        final StringBuilder builder = new StringBuilder();
+                        builder.append(enterVerificationCodeBinding.otpEditBox1.getText().toString().trim());
+                        builder.append(enterVerificationCodeBinding.otpEditBox2.getText().toString().trim());
+                        builder.append(enterVerificationCodeBinding.otpEditBox3.getText().toString().trim());
+                        builder.append(enterVerificationCodeBinding.otpEditBox4.getText().toString().trim());
+                        builder.trimToSize();
+                        commanRequestModel.setOTP(builder.toString());
+                        commanRequestModel.setMobile(mobileNumber);
+                        commanRequestModel.setUserType(Constants.USER_TYPE);
+                        commanRequestModel.setPin("0000");
+                        commanRequestModel.setMobileIdentity(Utils.getDeviceUniqueID(this));
+
+                        Call objectCall = RestClient.getApiService().userloginbypin(commanRequestModel);
+                        RestClient.makeApiRequest(this, objectCall, this, PIN_VALIDATION, true);
 
                     } else {
 
@@ -319,8 +347,9 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
             } else if (loginResponseModel.getResponseCode().equalsIgnoreCase("300")) {
                 Utils.showToast(context, loginResponseModel.getDescriptions());
                 clearAll4Field();
-                enterVerificationCodeBinding.didntReceiveOtp.setVisibility(View.GONE);
-                enterVerificationCodeBinding.getHeadermodel().setBottomText(getString(R.string.otp_entered_is_incorrect));
+                enterVerificationCodeBinding.incorrectOtp.setVisibility(View.VISIBLE);
+                enterVerificationCodeBinding.didntReceiveOtp.setVisibility(View.VISIBLE);
+                enterVerificationCodeBinding.getHeadermodel().setBottomText(getString(R.string.resend_otp));
                 enterVerificationCodeBinding.setHeadermodel(enterVerificationCodeBinding.getHeadermodel());
             }
         }
@@ -356,7 +385,6 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                 sharedPrefUtils.saveData(Constants.ADDRESS,pinResponseModel.getUsersInfo().getAddress());
                 sharedPrefUtils.saveData(Constants.IsDLUploadStatus,pinResponseModel.getUsersInfo().getIsDLUploadStatus());
 
-                NotificationUtils.setUpFCMNotifiction(this,pinResponseModel.getUsersInfo().getUserID()+"","Add");
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -372,7 +400,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         else if(reqCode==SEND_OTP)
         {
             OtpResponseModel otpResponseModel = (OtpResponseModel) response;
-            startOTPTimer();
+             startOTPTimer();
             if(otpResponseModel.getResponseCode().equalsIgnoreCase("103"))
                 Utils.showToast(context,otpResponseModel.getDescriptions());
 
@@ -381,6 +409,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
     }
 
     private void startOTPTimer() {
+        isOTPResent++;
         countDownTimer =    new CountDownTimer(150000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -392,7 +421,8 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
 
             public void onFinish() {
                 enterVerificationCodeBinding.timerOtp.setText("OTP Expired!");
-                sendOTP(SEND_OTP);
+                if(isOTPResent<3)
+                 sendOTP(SEND_OTP);
             }
 
         }.start();
@@ -404,6 +434,8 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
             @Override
             public void onSuccess(User user) {
                 Log.e("TAG", "Login Successful : " + user.toString());
+                NotificationUtils.setUpFCMNotifiction(VerificationCodeActivity.this,user.getUid()+"","Add");
+
                 //    MyFirebaseMessagingService.subscribeUserNotification(user.getUid());
             }
 

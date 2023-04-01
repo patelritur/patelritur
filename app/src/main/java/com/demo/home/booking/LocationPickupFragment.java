@@ -1,13 +1,17 @@
 package com.demo.home.booking;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +33,8 @@ import com.demo.utils.Constants;
 import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
+import com.google.android.libraries.places.api.model.Place;
+import com.rtchagas.pingplacepicker.PingPlacePicker;
 
 import retrofit2.Call;
 
@@ -50,6 +56,12 @@ public class LocationPickupFragment extends Fragment implements ApiResponseListe
             public void onClick(View v) {
                 ((HomeActivity)getActivity()).hideBottomSheet();
 
+            }
+        });
+        dialogCustomerLocationPickupBinding.customerLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPlacePicker();
             }
         });
         return dialogCustomerLocationPickupBinding.getRoot();
@@ -100,4 +112,33 @@ public class LocationPickupFragment extends Fragment implements ApiResponseListe
     public void onApiError(Call<Object> call, Object response, int reqCode) throws Exception {
 
     }
+
+    private void showPlacePicker() {
+        PingPlacePicker.IntentBuilder builder = new PingPlacePicker.IntentBuilder();
+        builder.setAndroidApiKey("AIzaSyCUFs0ot4kLDWcYm6ZdoR9Ydgthtk-5Imw")
+                .setMapsApiKey("AIzaSyCUFs0ot4kLDWcYm6ZdoR9Ydgthtk-5Imw");
+
+        // If you want to set a initial location rather then the current device location.
+        // NOTE: enable_nearby_search MUST be true.
+        // builder.setLatLng(new LatLng(37.4219999, -122.0862462))
+
+        try {
+            Intent placeIntent = builder.build(getActivity());
+            startActivityForResult(placeIntent, 1);
+        }
+        catch (Exception ex) {
+            // Google Play services is not available...
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 1) && (resultCode == RESULT_OK)) {
+            Place place = PingPlacePicker.getPlace(data);
+            if (place != null) {
+                Toast.makeText(getActivity(), "You selected the place: " + place.getName(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

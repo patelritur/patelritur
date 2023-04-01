@@ -1,5 +1,6 @@
 package com.demo.utils;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
@@ -33,8 +35,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -45,11 +49,12 @@ public class LocationUtils implements OnMapReadyCallback {
     private final LocationManager locationManager;
     private final LocationListener locationListener;
     private GoogleMap map;
-    private static final int DEFAULT_ZOOM = 20;
+    private static final int DEFAULT_ZOOM = 18;
     private Context context;
     private boolean locationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private MarkerOptions currentMarker;
+    private Marker currentMarker;
+    private MarkerOptions markerOptions;
 
 
     public Location getLoc() {
@@ -64,8 +69,7 @@ public class LocationUtils implements OnMapReadyCallback {
     private MutableLiveData<Location> loc = new MutableLiveData<>();
 
 
-    public LocationUtils(Context context, SupportMapFragment mapFragment)
-    {
+    public LocationUtils(Context context, SupportMapFragment mapFragment) {
         mapFragment.getMapAsync(this);
         this.context = context;
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -80,8 +84,15 @@ public class LocationUtils implements OnMapReadyCallback {
                 loc.setValue(location);
                 Constants.LATITUDE = String.valueOf(location.getLatitude());
                 Constants.LONGITUDE = String.valueOf(location.getLongitude());
-                currentMarker = (new MarkerOptions().position(new LatLng(loc.getValue().getLatitude(),loc.getValue().getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.customer)));
-
+                if (currentMarker == null) {
+                    markerOptions = (new MarkerOptions().position(new LatLng(loc.getValue().getLatitude(), loc.getValue().getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.customer)));
+                    currentMarker = map.addMarker(markerOptions);
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(location.getLatitude(),
+                                    location.getLongitude()), DEFAULT_ZOOM));
+                } else
+                    currentMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                updateCameraBearing(map, location.getBearing());
 
 
             }
@@ -103,11 +114,12 @@ public class LocationUtils implements OnMapReadyCallback {
         };
 
     }
+
     private boolean isLocationEnabled(Context context) {
         int locationMode = 0;
         String locationProviders;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
 
@@ -118,7 +130,7 @@ public class LocationUtils implements OnMapReadyCallback {
 
             return locationMode != Settings.Secure.LOCATION_MODE_OFF;
 
-        }else{
+        } else {
             locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
             return !TextUtils.isEmpty(locationProviders);
         }
@@ -126,6 +138,20 @@ public class LocationUtils implements OnMapReadyCallback {
 
     }
 
+    private void updateCameraBearing(GoogleMap map, float bearing) {
+        if (map == null) return;
+        CameraPosition camPos = CameraPosition
+                .builder(map.getCameraPosition())// current Camera)
+                .bearing(bearing)
+                .target(new LatLng(loc.getValue().getLatitude(), loc.getValue().getLongitude()))
+                .zoom(18f)
+                .build();
+        PrintLog.v("bear==" + bearing);
+      /*  map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(loc.getLatitude(),
+                        loc.getLongitude()), DEFAULT_ZOOM));*/
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(camPos));
+    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -145,8 +171,18 @@ public class LocationUtils implements OnMapReadyCallback {
          */
         if (Permissionsutils.CheckForLocationPermission(context)) {
             locationPermissionGranted = true;
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,locationListener);
-            if(isLocationEnabled(context))
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+            if (isLocationEnabled(context))
                 getDeviceLocation();
             else
                 askForLocation();
@@ -154,6 +190,7 @@ public class LocationUtils implements OnMapReadyCallback {
             Permissionsutils.askForLocationPermission(context);
         }
     }
+
     private void askForLocation() {
         new GPSUtils(context).turnGPSOn(new GPSUtils.onGpsListener() {
             @Override
@@ -167,9 +204,9 @@ public class LocationUtils implements OnMapReadyCallback {
 
         try {
             if (locationPermissionGranted) {
-                if(map==null)
+                if (map == null)
                     return;
-                map.setMyLocationEnabled(true);
+                map.setMyLocationEnabled(false);
 
                 UiSettings uiSettings = map.getUiSettings();
                 uiSettings.setZoomGesturesEnabled(true);
@@ -182,25 +219,30 @@ public class LocationUtils implements OnMapReadyCallback {
                     if (lastKnownLocationGPS != null) {
                         loc.setValue(lastKnownLocationGPS);
                     } else {
-                        Location loc =  locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                        Location loc = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
                         this.loc.setValue(loc);
                     }
-                    if(loc.getValue()==null)
+                    if (loc.getValue() == null)
                         return;
                     Constants.LATITUDE = String.valueOf(loc.getValue().getLatitude());
                     Constants.LONGITUDE = String.valueOf(loc.getValue().getLongitude());
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             new LatLng(this.loc.getValue().getLatitude(),
                                     this.loc.getValue().getLongitude()), DEFAULT_ZOOM));
-                    currentMarker = (new MarkerOptions().position(new LatLng(loc.getValue().getLatitude(),loc.getValue().getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.customer)));
+                    if (currentMarker == null) {
+                        markerOptions = (new MarkerOptions().position(new LatLng(loc.getValue().getLatitude(), loc.getValue().getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.customer)));
+                        currentMarker = map.addMarker(markerOptions);
+                    } else
+                        currentMarker.setPosition(new LatLng(loc.getValue().getLatitude(), loc.getValue().getLongitude()));
 
-                    map.addMarker(currentMarker);
+
                 }
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }
+
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -212,7 +254,17 @@ public class LocationUtils implements OnMapReadyCallback {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationPermissionGranted = true;
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,locationListener);
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
                     if(isLocationEnabled(context))
                         getDeviceLocation();
                     else
@@ -232,7 +284,7 @@ public class LocationUtils implements OnMapReadyCallback {
         PrintLog.v("setLocationOnMap==="+mapLocationResponseModel.size());
         map.clear();
          LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        map.addMarker(currentMarker);
+       currentMarker= map.addMarker(markerOptions);
         builder.include(currentMarker.getPosition());
         for(int i=0;i<mapLocationResponseModel.size();i++) {
 
@@ -279,7 +331,7 @@ public class LocationUtils implements OnMapReadyCallback {
     public void setLocationOnMapForDealer(List<BookingResponseModel.Locationlist> maplocationlist) {
         map.clear();
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        map.addMarker(currentMarker);
+       currentMarker= map.addMarker(markerOptions);
         builder.include(currentMarker.getPosition());
         PrintLog.v("setLocationOnMapForDealer"+maplocationlist.size());
         for(int i=0;i<maplocationlist.size();i++) {
@@ -319,8 +371,8 @@ public class LocationUtils implements OnMapReadyCallback {
     public void clearmap() {
         if(map!=null)
             map.clear();
-        if(currentMarker!=null)
-            map.addMarker(currentMarker);
+        if(markerOptions!=null)
+            map.addMarker(markerOptions);
     }
 
 
@@ -328,23 +380,28 @@ public class LocationUtils implements OnMapReadyCallback {
 
 
 
-    public void addPolyLine(PolylineOptions rectLine, DirectionResults.Location startLocation, DirectionResults.Location endLocation, String demoType) {
+    public void addPolyLine(PolylineOptions rectLine, DirectionResults.Location endLocation, String demoType, String durationInMin) {
         PrintLog.v("add");
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         map.clear();
-        map.addMarker(currentMarker);
+      currentMarker=  map.addMarker(markerOptions);
+        map.addPolyline(rectLine);
         builder.include(currentMarker.getPosition());
         MarkerOptions marker;
         if(demoType.equalsIgnoreCase("At Home")){
              marker = (new MarkerOptions().position(new LatLng(endLocation.getLat(),endLocation.getLng())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.car)));
-
+            map.addMarker(marker);
+            builder.include(marker.getPosition());
+            zoomMapTocontainsAll(builder);
         }
-        else
-         marker = (new MarkerOptions().position(new LatLng(endLocation.getLat(),endLocation.getLng())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.dealership)));
-        map.addMarker(marker);
+        else {
+            marker = (new MarkerOptions().position(new LatLng(endLocation.getLat(), endLocation.getLng())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.dealership)).title("Dealership").snippet(durationInMin));
+            map.addMarker(marker);
+        }
+      /*  map.addMarker(marker);
         builder.include(marker.getPosition());
-        zoomMapTocontainsAll(builder);
-        map.addPolyline(rectLine);
+        zoomMapTocontainsAll(builder);*/
+
 
     }
 }

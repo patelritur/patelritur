@@ -62,7 +62,7 @@ public class BookingFeedbackFragment extends Fragment implements ApiResponseList
         fragmentFeedbackBinding.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(reviewRequestModel.getReviewDesc()!=null && reviewRequestModel.getReviewDesc().trim().length()>0 && reviewRequestModel.getReviewRating()!=0) {
+                if(/*reviewRequestModel.getReviewDesc()!=null && reviewRequestModel.getReviewDesc().trim().length()>0 &&*/ reviewRequestModel.getReviewRating()!=0) {
                     if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
                         Call objectCall = RestClient.getApiService().insertDemoBookingReview(reviewRequestModel);
                         RestClient.makeApiRequest(getActivity(), objectCall, context, 1, true);
@@ -73,7 +73,7 @@ public class BookingFeedbackFragment extends Fragment implements ApiResponseList
                     }
                 }
                 else {
-                    Utils.showToast(getActivity(),"Please provide both Ratings & Review");
+                    Utils.showToast(getActivity(),"Please provide Ratings");
                 }
 
             }

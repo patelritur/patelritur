@@ -9,16 +9,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.Call;
 import com.cometchat.pro.core.CallSettings;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.AudioMode;
 import com.cometchat.pro.models.User;
+import com.demo.BaseActivity;
 import com.demo.R;
+import com.demo.utils.CometChatCallActivity;
 import com.demo.utils.comectChat.UIKitConstants;
 import com.demo.utils.comectChat.call_manager.ongoing_call.OngoingCallService;
 import com.demo.utils.comectChat.utils.CometChatError;
@@ -35,9 +34,10 @@ import java.util.List;
  * Modified On -  07th October 2020
  *
  */
-public class CometChatStartCallActivity extends AppCompatActivity {
+public class CometChatStartCallActivity extends BaseActivity {
 
     public static CometChatStartCallActivity activity;
+    public boolean callended;
 
     private RelativeLayout mainView;
 
@@ -60,7 +60,6 @@ public class CometChatStartCallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activity = this;
         setContentView(R.layout.activity_cometchat_start_call);
-
         ongoingCallService = new OngoingCallService();
         mServiceIntent = new Intent(this,ongoingCallService.getClass());
         isDefaultCall = getIntent().getBooleanExtra(UIKitConstants.IntentStrings.IS_DEFAULT_CALL,false);
@@ -91,6 +90,26 @@ public class CometChatStartCallActivity extends AppCompatActivity {
             @Override
             public void onAudioModesUpdated(List<AudioMode> list) {
                 Log.e("onAudioModesUpdated: ",list.toString() );
+            }
+
+            @Override
+            public void onRecordingStarted(User user) {
+
+            }
+
+            @Override
+            public void onRecordingStopped(User user) {
+
+            }
+
+            @Override
+            public void onUserMuted(User user, User user1) {
+
+            }
+
+            @Override
+            public void onCallSwitchedToVideo(String s, User user, User user1) {
+
             }
 
             @Override
@@ -129,6 +148,8 @@ public class CometChatStartCallActivity extends AppCompatActivity {
             public void onCallEnded(Call call) {
                 stopService(mServiceIntent);
                 Log.e("TAG", "onCallEnded: ");
+                callended=true;
+                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -164,5 +185,10 @@ public class CometChatStartCallActivity extends AppCompatActivity {
                         mainView, CometChatError.localized(e), 1000);
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

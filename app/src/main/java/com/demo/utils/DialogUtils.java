@@ -98,7 +98,7 @@ public class DialogUtils {
 
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setMessage(body).setCancelable(false).setPositiveButton("Ok", okListener);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,0).setMessage(body).setCancelable(false).setPositiveButton("Ok", okListener);
 
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);

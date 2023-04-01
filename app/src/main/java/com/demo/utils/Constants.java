@@ -33,10 +33,10 @@ public class Constants {
     public static final String RECENT_SEARCH = "RECENT_SEARCH";
     public static final String ISVACCINATED= "ISVACCINATED";
 
-    public static final long  WAIT_MINUTE=120000L;
-    public static final String  appID = "21953650e4eaed92"; // Replace with your App ID
+    public static final long  WAIT_MINUTE=30000L;
+    public static final String  appID = "234362a22101d109"; // Replace with your App ID
     public static final String region = "us"; // Replace with your App Region ("eu" or "us")
-    public static final String AUTH_KEY = "adb6edb242c38eab6fb0b1b5086354257eba716c";
+    public static final String AUTH_KEY = "13e86b6267ea030d7fc4c68407dbbbd43a9facb3";
     public static final String  APP_START = "AppStartInfo";
     public static final String BANNER = "ProductListBanner";
     public static final String MAIN_MENU = "MainMenu";
@@ -51,8 +51,10 @@ public class Constants {
 
     public static final String  MYDEMO_DESCRIPTIONS = "DriveaDemoDesc";
     public static final String  SPECIALIST_DESCRIPTIONS ="MeetaSpecialistDesc";
-    public static final String LEFT_HOME = "left_home";
+    public static final String OTP_SHOW = "otp_show";
     public static final int DL = 200;
+    public static final String SNAME = "Specilaist_name";
+    public static final String TIMER = "15minutestimer";
 
     public static String LATITUDE;
     public static String LONGITUDE ;
