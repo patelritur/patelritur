@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -83,6 +84,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -182,6 +184,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         }
         statusRequestModel.setUserID(userId);
         Call objectCall;
+        if(Constants.BOOK_TYPE==null)
+            Constants.BOOK_TYPE=sharedPrefUtils.getStringData(Constants.BOOK_TYPE_S);
         if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
             statusRequestModel.setBookingID(Constants.BOOKING_ID);
             objectCall = RestClient.getApiService().getBookingDetails(statusRequestModel);
@@ -435,7 +439,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                         dialogRecordBinding.statusRecord.setText("Done");
                         recorderUtils.stopRecording();
                         isRecording = false;
-                        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+                        String mFileName = getActivity().getExternalFilesDir(null).getAbsolutePath();;
                         mFileName += "/AudioRecording.mp3";
 
                         uploadFileToServer(new File(mFileName));
@@ -470,7 +474,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                         dialogRecordBinding.statusRecord.setText("Recording");
                         recorderUtils = new RecorderUtils();
                         isRecording = true;
-                        recorderUtils.startRecording();
+                        recorderUtils.startRecording(getActivity());
                         if(countuptimer!=null)
                         {
                             countuptimer.cancel();
@@ -754,6 +758,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                             }
                         /*sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
                         fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
+                            ((HomeActivity) requireActivity()).locationUtils.removePolyLine();
                             endTask();
                             break;
                         case "7":
@@ -762,10 +767,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                             fragmentBookingBookedBinding.bookDemo.setVisibility(View.VISIBLE);
                             fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);
                             fragmentBookingBookedBinding.joinCall.setVisibility(View.GONE);
-                            if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
+                            ((HomeActivity)getActivity()).showFragment(new BookingStatusFragment(bookingAcceptModel.bookingID,Constants.BOOK_TYPE));
+
+                           /* if (Constants.BOOK_TYPE.equalsIgnoreCase("Demo"))
                                 fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.takedemos));
                             else
-                                fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.book_a_meeting));
+                                fragmentBookingBookedBinding.bookDemo.setText(getString(R.string.book_a_meeting));*/
 
                             break;
                         case "9":
@@ -800,7 +807,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     }
 
                     //  ((HomeActivity) getActivity()).locationUtils.drawOnMap(bookingAcceptModel.bookingdetails.getSpecialistLatitude(), bookingAcceptModel.bookingdetails.getSpecialistLongitude());
-                    ((HomeActivity) getActivity()).setPeekheight(fragmentBookingBookedBinding.parentLl.getMeasuredHeight());
+                    ((HomeActivity) getActivity()).setPeekheightBookingConfirmed();
                 }
             }
         }
@@ -846,7 +853,9 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                             start15minutesTimer();
                             PrintLog.v("Timmer===startloop");
                         }*/
-                        fragmentBookingBookedBinding.distanceText.setText("(" + routeA.getLegs().get(0).getDuration().getText() + ")");
+                        fragmentBookingBookedBinding.distanceText.setText("(" +"Reached"+ ")");
+
+//                        fragmentBookingBookedBinding.distanceText.setText("(" + routeA.getLegs().get(0).getDuration().getText() + ")");
                     }
                     durationInMin=routeA.getLegs().get(0).getDuration().getText();
                     if (fragmentBookingBookedBinding.address.getText().toString().trim().length() == 0)
@@ -883,6 +892,9 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             if(reqCode==GET_ROUTE && bookingAcceptModel.getBookingdetails().getDemoType().equalsIgnoreCase("At Home")) {
                 if (destinationTime == 0)
                     destinationTime = Utils.getNextTime(Math.toIntExact(duration));
+                PrintLog.v("===diff==="+(Utils.getNextTime(Math.round(duration)) - destinationTime));
+                PrintLog.v("=====duration="+(Utils.getNextTime(Math.round(duration))) );
+                PrintLog.v("===destinationTime===="+ destinationTime);
                 if (distance <= 200) {
                     fragmentBookingBookedBinding.status.setText("Arrived");
                    /* sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
@@ -979,7 +991,6 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(bookingDateTime);
         calendar.add(Calendar.MINUTE,-15);
-        PrintLog.v("tvs vs tvs =====15 min"+calendar.getTime().getTime());
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTime().getTime(), pendingIntent);
     }
 
@@ -1009,7 +1020,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     if (timer != null)
                         timer.schedule(hourlyTask, 0, Constants.WAIT_MINUTE);
                 }
-            }, 0);
+            },  Constants.WAIT_MINUTE);
         }
     }
 
@@ -1054,13 +1065,17 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             case 1:
                 if (grantResults.length > 0) {
                     boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean permissionToStore;
+                    if(Build.VERSION.SDK_INT<Build.VERSION_CODES.R)
+                         permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    else
+                         permissionToStore=true;
                     if (permissionToRecord && permissionToStore) {
                         dialogRecordBinding.recordIv.setImageResource(R.mipmap.record_pause);
                         dialogRecordBinding.statusRecord.setText("Recording");
                         recorderUtils=   new RecorderUtils();
                         isRecording = true;
-                        recorderUtils.startRecording();
+                        recorderUtils.startRecording(getActivity());
                     }
                 }
                 break;

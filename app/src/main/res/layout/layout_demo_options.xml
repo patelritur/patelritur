@@ -8,16 +8,12 @@
             type="com.demo.home.model.HomeModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/ll_options"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
-
+        android:id="@+id/ll_options"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
@@ -173,5 +169,4 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.core.widget.NestedScrollView>
 </layout>

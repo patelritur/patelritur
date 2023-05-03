@@ -2,6 +2,7 @@ package com.demo.utils;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -40,6 +41,7 @@ public class NotificationUtils
                         RestClient.makeApiRequest(context, objectCall, new ApiResponseListener() {
                             @Override
                             public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
+                                Utils.showToast(context,"Notification Token Added");
                                 CometChat.registerTokenForPushNotification(token, new CometChat.CallbackListener<String>() {
                                     @Override
                                     public void onSuccess(String s) {

@@ -4,6 +4,7 @@ import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -21,7 +22,7 @@ public class RecorderUtils
      mRecorder.stop();
 
  }
-    public void startRecording() {
+    public void startRecording(Context context) {
         // check permission method is used to check
         // that the user has granted permission
         // to record nd store the audio.
@@ -31,8 +32,8 @@ public class RecorderUtils
 
             // we are here initializing our filename variable
             // with the path of the recorded audio file.
-           String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mFileName += "/AudioRecording.mp3";
+           String mFileName = context.getExternalFilesDir(null).getAbsolutePath();;
+           mFileName += "/AudioRecording.mp3";
 
             // below method is used to initialize
             // the media recorder clss

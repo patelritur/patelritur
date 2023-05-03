@@ -60,6 +60,19 @@
                     android:letterSpacing="0.01"
                     android:text="@{demoTrips.demoDate}"
                     tools:text="Jan 21, 2021"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textStyle="normal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/color_241e61"
+                        android:letterSpacing="0.01"
+                        android:visibility='@{demoTrips.demoStatus.equalsIgnoreCase("Upcoming")?View.VISIBLE:View.GONE}'
+                        android:text="@{demoTrips.demoTime}"
+                        tools:text="Jan 21, 2021"/>
 
                 <TextView
                     android:layout_width="match_parent"

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -82,11 +83,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         if(sharedPrefUtils.getStringData(Constants.IMAGE)!=null){
             profileModel.setImage(sharedPrefUtils.getStringData(Constants.IMAGE));
         }
-        if(sharedPrefUtils.getStringData(Constants.IMAGE_FILE)!=null && !sharedPrefUtils.getStringData(Constants.IMAGE_FILE).equalsIgnoreCase("IMAGE_FILE")) {
-            File file = new File(sharedPrefUtils.getStringData(Constants.IMAGE_FILE));
-            Uri imageUri = Uri.fromFile(file);
-            showImage(imageUri);
-        }
+
         fragmentCustomerProfileBinding.setProfile(profileModel);
         if(sharedPrefUtils.getStringData(Constants.IsDLUploadStatus)!=null && sharedPrefUtils.getStringData(Constants.IsDLUploadStatus).equalsIgnoreCase("Y"))
             fragmentCustomerProfileBinding.downloadDl.setVisibility(View.VISIBLE);
@@ -153,16 +150,28 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
                             if (!Permissionsutils.checkForCameraPermission(MyProfileActivity.this)) {
                                 Permissionsutils.askForCameraPermission(MyProfileActivity.this,PICK_IMAGE_CAMERA);
                             } else {
-                                pickCameraImage();
+                                if(!Permissionsutils.checkForReadPermission(MyProfileActivity.this)) {
+                                    Permissionsutils.askForReadStoragePermission(MyProfileActivity.this, PICK_IMAGE_CAMERA);
+                                }
+                                else
+                                    pickCameraImage();
                             }
                         } else if (options[item].equals("Choose From Gallery")) {
                             dialog.dismiss();
-
-                            if (!Permissionsutils.checkForStoragePermission(MyProfileActivity.this)) {
-                                Permissionsutils.askForStoragePermission(MyProfileActivity.this,PICK_IMAGE_GALLERY);
-                            } else {
-                                pickImage();
+                            //pickImage();
+                            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.R) {
+                                if (!Permissionsutils.checkForStoragePermission(MyProfileActivity.this)) {
+                                    Permissionsutils.askForStoragePermission(MyProfileActivity.this,PICK_IMAGE_GALLERY);
+                                } else {
+                                    pickImage();
+                                }
                             }
+                            else
+                            if(!Permissionsutils.checkForReadPermission(MyProfileActivity.this)) {
+                                Permissionsutils.askForReadStoragePermission(MyProfileActivity.this, PICK_IMAGE_GALLERY);
+                            }
+                            else
+                                pickImage();
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
                         }
@@ -235,9 +244,12 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_GALLERY);
+        Intent i = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(i, PICK_IMAGE_GALLERY);
+
     }
 
 
@@ -260,7 +272,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     private void pickCameraImage() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        //  if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+        {
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -359,7 +372,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             }
             try {
                 Uri uri = data.getData();
-                 fullFilePath = UriUtils.getPathFromUri(this,uri);
+                fullFilePath = UriUtils.getPathFromUri(this,uri);
 
                 File destination = new File(fullFilePath);
                 if(destination.exists())
@@ -394,7 +407,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             //resume tasks needing this permission
             if(requestCode==PICK_IMAGE_GALLERY)
-                 pickImage();
+                pickImage();
             else if(requestCode==PICK_IMAGE_CAMERA)
                 pickCameraImage();
           /*  else if(requestCode==Constants.DL)
@@ -407,7 +420,7 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void downloadDL() {
-        File file = new File(Environment.getExternalStorageDirectory() + "/DEMO/" + dlDocument.substring(dlDocument.lastIndexOf(".")));
+        File file = new File(this.getExternalFilesDir(null).getAbsolutePath() + "/DEMO/" + dlDocument.substring(dlDocument.lastIndexOf(".")));
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(dlDocument))
                 .setTitle("Driving License")
@@ -468,15 +481,15 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
         }
         else if(reqCode==DRIVING_LICENSE_DATA){
             DrivingLicenseDataResponse drivingLicenseDataResponse = (DrivingLicenseDataResponse) response;
-             dlDocument = drivingLicenseDataResponse.getDLDocument();
+            dlDocument = drivingLicenseDataResponse.getDLDocument();
             if(drivingLicenseDataResponse.getDLNumber().trim().length()>0) {
                 fragmentCustomerProfileBinding.dlNumber.setVisibility(View.VISIBLE);
                 fragmentCustomerProfileBinding.dlNumber.setText("Driving License Number: "+drivingLicenseDataResponse.getDLNumber());
             }
             if(drivingLicenseDataResponse.getResponseCode().equalsIgnoreCase("200")){
                 if(Permissionsutils.checkForStoragePermission(this)) {
-                   downloadDL();
-                     }
+                    downloadDL();
+                }
                 else
                     Permissionsutils.askForStoragePermission(this,10);
             }

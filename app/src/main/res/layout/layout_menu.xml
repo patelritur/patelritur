@@ -28,7 +28,7 @@
             android:layout_height="60dp"
             android:layout_marginEnd="@dimen/margin_10"
             android:src="@drawable/profimg"
-            app:roundProfileOptionsImage="@{homeModel.image}" />
+            app:roundMenueOptionsImage="@{homeModel.image}" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"

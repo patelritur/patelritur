@@ -17,6 +17,7 @@ import com.demo.carDetails.model.CarDetailRequest;
 import com.demo.databinding.FragmentScheduleDateBinding;
 import com.demo.databinding.ItemPersonalisedCarOptionsBinding;
 import com.demo.home.HomeActivity;
+import com.demo.home.booking.datePicker.DatePickerListener;
 import com.demo.home.booking.datePicker.Time;
 import com.demo.home.booking.model.LaterOptionModel;
 import com.demo.utils.Constants;
@@ -27,7 +28,6 @@ import com.demo.webservice.RestClient;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,18 +61,18 @@ public class ScheduleLaterFragment extends Fragment implements ApiResponseListen
         fragmentScheduleDateBinding.textviewSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm a");
                 try {
-                    Date date =  simpleDateFormat.parse(Constants.DATE+" "+Constants.TIME);
+                    ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
+                   /* Date date =  simpleDateFormat.parse(Constants.DATE+" "+Constants.TIME);
                     if(date.compareTo( Calendar.getInstance().getTime())>0){
 
                         ((HomeActivity) getActivity()).showFragment(new BookingStatusFragment(false));
                     }
                     else
                     {
-                        Utils.showToast(getActivity(),"Please select valid date");
-                    }
-                } catch (ParseException e) {
+                        Utils.showToast(getActivity(),"Please select valid timeslot");
+                    }*/
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -133,17 +133,26 @@ public class ScheduleLaterFragment extends Fragment implements ApiResponseListen
            getDate(bookDate);
            fragmentScheduleDateBinding.horizontalDatepicker.init(Integer.parseInt(laterOptionModel.getLaterbookingoption().getNoDaysForBooking()),new DateTime().parse(bookDate,DateTimeFormat.forPattern("dd/MM/yyyy hh:mm:ss a")));
            fragmentScheduleDateBinding.horizontalDatepicker.setDate(new DateTime().parse(bookDate, DateTimeFormat.forPattern("dd/MM/yyyy hh:mm:ss a")));
+           setTimeSlot(laterOptionModel,new DateTime().parse(bookDate, DateTimeFormat.forPattern("dd/MM/yyyy hh:mm:ss a")));
        } else {
            getDate();
            fragmentScheduleDateBinding.horizontalDatepicker.init(Integer.parseInt(laterOptionModel.getLaterbookingoption().getNoDaysForBooking()),new DateTime());
            fragmentScheduleDateBinding.horizontalDatepicker.setDate(new DateTime());
+           setTimeSlot(laterOptionModel,new DateTime());
        }
-        setTimeSlot(laterOptionModel);
+        fragmentScheduleDateBinding.horizontalDatepicker.setListener(new DatePickerListener() {
+            @Override
+            public void onDateSelected(DateTime dateSelected) {
+                setTimeSlot(laterOptionModel,dateSelected);
+            }
+        });
+
     }
 
 
-    private void setTimeSlot(LaterOptionModel laterOptionModel) {
-        ArrayList<String> timeSlotList = new Time().getNextTime(laterOptionModel.getLaterbookingoption().getBookingStartTime(),laterOptionModel.getLaterbookingoption().getBookingEndTime());
+    private void setTimeSlot(LaterOptionModel laterOptionModel, DateTime dateSelected) {
+        fragmentScheduleDateBinding.llTimeSlot.removeAllViews();
+        ArrayList<String> timeSlotList = new Time().getNextTime(dateSelected,laterOptionModel.getLaterbookingoption().getBookingStartTime(),laterOptionModel.getLaterbookingoption().getBookingEndTime());
         PrintLog.v("",""+timeSlotList.toString());
         final int[] previousI = {-1};
         for( int i = 0; i<timeSlotList.size()-1; i++)

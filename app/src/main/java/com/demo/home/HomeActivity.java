@@ -1,6 +1,7 @@
 package com.demo.home;
 
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.demo.BaseActivity;
 import com.demo.R;
 import com.demo.carDetails.model.CarDetailRequest;
@@ -38,7 +43,6 @@ import com.demo.home.booking.BookingFeedbackFragment;
 import com.demo.home.booking.BookingStatusFragment;
 import com.demo.home.booking.DemoPlaceBookingFragment;
 import com.demo.home.booking.ScheduleBookingFragment;
-import com.demo.home.booking.model.DirectionsGeocodeResponse;
 import com.demo.home.booking.model.MapLocationResponseModel;
 import com.demo.home.meeting.MeetingPlaceFragment;
 import com.demo.home.meeting.VirtualMeetFragment;
@@ -67,7 +71,7 @@ import retrofit2.Call;
 
 public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiResponseListener {
     private ActivityHomeBinding activityHomeBinding;
-    private BottomSheetBehavior<View> behavior,behavior1;
+    private BottomSheetBehavior<View> behavior,behavior1,behavior2;
     public LocationUtils locationUtils;
     protected ArrayList<String> budgetSelectedId = new ArrayList<>();
     protected ArrayList<String> brandSelectedId = new ArrayList<>();
@@ -77,10 +81,13 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     private TakeADemoFragment takeAdemoFragment;
     public String userId;
     private Fragment fragment;
-    private int height;
+    private int height,deviceHeight;
     private ViewTreeObserver.OnGlobalLayoutListener globalListener = null;
     public String specialistId="0";
-    private String currentLocation;
+    private SupportMapFragment mapFragment;
+    private DisplayMetrics displayMetrics;
+    private ViewGroup.LayoutParams params;
+    private int expandedHeight;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,13 +113,13 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
 
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+         params = mapFragment.getView().getLayoutParams();
+         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        params.height = (int) (displayMetrics.heightPixels/3.2);
-        mapFragment.getView().setLayoutParams(params);
+        deviceHeight = displayMetrics.heightPixels;
+
         locationUtils = new LocationUtils(this,mapFragment);
         setBottomMenuLabels(activityHomeBinding.llBottom);
         setMenuLabels(activityHomeBinding.leftMenu.menuRecyclerview);
@@ -122,7 +129,12 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         activityHomeBinding.layoutOptionsDemo.setHomeModel(homeModel);
         activityHomeBinding.executePendingBindings();
         setBottomSheetBehaviour();
-
+        if (CometChat.getLoggedInUser()==null) {
+            User user = new User();
+            user.setUid(userId);
+            user.setName(sharedPrefUtils.getStringData(Constants.FNAME));
+            login(user);
+        }
 //        getWeatherData();
         locationUtils.getMutableLoc().observe(this,new Observer<Location>() {
             @Override
@@ -141,6 +153,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             if(Permissionsutils.CheckForLocationPermission(this) && !Permissionsutils.checkForNotificationPermission(this))
                 Permissionsutils.askForNotificationPermission(this);
         }
+
         if(getIntent().getExtras()!=null)
         {
             Utils.cancelJob(this);
@@ -152,7 +165,8 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                     if(getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("schedule") ||
                             getIntent().getExtras().getString("bookingtype").equalsIgnoreCase("After30Min"))
                     {
-                        showFragment(new BookingConfirmedFragment(true));
+                        startActivity(new Intent(this, MyDemoActivity.class));
+//                        showFragment(new BookingConfirmedFragment(true));
                     }
                 } else if(getIntent().getExtras().getString("notificationtype").equalsIgnoreCase("AcceptMeetRequest")){
                     Constants.MEETING_ID = getIntent().getExtras().getString("demoid");
@@ -235,6 +249,22 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
     }
 
+    private void login(User user) {
+        CometChat.login(user.getUid(), Constants.AUTH_KEY, new CometChat.CallbackListener<User>() {
+
+            @Override
+            public void onSuccess(User user) {
+                Log.e("TAG", "Login Successful : " + user.toString());
+
+                //    MyFirebaseMessagingService.subscribeUserNotification(user.getUid());
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.e("TAG", "Login failed with exception: " + e.getMessage());
+            }
+        });
+    }
 
 
     private void getWeatherData() {
@@ -271,15 +301,28 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     }
 
     public void setBottomSheetBehaviour() {
-        ViewTreeObserver viewTreeObserver = activityHomeBinding.layoutOptionsDemo.llOptions.getViewTreeObserver();
+        ViewTreeObserver viewTreeObserver = activityHomeBinding.llBottom.getRoot().getViewTreeObserver();
         behavior = BottomSheetBehavior.from(activityHomeBinding.fragmentContainerView);
+        behavior2 = BottomSheetBehavior.from(activityHomeBinding.llContainerName);
+        behavior2.setDraggable(true);
         behavior1 = BottomSheetBehavior.from(activityHomeBinding.scheduleFragmentContainerView);
+
         globalListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+
+
             @Override
             public void onGlobalLayout() {
-                height = activityHomeBinding.layoutOptionsDemo.llOptions.getMeasuredHeight() + activityHomeBinding.llName.getRoot().getMeasuredHeight();
-                behavior.setPeekHeight(height);
-                activityHomeBinding.fragmentContainerView.setMinimumHeight(height);
+
+                height = activityHomeBinding.coordinatorName.getMeasuredHeight();
+                int peekHeight=deviceHeight/4;
+                int maxheight= Math.min((deviceHeight / 2), activityHomeBinding.coordinatorName.getHeight());
+                behavior2.setPeekHeight(peekHeight);
+                behavior2.setMaxHeight(maxheight);
+                behavior.setPeekHeight(peekHeight);
+                behavior.setMaxHeight(deviceHeight / 2);
+                behavior1.setPeekHeight(peekHeight);
+                behavior1.setMaxHeight(deviceHeight / 2);
+                expandedHeight = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-40-behavior2.getMaxHeight();
 
 
 
@@ -287,50 +330,25 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         };
         //  behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         viewTreeObserver.addOnGlobalLayoutListener(globalListener);
-        behavior1.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState==STATE_HIDDEN){
-                    if(sharedPrefUtils!=null && sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
-                        activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
-                    }
-                    else
-                        activityHomeBinding.bookingOngoing.setVisibility(View.GONE);
-                    if(locationUtils!=null)
-                        locationUtils.clearmap();
-                    if(fragment.toString().contains("ScheduleBookingFragment")){
-                        PrintLog.v("hidden");
-                        if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
-
-                            showFragment(new DemoPlaceBookingFragment());
-                        }
-
-                        else
-                            showFragment(new MeetingPlaceFragment());
-                    }
-
-                    else if(fragment.toString().contains("VirtualMeetFragment")){
-                        PrintLog.v("hidden");
-                        showFragment(new MeetingPlaceFragment());
-                    }
-
-
-                }
-                else if(newState==STATE_COLLAPSED){
-                    if(locationUtils!=null)
-                        locationUtils.clearmap();
-                }
+            public void run() {
+                behavior2.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
+        },200);
 
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
+//        params.height = expandedHeight;
+//        mapFragment.getView().setLayoutParams(params);
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if(newState==STATE_HIDDEN){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            behavior2.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        }
+                    },200);
                     if(sharedPrefUtils!=null && sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
                         activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
                     }
@@ -361,6 +379,19 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                     else if(fragment.toString().contains("CancelDemoFragment")){
                         activityHomeBinding.bookingOngoing.performClick();
                     }
+
+                }
+                else if(newState==STATE_COLLAPSED){
+//                    params.height = (int) (displayMetrics.heightPixels/2+100);
+                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-behavior.getPeekHeight();
+                    mapFragment.getView().setLayoutParams(params);
+//                    behavior.setPeekHeight(300);
+                }
+                else if(newState==STATE_EXPANDED){
+                    behavior.setPeekHeight(Math.min(activityHomeBinding.fragmentContainerView.getHeight(),behavior.getPeekHeight()));
+                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-activityHomeBinding.fragmentContainerView.getHeight()-40;
+                    mapFragment.getView().setLayoutParams(params);
+//                    behavior.setPeekHeight(displayMetrics.heightPixels/2);
                 }
 
 
@@ -376,6 +407,74 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 }
             }
         });
+        behavior1.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState==STATE_HIDDEN){
+                    if(sharedPrefUtils!=null && sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING)!=null && !sharedPrefUtils.getStringData(Constants.BOOKING_ONGOING).equalsIgnoreCase("null")) {
+                        activityHomeBinding.bookingOngoing.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        activityHomeBinding.bookingOngoing.setVisibility(View.GONE);
+                    if(locationUtils!=null)
+                        locationUtils.clearmap();
+                    if(fragment.toString().contains("ScheduleBookingFragment")){
+                        PrintLog.v("hidden");
+                        if(Constants.BOOK_TYPE.equalsIgnoreCase("Demo")) {
+
+                            showFragment(new DemoPlaceBookingFragment());
+                        }
+
+                        else
+                            showFragment(new MeetingPlaceFragment());
+                    }
+
+                    else if(fragment.toString().contains("VirtualMeetFragment")){
+                        PrintLog.v("hidden");
+                        showFragment(new MeetingPlaceFragment());
+                    }
+
+
+                }
+                else if(newState==STATE_COLLAPSED){
+                    params.height = (int) (displayMetrics.heightPixels/2);
+                    mapFragment.getView().setLayoutParams(params);
+//                    behavior.setPeekHeight(300);
+                }
+                else if(newState==STATE_EXPANDED){
+                    params.height = (int) (displayMetrics.heightPixels/3);
+                    mapFragment.getView().setLayoutParams(params);
+//                    behavior.setPeekHeight(displayMetrics.heightPixels/2);
+                }
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+        behavior2.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState==STATE_COLLAPSED || newState==STATE_HIDDEN){
+                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-40-behavior2.getPeekHeight();
+                    mapFragment.getView().setLayoutParams(params);
+//                    behavior.setPeekHeight(300);
+                }
+                else if(newState==STATE_EXPANDED){
+                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-40-activityHomeBinding.coordinatorName.getHeight();
+                    mapFragment.getView().setLayoutParams(params);
+//                    behavior.setPeekHeight(displayMetrics.heightPixels/2);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
 
     }
 
@@ -506,7 +605,9 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
     public void showScheduleFragment(Fragment fragment) {
         behavior.setState(STATE_HIDDEN);
-        behavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        behavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
+        behavior2.setState(STATE_COLLAPSED);
+
 
         activityHomeBinding.coordinatorSchedule.setBackgroundColor(Color.parseColor("#D9000000"));
 
@@ -528,7 +629,9 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     public void showFragment(Fragment fragment) {
 //        behavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
         activityHomeBinding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(globalListener);
-        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+
+
         activityHomeBinding.coordinatorSchedule.setBackgroundColor(Color.TRANSPARENT);
         activityHomeBinding.coordinatorSchedule.setVisibility(View.GONE);
         activityHomeBinding.scheduleFragmentContainerView.setVisibility(View.GONE);
@@ -544,17 +647,21 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         activityHomeBinding.coordinator11.setVisibility(View.VISIBLE);
         activityHomeBinding.fragmentContainerView.removeAllViews();
         slideUp(activityHomeBinding.coordinator11);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        },500);
 
-
+        behavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        behavior1.setState(STATE_COLLAPSED);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_view, fragment)
                 .commit();
-        behavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        activityHomeBinding.fragmentContainerView.setMinimumHeight(height+100);
-        behavior.setPeekHeight(height+100);
-        PrintLog.v("=="+height);
-        PrintLog.v("===EE"+fragment,"EEE"+activityHomeBinding.fragmentContainerView.getMeasuredHeight());
+        //activityHomeBinding.fragmentContainerView.setMinimumHeight(height/3);
+        //behavior.setPeekHeight(height/3);
     }
 
     public void slideUp(View view){
@@ -562,7 +669,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
-                view.getHeight(),  // fromYDelta
+               100,  // fromYDelta
                 0);                // toYDelta
         animate.setDuration(500);
         animate.setFillAfter(true);
@@ -691,7 +798,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     public void showSelectFilerCars() {
         takeAdemoFragment = new TakeADemoFragment(specialistId);
         showFragment(takeAdemoFragment);
-        behavior.setState(STATE_EXPANDED);
+       // behavior.setState(STATE_EXPANDED);
 
     }
 
@@ -717,16 +824,23 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     }
 
     public void setBehavior(boolean draggable) {
-        behavior.setDraggable(draggable);
+        behavior.setHideable(draggable);
     }
 
     public void setPeekheight(int measuredHeight) {
-        PrintLog.v(measuredHeight+"=== "+height);
+       /* PrintLog.v(measuredHeight+"=== "+height);
         if(measuredHeight!=0 && measuredHeight>height)
             behavior.setPeekHeight(measuredHeight+100);
         else
-            behavior.setPeekHeight(height+100);
-        activityHomeBinding.fragmentContainerView.setMinimumHeight(behavior.getPeekHeight());
+            behavior.setPeekHeight(height+100);*/
+
+//        behavior.setPeekHeight(activityHomeBinding.layoutOptionsDemo.llOptions.getMeasuredHeight());
+//        activityHomeBinding.fragmentContainerView.setMinimumHeight(behavior.getPeekHeight());
+    }
+
+    public void setPeekheightBookingConfirmed() {
+//            behavior.setPeekHeight(activityHomeBinding.layoutOptionsDemo.llOptions.getMeasuredHeight());
+//        activityHomeBinding.fragmentContainerView.setMinimumHeight(behavior.getPeekHeight());
     }
 
     public void hideBottomSheet() {

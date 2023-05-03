@@ -31,8 +31,6 @@ import com.demo.utils.Utils;
 import com.demo.webservice.ApiResponseListener;
 import com.demo.webservice.RestClient;
 
-import java.util.Objects;
-
 import retrofit2.Call;
 
 public class BookingStatusFragment  extends Fragment implements  ApiResponseListener
@@ -153,8 +151,8 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
     public void onApiResponse(Call<Object> call, Object response, int reqCode) throws Exception {
         if(reqCode==DETAIL_API) {
             extracted((BookingResponseModel) response);
-            ((HomeActivity)getActivity()).setBehavior(false);
-            ((HomeActivity) getActivity()).setPeekheight(layoutStatusDemoBookingBinding.parentLl.getMeasuredHeight());
+//            ((HomeActivity)getActivity()).setBehavior(false);
+//            ((HomeActivity) getActivity()).setPeekheight(layoutStatusDemoBookingBinding.parentLl.getMeasuredHeight());
         }
         else if(reqCode==STATUS_API)
         {
@@ -291,7 +289,7 @@ public class BookingStatusFragment  extends Fragment implements  ApiResponseList
             @Override
             public void run() {
                 ((HomeActivity)getActivity()).setBehavior(false);
-                ((HomeActivity) getActivity()).setPeekheight(layoutStatusDemoBookingBinding.parentLl.getMeasuredHeight());
+//                ((HomeActivity) getActivity()).setPeekheight(layoutStatusDemoBookingBinding.parentLl.getMeasuredHeight());
 
             }
         },500);

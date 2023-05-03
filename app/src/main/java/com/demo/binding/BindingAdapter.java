@@ -48,9 +48,33 @@ public class BindingAdapter {
                 .into(view);
     }
 
+    @androidx.databinding.BindingAdapter("app:roundMenueOptionsImage")
+    public static void loadMenuRoundedImage(AppCompatImageView view, String imageUrl) {
+        if (imageUrl == null)
+            return;
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.user_default);
+        requestOptions.circleCrop();
+        if (imageUrl.contains("http")) {
+            Glide.with(view.getContext())
+                    .load(imageUrl)
+                    .apply(requestOptions)
+                    .into(view);
+        } else {
+            File file = new File(imageUrl);
+            Uri imageUri = Uri.fromFile(file);
+            Glide.with(view.getContext())
+                    .load(imageUri)
+                    .apply(requestOptions)
+                    .into(view);
+        }
+    }
+
+
 
     @androidx.databinding.BindingAdapter("app:roundProfileOptionsImage")
     public static void loadProfileRoundedImage(AppCompatImageView view, String imageUrl) {
+        PrintLog.v("url==="+imageUrl);
         if(imageUrl==null)
             return;
         RequestOptions requestOptions = new RequestOptions();
@@ -70,8 +94,6 @@ public class BindingAdapter {
                     .apply(requestOptions)
                     .into(view);
         }
-
-
 
 
     }
@@ -94,7 +116,7 @@ public class BindingAdapter {
     @androidx.databinding.BindingAdapter("app:carRating")
     public static void carRating(RatingBar view, String rating) {
         if(rating!=null)
-      view.setRating(Float.parseFloat(rating));
+            view.setRating(Float.parseFloat(rating));
     }
 
 

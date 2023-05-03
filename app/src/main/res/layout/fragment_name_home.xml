@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="homeModel"
+            type="com.demo.home.model.HomeModel" />
+    </data>
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/ll_name"
+        layout="@layout/name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map"
+        bind:homeModel="@{homeModel}" />
+
+
+    <include
+        android:id="@+id/layout_options_demo"
+        layout="@layout/layout_demo_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/booking_ongoing"
+        android:layout_below="@+id/name_layout"
+        android:background="@color/black"
+        bind:homeModel="@{homeModel}" />
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

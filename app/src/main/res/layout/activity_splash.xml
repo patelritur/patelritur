@@ -38,7 +38,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="31-03-23"
+        android:text="02-05-23"
         android:textColor="@color/white"
         android:gravity="bottom|center"/>
 </FrameLayout>

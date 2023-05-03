@@ -2,6 +2,9 @@ package com.demo.home.booking.datePicker;
 
 import com.demo.utils.PrintLog;
 
+import org.joda.time.DateTime;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,18 +52,35 @@ public class Time
         return  date;
     }
 
-    public ArrayList<String> getNextTime(String startTime, String endTime)
+    public ArrayList<String> getNextTime(DateTime dateSelected,String startTime, String endTime)
     {
        String nextTime = startTime;
 
-        timeSlotList.add(nextTime);
+        //timeSlotList.add(nextTime);
         try {
             do{
 
+
+                SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+                Date nexttime = parseFormat.parse(nextTime);
+                System.out.println(parseFormat.format(nexttime) + " = " + displayFormat.format(nexttime));
+                nexttime = displayFormat.parse(displayFormat.format(nexttime));
+
+             //   DateFormat dateFormat = new SimpleDateFormat("HH:mm a");
+             //   Date nexttime=dateFormat.parse(nextTime);
+//                PrintLog.v("nexttiem","ner"+nexttime);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dateSelected.toDate());
+                calendar.set(Calendar.HOUR_OF_DAY,nexttime.getHours());
+                calendar.set(Calendar.MINUTE,nexttime.getMinutes());
+                if(Calendar.getInstance().getTime().before(calendar.getTime())){
+                    timeSlotList.add(nextTime);
+                }
+
                 nextTime = getNextTime(nextTime);
-                timeSlotList.add(nextTime);
             }
-            while(getTime(endTime).getTime()>getTime(nextTime).getTime());
+            while(getTime(getNextTime(endTime)).getTime()>getTime(nextTime).getTime());
 
 
         } catch (Exception e) {

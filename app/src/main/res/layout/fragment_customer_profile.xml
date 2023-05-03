@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -8,10 +10,8 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="match_parent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -35,12 +35,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/profile_image"
-                android:src="@drawable/profimg"
-                app:roundProfileOptionsImage="@{profile.image}"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="110dp"
-                android:layout_height="110dp"/>
+                android:src="@drawable/profimg"
+                app:roundProfileOptionsImage="@{profile.image}" />
             <TextView
                 android:layout_toEndOf="@+id/profile_image"
                 android:layout_centerVertical="true"

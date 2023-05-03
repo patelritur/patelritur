@@ -64,6 +64,17 @@ public class DemoTripResponseModel {
         public String faceliftDesc;
         @SerializedName("DemoDate")
         public String demoDate;
+
+        public String getDemoTime() {
+            return DemoTime;
+        }
+
+        public void setDemoTime(String demoTime) {
+            DemoTime = demoTime;
+        }
+
+        @SerializedName("DemoTime")
+        public String DemoTime;
         @SerializedName("SpecialistName")
         public String specialistName;
         @SerializedName("SpecialistImage")

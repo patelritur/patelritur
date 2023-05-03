@@ -1,6 +1,7 @@
 package com.demo.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -55,6 +56,7 @@ public class LocationUtils implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Marker currentMarker;
     private MarkerOptions markerOptions;
+    private boolean isDealership;
 
 
     public Location getLoc() {
@@ -76,6 +78,7 @@ public class LocationUtils implements OnMapReadyCallback {
 
         //To get users permissions and updates about device movement
         locationListener = new LocationListener() {
+            @SuppressLint("SuspiciousIndentation")
             @Override
             public void onLocationChanged(Location location) {
             /*   map.moveCamera(CameraUpdateFactory.newLatLngZoom(
@@ -92,7 +95,8 @@ public class LocationUtils implements OnMapReadyCallback {
                                     location.getLongitude()), DEFAULT_ZOOM));
                 } else
                     currentMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-                updateCameraBearing(map, location.getBearing());
+                if(isDealership)
+                updateCameraBearing(map, location.getBearing(),location);
 
 
             }
@@ -138,12 +142,12 @@ public class LocationUtils implements OnMapReadyCallback {
 
     }
 
-    private void updateCameraBearing(GoogleMap map, float bearing) {
+    private void updateCameraBearing(GoogleMap map, float bearing, Location location) {
         if (map == null) return;
         CameraPosition camPos = CameraPosition
                 .builder(map.getCameraPosition())// current Camera)
                 .bearing(bearing)
-                .target(new LatLng(loc.getValue().getLatitude(), loc.getValue().getLongitude()))
+                .target(new LatLng(location.getLatitude(), location.getLongitude()))
                 .zoom(18f)
                 .build();
         PrintLog.v("bear==" + bearing);
@@ -206,7 +210,7 @@ public class LocationUtils implements OnMapReadyCallback {
             if (locationPermissionGranted) {
                 if (map == null)
                     return;
-                map.setMyLocationEnabled(false);
+                map.setMyLocationEnabled(true);
 
                 UiSettings uiSettings = map.getUiSettings();
                 uiSettings.setZoomGesturesEnabled(true);
@@ -378,25 +382,39 @@ public class LocationUtils implements OnMapReadyCallback {
 
 
 
+    public void removePolyLine(){
+        isDealership=false;
+        map.clear();
+        currentMarker=  map.addMarker(markerOptions);
+    }
 
 
+    @SuppressLint("SuspiciousIndentation")
     public void addPolyLine(PolylineOptions rectLine, DirectionResults.Location endLocation, String demoType, String durationInMin) {
         PrintLog.v("add");
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         map.clear();
       currentMarker=  map.addMarker(markerOptions);
         map.addPolyline(rectLine);
-        builder.include(currentMarker.getPosition());
+       //
         MarkerOptions marker;
         if(demoType.equalsIgnoreCase("At Home")){
+            isDealership=false;
              marker = (new MarkerOptions().position(new LatLng(endLocation.getLat(),endLocation.getLng())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.car)));
             map.addMarker(marker);
             builder.include(marker.getPosition());
-            zoomMapTocontainsAll(builder);
+//            zoomMapTocontainsAll(builder);
+            Location location=new Location("");
+            location.setLatitude(endLocation.getLat());
+            location.setLongitude(endLocation.getLng());
+            updateCameraBearing(map, location.getBearing(), location);
         }
         else {
+            isDealership=true;
+            currentMarker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.car));
             marker = (new MarkerOptions().position(new LatLng(endLocation.getLat(), endLocation.getLng())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.dealership)).title("Dealership").snippet(durationInMin));
             map.addMarker(marker);
+            builder.include(currentMarker.getPosition());
         }
       /*  map.addMarker(marker);
         builder.include(marker.getPosition());

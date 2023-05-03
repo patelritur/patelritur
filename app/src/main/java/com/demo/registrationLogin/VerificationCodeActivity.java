@@ -322,22 +322,22 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
                     if (moduleName.equalsIgnoreCase(Constants.MODULE_TYPE_LOGIN)) {
 //                        clearAll4Field();
 //                        enterVerificationCodeBinding.setHeadermodel(getHeaderModelforPINVerificationActivity());
-                        if(mobileNumber==null || mobileNumber.trim().length()==0)
-                            mobileNumber = sharedPrefUtils.getStringData(context,Constants.MOBILE_NO);
-                        final StringBuilder builder = new StringBuilder();
-                        builder.append(enterVerificationCodeBinding.otpEditBox1.getText().toString().trim());
-                        builder.append(enterVerificationCodeBinding.otpEditBox2.getText().toString().trim());
-                        builder.append(enterVerificationCodeBinding.otpEditBox3.getText().toString().trim());
-                        builder.append(enterVerificationCodeBinding.otpEditBox4.getText().toString().trim());
-                        builder.trimToSize();
-                        commanRequestModel.setOTP(builder.toString());
-                        commanRequestModel.setMobile(mobileNumber);
-                        commanRequestModel.setUserType(Constants.USER_TYPE);
-                        commanRequestModel.setPin("0000");
-                        commanRequestModel.setMobileIdentity(Utils.getDeviceUniqueID(this));
+                            if(mobileNumber==null || mobileNumber.trim().length()==0)
+                                mobileNumber = sharedPrefUtils.getStringData(context,Constants.MOBILE_NO);
+                            final StringBuilder builder = new StringBuilder();
+                            builder.append(enterVerificationCodeBinding.otpEditBox1.getText().toString().trim());
+                            builder.append(enterVerificationCodeBinding.otpEditBox2.getText().toString().trim());
+                            builder.append(enterVerificationCodeBinding.otpEditBox3.getText().toString().trim());
+                            builder.append(enterVerificationCodeBinding.otpEditBox4.getText().toString().trim());
+                            builder.trimToSize();
+                            commanRequestModel.setOTP(builder.toString());
+                            commanRequestModel.setMobile(mobileNumber);
+                            commanRequestModel.setUserType(Constants.USER_TYPE);
+                            commanRequestModel.setPin("0000");
+                            commanRequestModel.setMobileIdentity(Utils.getDeviceUniqueID(this));
 
-                        Call objectCall = RestClient.getApiService().userloginbypin(commanRequestModel);
-                        RestClient.makeApiRequest(this, objectCall, this, PIN_VALIDATION, true);
+                            Call objectCall = RestClient.getApiService().userloginbypin(commanRequestModel);
+                            RestClient.makeApiRequest(this, objectCall, this, PIN_VALIDATION, true);
 
                     } else {
 
@@ -356,6 +356,7 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
         else if(reqCode==PIN_VALIDATION){
             PINResponseModel pinResponseModel = (PINResponseModel) response;
             if (pinResponseModel.getResponseCode().equalsIgnoreCase("200")) {
+                NotificationUtils.setUpFCMNotifiction(VerificationCodeActivity.this,pinResponseModel.getUsersInfo().getUserID()+"","Add");
                 User user = new User();
                 user.setName(pinResponseModel.getUsersInfo().getFirstName());
                 user.setUid(pinResponseModel.getUsersInfo().getUserID()+"");
@@ -434,7 +435,6 @@ public class VerificationCodeActivity extends BaseActivity implements ApiRespons
             @Override
             public void onSuccess(User user) {
                 Log.e("TAG", "Login Successful : " + user.toString());
-                NotificationUtils.setUpFCMNotifiction(VerificationCodeActivity.this,user.getUid()+"","Add");
 
                 //    MyFirebaseMessagingService.subscribeUserNotification(user.getUid());
             }
