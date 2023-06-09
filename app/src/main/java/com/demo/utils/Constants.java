@@ -33,7 +33,7 @@ public class Constants {
     public static final String RECENT_SEARCH = "RECENT_SEARCH";
     public static final String ISVACCINATED= "ISVACCINATED";
 
-    public static final long  WAIT_MINUTE=30000L;
+    public static final long  WAIT_MINUTE=5000L;
     public static final String  appID = "234362a22101d109"; // Replace with your App ID
     public static final String region = "us"; // Replace with your App Region ("eu" or "us")
     public static final String AUTH_KEY = "13e86b6267ea030d7fc4c68407dbbbd43a9facb3";

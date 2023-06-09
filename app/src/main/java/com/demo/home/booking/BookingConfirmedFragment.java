@@ -116,8 +116,8 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private DialogReviewsBinding binding;
     private CarPorfomaInvoiceModel carPorfomaInvoiceModel;
     private static long destinationTime;
-    private Timer timer;
-    private TimerTask hourlyTask;
+    private Timer timer,timer2;
+    private TimerTask hourlyTask,hourlyTask2;
     private String specialistId;
     private String userId;
     private DialogRecordBinding dialogRecordBinding;
@@ -128,6 +128,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private String durationInMin;
     //    private DialogUploadDlBinding dialogUploadDlBinding;
     private CountDownTimer dlUploadcountDownTimer;
+    private String status;
 //    private Handler m15MinutesTimer,m5minutesTimer;
 
     public BookingConfirmedFragment(boolean fromNotification) {
@@ -230,7 +231,7 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
     private void calculateDistance(int getOnlyRoute, String specialistLatitude, String specialistLongitude) {
 
         Call objectCall = RestClient.getApiService().getRoute(((HomeActivity) getActivity()).locationUtils.getLoc().getLatitude() + "," + ((HomeActivity) getActivity()).locationUtils.getLoc().getLongitude(), specialistLatitude + "," + specialistLongitude);
-        RestClient.makeApiRequest(getActivity(), objectCall, this, getOnlyRoute, true);
+        RestClient.makeApiRequest(getActivity(), objectCall, this, getOnlyRoute, false);
 
 
     }
@@ -658,6 +659,12 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
             timer.cancel();
         timer = null;
 
+        if (hourlyTask2 != null)
+            hourlyTask2.cancel();
+        if (timer2 != null)
+            timer2.cancel();
+        timer2 = null;
+
     }
 
 
@@ -899,16 +906,19 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                     fragmentBookingBookedBinding.status.setText("Arrived");
                    /* sharedPrefUtils.saveData(Constants.LEFT_HOME,true);
                     fragmentBookingBookedBinding.tvLeftHome.setVisibility(View.GONE);*/
-                    updateStatusApi("10");
+//                    updateStatusApi("10");
+                    status="10";
 
                 } else if (distance <= 1000) {
                     fragmentBookingBookedBinding.status.setText("Arriving Soon");
-                    updateStatusApi("9");
+//                    updateStatusApi("9");
+                    status="9";
                 } else if ((Utils.getNextTime(Math.round(duration)) - destinationTime) < 60000)
                     fragmentBookingBookedBinding.status.setText("On Time");
                 else {
                     fragmentBookingBookedBinding.status.setText("Delayed");
-                    updateStatusApi("13");
+//                    updateStatusApi("13");
+                    status="13";
                 }
             }
         }
@@ -1022,6 +1032,23 @@ public class BookingConfirmedFragment extends Fragment implements ApiResponseLis
                 }
             },  Constants.WAIT_MINUTE);
         }
+        if(hourlyTask2==null){
+            setTaskForStatusUpdate();
+            timer2=new Timer();
+            if(timer2!=null){
+                timer2.schedule(hourlyTask2,30000,30000);
+            }
+        }
+    }
+
+    private void setTaskForStatusUpdate() {
+        hourlyTask2=new TimerTask() {
+            @Override
+            public void run() {
+                updateStatusApi(status);
+            }
+        };
+
     }
 
 

@@ -50,14 +50,15 @@ public class LocationUtils implements OnMapReadyCallback {
     private final LocationManager locationManager;
     private final LocationListener locationListener;
     private GoogleMap map;
-    private static final int DEFAULT_ZOOM = 18;
+    private  Float DEFAULT_ZOOM = 15f;
     private Context context;
     private boolean locationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Marker currentMarker;
     private MarkerOptions markerOptions;
     private boolean isDealership;
-
+    private LatLngBounds.Builder builder;
+    private int count=0;
 
     public Location getLoc() {
         return loc.getValue();
@@ -148,7 +149,7 @@ public class LocationUtils implements OnMapReadyCallback {
                 .builder(map.getCameraPosition())// current Camera)
                 .bearing(bearing)
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(18f)
+                //.zoom(18f)
                 .build();
         PrintLog.v("bear==" + bearing);
       /*  map.moveCamera(CameraUpdateFactory.newLatLngZoom(
@@ -160,10 +161,25 @@ public class LocationUtils implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
+        map.setPadding(0,0,0,80);
         getLocationPermission();
+        map.setOnCameraChangeListener(getCameraChangeListener());
     }
 
+    private GoogleMap.OnCameraChangeListener getCameraChangeListener()
+    {
+        return new GoogleMap.OnCameraChangeListener()
+        {
+            @Override
+            public void onCameraChange(CameraPosition position)
+            {
+                Log.d("Zoom", "Zoom: " + position.zoom);
 
+
+                DEFAULT_ZOOM = position.zoom;
+            }
+        };
+    }
     /**
      * Prompts the user for permission to use the device location.
      */
@@ -185,7 +201,7 @@ public class LocationUtils implements OnMapReadyCallback {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
             if (isLocationEnabled(context))
                 getDeviceLocation();
             else
@@ -268,7 +284,7 @@ public class LocationUtils implements OnMapReadyCallback {
                         // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
                     if(isLocationEnabled(context))
                         getDeviceLocation();
                     else
@@ -392,7 +408,8 @@ public class LocationUtils implements OnMapReadyCallback {
     @SuppressLint("SuspiciousIndentation")
     public void addPolyLine(PolylineOptions rectLine, DirectionResults.Location endLocation, String demoType, String durationInMin) {
         PrintLog.v("add");
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        if(builder==null)
+            builder = new LatLngBounds.Builder();
         map.clear();
       currentMarker=  map.addMarker(markerOptions);
         map.addPolyline(rectLine);
@@ -408,6 +425,12 @@ public class LocationUtils implements OnMapReadyCallback {
             location.setLatitude(endLocation.getLat());
             location.setLongitude(endLocation.getLng());
             updateCameraBearing(map, location.getBearing(), location);
+            if(count==0) {
+                PrintLog.v("zoomMapTocontainsAll","zoomMapTocontainsAll==1");
+                zoomMapTocontainsAll(builder);
+                count=1;
+            }
+
         }
         else {
             isDealership=true;
@@ -415,11 +438,29 @@ public class LocationUtils implements OnMapReadyCallback {
             marker = (new MarkerOptions().position(new LatLng(endLocation.getLat(), endLocation.getLng())).icon(BitmapDescriptorFactory.fromResource(R.mipmap.dealership)).title("Dealership").snippet(durationInMin));
             map.addMarker(marker);
             builder.include(currentMarker.getPosition());
+            if(count==0) {
+                PrintLog.v("zoomMapTocontainsAll","zoomMapTocontainsAll==1");
+                zoomMapTocontainsAll(builder);
+                count=1;
+            }
         }
       /*  map.addMarker(marker);
         builder.include(marker.getPosition());
         zoomMapTocontainsAll(builder);*/
 
 
+    }
+
+    public void setZoom(int zoom, int padding) {
+        if(map!=null && loc!=null) {
+            map.animateCamera(CameraUpdateFactory.zoomTo(zoom));
+            if(builder!=null) {
+                zoomMapTocontainsAll(builder);
+            }
+            DEFAULT_ZOOM = Float.valueOf(zoom);
+            map.setPadding(0, 0, 0, padding);
+            if(loc!=null && loc.getValue()!=null)
+            updateCameraBearing(map, loc.getValue().getBearing(), loc.getValue());
+        }
     }
 }

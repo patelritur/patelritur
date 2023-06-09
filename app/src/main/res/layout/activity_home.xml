@@ -25,13 +25,7 @@
                 bind:homeModel="@{homeModel}" />
 
 
-            <fragment
-                android:layout_marginTop="-20dp"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:layout_below="@+id/rl_top" />
+
 
 
 
@@ -45,10 +39,20 @@
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/coordinator_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rl_top"
                 android:layout_above="@id/ll_bottom"
+                android:layout_marginTop="-20dp"
+
                 android:orientation="vertical">
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                     />
                 <androidx.core.widget.NestedScrollView
+                    android:elevation="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -120,7 +124,6 @@
                     android:tag="takeAdemo"
                     android:background="@drawable/behavior_rounded_corner"
                     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-                    android:name="com.demo.home.HomeNameFragment"
                     tools:layout="@layout/dialog_reviews" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

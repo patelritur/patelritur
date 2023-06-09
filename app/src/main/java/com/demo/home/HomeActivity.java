@@ -1,7 +1,6 @@
 package com.demo.home;
 
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 
@@ -116,10 +115,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
          mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
          params = mapFragment.getView().getLayoutParams();
+
          displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         deviceHeight = displayMetrics.heightPixels;
-
         locationUtils = new LocationUtils(this,mapFragment);
         setBottomMenuLabels(activityHomeBinding.llBottom);
         setMenuLabels(activityHomeBinding.leftMenu.menuRecyclerview);
@@ -322,7 +321,7 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
                 behavior.setMaxHeight(deviceHeight / 2);
                 behavior1.setPeekHeight(peekHeight);
                 behavior1.setMaxHeight(deviceHeight / 2);
-                expandedHeight = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-40-behavior2.getMaxHeight();
+                activityHomeBinding.llBottom.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
 
 
@@ -334,6 +333,8 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
             @Override
             public void run() {
                 behavior2.setState(BottomSheetBehavior.STATE_EXPANDED);
+                locationUtils.setZoom(12,Math.min(deviceHeight/2,activityHomeBinding.fragmentContainerView.getHeight()));
+
             }
         },200);
 
@@ -382,16 +383,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
                 }
                 else if(newState==STATE_COLLAPSED){
-//                    params.height = (int) (displayMetrics.heightPixels/2+100);
-                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-behavior.getPeekHeight();
-                    mapFragment.getView().setLayoutParams(params);
-//                    behavior.setPeekHeight(300);
+                    locationUtils.setZoom(15,deviceHeight/4);
                 }
                 else if(newState==STATE_EXPANDED){
-                    behavior.setPeekHeight(Math.min(activityHomeBinding.fragmentContainerView.getHeight(),behavior.getPeekHeight()));
-                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-activityHomeBinding.fragmentContainerView.getHeight()-40;
-                    mapFragment.getView().setLayoutParams(params);
-//                    behavior.setPeekHeight(displayMetrics.heightPixels/2);
+                    locationUtils.setZoom(12,Math.min(deviceHeight/2,activityHomeBinding.fragmentContainerView.getHeight()));
                 }
 
 
@@ -437,14 +432,10 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
 
                 }
                 else if(newState==STATE_COLLAPSED){
-                    params.height = (int) (displayMetrics.heightPixels/2);
-                    mapFragment.getView().setLayoutParams(params);
-//                    behavior.setPeekHeight(300);
+                    locationUtils.setZoom(15,deviceHeight/4);
                 }
                 else if(newState==STATE_EXPANDED){
-                    params.height = (int) (displayMetrics.heightPixels/3);
-                    mapFragment.getView().setLayoutParams(params);
-//                    behavior.setPeekHeight(displayMetrics.heightPixels/2);
+                    locationUtils.setZoom(12,deviceHeight/2);
                 }
 
             }
@@ -457,15 +448,12 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         behavior2.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState==STATE_COLLAPSED || newState==STATE_HIDDEN){
-                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-40-behavior2.getPeekHeight();
-                    mapFragment.getView().setLayoutParams(params);
-//                    behavior.setPeekHeight(300);
+
+                 if(newState==STATE_COLLAPSED || newState==STATE_HIDDEN){
+                     locationUtils.setZoom(15,deviceHeight/4);
                 }
                 else if(newState==STATE_EXPANDED){
-                    params.height = deviceHeight-activityHomeBinding.rlTop.getRoot().getHeight()-activityHomeBinding.llBottom.getRoot().getHeight()-40-activityHomeBinding.coordinatorName.getHeight();
-                    mapFragment.getView().setLayoutParams(params);
-//                    behavior.setPeekHeight(displayMetrics.heightPixels/2);
+                     locationUtils.setZoom(12,deviceHeight/3);
                 }
             }
 
@@ -629,9 +617,6 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
     public void showFragment(Fragment fragment) {
 //        behavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
         activityHomeBinding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(globalListener);
-
-
-
         activityHomeBinding.coordinatorSchedule.setBackgroundColor(Color.TRANSPARENT);
         activityHomeBinding.coordinatorSchedule.setVisibility(View.GONE);
         activityHomeBinding.scheduleFragmentContainerView.setVisibility(View.GONE);
@@ -647,15 +632,16 @@ public class HomeActivity extends BaseActivity implements LifecycleOwner, ApiRes
         activityHomeBinding.coordinator11.setVisibility(View.VISIBLE);
         activityHomeBinding.fragmentContainerView.removeAllViews();
         slideUp(activityHomeBinding.coordinator11);
+
+
+        behavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        behavior1.setState(STATE_COLLAPSED);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         },500);
-
-        behavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        behavior1.setState(STATE_COLLAPSED);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_view, fragment)
                 .commit();
